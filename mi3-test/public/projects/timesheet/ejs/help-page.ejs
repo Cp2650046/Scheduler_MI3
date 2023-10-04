@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Help **Only Sheet**</title>
+    <%- include('../../includes/script-top'); %>
+        <link rel="stylesheet" type="text/css" href="./projects/timesheet/css/help-page.css">
+</head>
+
+<body class="dark-mode hold-transition sidebar-mini">
+    <div class="container-fluid text-center p-3">
+        <div class="row">
+            <div class="col-sm-3">
+                <!-- One of three columns -->
+            </div>
+            <div class="col-sm-6">
+                <h2><u>ทำความเข้าใจเกี่ยวกับปุ่ม Process ของเครื่อง Sheet</u></h2>
+                <p>การทำงานของเครื่อง Sheet จะมีการแสดง Process ตาม step ที่กำหนดเอาไว้
+                    <br><strong class="text-warning">** ซึ่งหากต้องการกดปุ่ม Process ที่อยู่ใน Step ใดๆ
+                        <br>จำเป็นที่จะต้องกด Process ที่เป็น Step ก่อนหน้าของ Process นั้นก่อน **</strong>
+                    <br>ซึ่งปุ่ม Process ที่มีการกำหนด Step ไว้ จะมีดังนี้
+                </p>
+                <table class="table table-dark">
+                    <thead>
+                        <tr>
+                            <th class="text-primary">ขั้นตอน</th>
+                            <th class="text-primary">รหัส Process </th>
+                            <th class="text-primary text-left pl-5">ชื่อ Process</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Step 1</td>
+                            <td>S2</td>
+                            <td class="text-left pl-5">
+                                <p>เจาะเพลท ใส่เพลท ขึ้นกระดาษ</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Step 2</td>
+                            <td>S3</td>
+                            <td class="text-left pl-5">
+                                <p>ตั้งฉาก ตั้งสี</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Step 3</td>
+                            <td>S7</td>
+                            <td class="text-left pl-5">
+                                <p>Sup ตรวจสอบสี</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Step 4</td>
+                            <td>
+                                <p>
+                                    S5<br>
+                                    S6<br>
+                                    S8<br>
+                                    R
+                                </p>
+                            </td>
+                            <td class="text-left pl-5">
+                                <p>
+                                    AE ตรวจสอบสี,<br>
+                                    ลูกค้าตรวจสอบสี,<br>
+                                    OK Sheet,<br>
+                                    วิ่งงาน
+                                </p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Step 5</td>
+                            <td>
+                                <p>
+                                    C5<br>
+                                    M4<br>
+                                    M5<br>
+                                    M6<br>
+                                    M7<br>
+                                    M8
+                                </p>
+                            </td>
+                            <td class="text-left pl-5">
+                                <p>
+                                    ล้างผ้ายาง,<br>
+                                    หยุดปรับตั้งเครื่องอื่นๆ เพื่อแก้ไขปัญหา,<br>
+                                    หยุดแก้ปัญหากระดาษติด,<br>
+                                    หยุดแก้ปัญหาสกรัม,<br>
+                                    หยุดแก้ไขปัญหาน้ำท่วม,<br>
+                                    หยุดแก้ปัญหาสีหาย
+                                </p>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <p> <h5>**** คำอธิบายเพิ่มเติม ****</h5>
+                    <div class="figure">
+                        <p><img src="./projects/timesheet/image/help/step1.png" alt=""></p>
+                        <p><i>ตัวอย่างรูปที่ 1 Process ของ Step 1 แสดง S2 เจาะเพลท ใส่เพลท ขึ้นกระดาษ</i></p>
+                    </div>
+
+                    หากเข้ามาในหน้า Timesheet หลังจากกด Start ระบบจะแสดง<br>
+                    ปุ่มของ Step 1 คือปุ่ม <strong class="text-warning">S2 เจาะเพลท ใส่เพลท ขึ้นกระดาษ</strong> ดังตัวอย่างรูปที่ 1<br>
+                    
+                    <div class="figure">
+                        <p><img src="./projects/timesheet/image/help/step2.png" alt=""></p>
+                        <p><i>ตัวอย่างรูปที่ 2 Process ของ Step 2 แสดง S3 ตั้งฉาก ตั้งสี</i></p>
+                    </div>
+                    หากต้องการให้ระบบแสดง Process ใน Step 2 จำเป็นต้องกดปุ่มของ Step 1 ก่อน<br>
+                    แล้วระบบจะแสดง Process ของ Step ถัดไป ดังตัวอย่างรูปที่ 2 คือ <strong class="text-warning">S3 ตั้งฉาก ตั้งสี</strong>
+
+                    <div class="figure">
+                        <p><img src="./projects/timesheet/image/help/step3.png" alt=""></p>
+                        <p><i>ตัวอย่างรูปที่ 3 Process ของ Step 3 แสดง S7 Sup ตรวจสอบสี</i></p>
+                    </div>
+                    หากต้องการให้ระบบแสดง Process ใน Step 3 จำเป็นต้องกดปุ่มของ Step 2 ก่อน<br>
+                    แล้วระบบจะแสดง Process ของ Step ถัดไป ดังตัวอย่างรูปที่ 3 คือ <strong class="text-warning">S7 Sup ตรวจสอบสี</strong>
+
+                    <div class="figure">
+                        <p><img src="./projects/timesheet/image/help/step4.png" alt=""></p>
+                        <p><i>ตัวอย่างรูปที่ 4 Process ของ Step 4 ทั้งหมด 4 ปุ่ม</i></p>
+                    </div>
+                    หากต้องการให้ระบบแสดง Process ใน Step 4 จำเป็นต้องกดปุ่มของ Step 3 ก่อน<br>
+                    แล้วระบบจะแสดง Process ของ Step ถัดไป ได้แก่ 
+                    <strong class="text-warning">S5 AE ตรวจสอบสี </strong>,
+                    <strong class="text-warning">S6 ลูกค้าตรวจสอบสี </strong>, <br>
+                    <strong class="text-warning">S8 OK Sheet </strong> และ <strong class="text-warning">R วิ่งงาน</strong> ดังตัวอย่างรูปที่ 4
+
+                    <div class="figure">
+                        <p><img src="./projects/timesheet/image/help/step5.png" alt=""></p>
+                        <p><i>ตัวอย่างรูปที่ 5 Process ของ Step 5 ทั้งหมด 6 ปุ่ม</i></p>
+                    </div>
+                    หากต้องการให้ระบบแสดง Process ใน Step 5 จำเป็นต้องกดปุ่มใดปุ่มหนึ่งของ Step 4 ก่อน<br>
+                    แล้วระบบจะแสดง Process ของ Step ถัดไป ได้แก่ <br>
+                    <strong class="text-warning">C5 ล้างผ้ายาง </strong>,
+                    <strong class="text-warning">M4 หยุดปรับตั้งเครื่องอื่นๆ เพื่อแก้ไขปัญหา </strong>, <br>
+                    <strong class="text-warning">M5 หยุดแก้ปัญหากระดาษติด </strong> , <strong class="text-warning">M5 หยุดแก้ปัญหาสกรัม </strong>, <br>
+                    <strong class="text-warning">M7 หยุดแก้ไขปัญหาน้ำท่วม </strong> 
+                    และ <strong class="text-warning">M8 หยุดแก้ปัญหาสีหาย </strong> ดังตัวอย่างรูปที่ 5
+                </p>
+                <h3>***********************************</h3>
+            </div>
+            <div class="col-sm-3">
+                <!-- One of three columns -->
+            </div>
+        </div>
+
+
+        <%- include('../../includes/script-bottom'); %>
+            <!-- <script src="./projects/timesheet/js/leader.js"></script> -->
+    </div>
+</body>
+
+</html>

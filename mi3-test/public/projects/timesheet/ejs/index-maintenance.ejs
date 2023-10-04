@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MI v.3 - Timesheet(Maintenance)</title>
+    <%- include('../../includes/script-top'); %>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+        <link rel="stylesheet" type="text/css" href="./projects/timesheet/css/index-maintenance.css">
+        <link rel="stylesheet" type="text/css" href="./projects/timesheet/css/process-type.css">
+        <link rel="stylesheet" type="text/css" href="./projects/timesheet/css/machines.css">
+        <link rel="stylesheet" type="text/css" href="./projects/timesheet/css/workers.css">
+        <link rel="stylesheet" type="text/css" href="./projects/timesheet/css/plans.css">
+        <link rel="stylesheet" type="text/css" href="./projects/timesheet/css/timesheet-modal.css">
+        <link rel="stylesheet" type="text/css" href="./projects/timesheet/css/sweet-alert.css">
+
+</head>
+
+<body class="dark-mode hold-transition sidebar-mini">
+    <div class="wrapper">
+
+        <%- include('../../includes/navbar'); %>
+
+            <div class="content-wrapper" hidden>
+                <div class="container-fluid" id="main_board">
+                    <div class="content-header">
+                        <div class="col-lg-12" id="action_bar">
+                            <div class="row mb-2">
+                                <div class="col-sm-6">
+                                    <ol class="breadcrumb float-sm-left" id="show_navigation_group"></ol>
+                                </div>
+                                <div class="col-sm-6">
+                                    <ol class="breadcrumb float-sm-right" id="show_action_group"></ol>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Start page content below -->
+                        <div class="container-fluid" id="second_board">
+                            <div class="div-process-type">
+                            </div>
+                            <div class="row d-flex justify-content-center flex-nowrap">
+                                <div class="col-12 col-sm-6 col-md-3 timesheet-box" id="div-machines">
+                                    <div class="timesheet-head-box">
+                                        <span>Machine</span>
+                                    </div>
+                                    <div class="timesheet-body-box machines" id="child-machines">
+                                    </div>
+                                </div>
+                                <div class="col-12 col-sm-6 col-md-3 timesheet-box">
+                                    <div class="timesheet-head-box">
+                                        <span>Plan</span>
+                                    </div>
+                                    <div class="timesheet-body-box plans"></div>
+                                </div>
+                                <div class="col-12 col-sm-6 col-md-3 timesheet-box">
+                                    <div class="timesheet-head-box">
+                                        <span>Signature</span>
+                                    </div>
+                                    <div class="timesheet-body-box signature">
+                                        <div class="date-container">
+                                            <span>วันทำงานตามกะ</span>
+                                            <div class="input-group date" id="timesheet-date"
+                                                data-target-input="nearest">
+                                                <input type="text" class="form-control datetimepicker-input"
+                                                    data-target="#timesheet-date" />
+                                                <div class="input-group-append" data-target="#timesheet-date"
+                                                    data-toggle="datetimepicker">
+                                                    <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <hr>
+                                        <div class="shift-container">
+                                            <span>กะการทำงาน</span>
+                                            <div class="shift">
+                                                <input name="shift" type="radio" id="1" value="กลางวัน"
+                                                    onclick="manageOption($(this))" />
+                                                <label for="1" name="shift" id="label-1"><span>กลางวัน</span></label>
+                                                <input name="shift" type="radio" id="2" value="กลางคืน"
+                                                    onclick="manageOption($(this))" />
+                                                <label for="2" name="shift" id="label-2"><span>กลางคืน</span></label>
+                                            </div>
+                                        </div>
+                                        <hr>
+                                        <div class="detail-container">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-sm-6 col-md-3 timesheet-box">
+                                    <div class="timesheet-head-box">
+                                        <span>Worker</span>&nbsp;<span class="text-success"
+                                            id="number-worker">(0/0)</span>
+                                    </div>
+                                    <div class="timesheet-body-box workers"></div>
+                                    <div class="timesheet-body-box add-workers pt-2 pl-4 pr-4 pb-4" hidden>
+                                        <button class="btn btn-lg btn-block btn-warning"
+                                            onclick="open_modal_add_workers(1)"><strong>เพิ่มพนักงานชั่วคราว</strong></button>
+                                        <button class="btn btn-lg btn-block btn-success"
+                                            onclick="open_modal_add_workers(2)"><strong>เพิ่มพนักงานในหน่วยงาน</strong></button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="div-start-maintenance" hidden>
+                                <button class="btn btn-block btn-lg" onclick="startTimesheetMaintenanceMachines()">Start
+                                    <i class="bi bi-caret-right-fill"></i></button>
+                            </div>
+                        </div>
+                        <!-- End page content above -->
+                    </div>
+                </div>
+            </div>
+    </div>
+
+    <!-- Modal add worker -->
+    <div class="modal fade" id="add-workers" data-backdrop="static" tabindex="-1" role="dialog"
+        aria-labelledby="checklist-label" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+            <div class="modal-content">
+                <div class="modal-body text-center">
+                    <h3 class="modal-title">เพิ่มพนักงาน</h3>
+                    <input type="text" class="form-control text-center" placeholder="พิมพ์ชื่อ หรือ รหัสพนักงาน"
+                        id="search-emp">
+                    <input type="hidden" id="new-emp-id" />
+                    <div style="max-height: 30vh; min-height: 30vh;" id="finding-emp">
+
+                    </div>
+                </div>
+                <div class="modal-footer d-flex justify-content-center">
+                    <button type="button" class="btn btn-success btn-save" onclick="saveWorker()">เพิ่มพนักงาน</button>
+                    <button type="button" class="btn btn-danger btn-close onclick=" closeModal($(this))"
+                        data-dismiss="modal">ยกเลิก</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <%- include('../../includes/script-bottom'); %>
+        <script src="./projects/timesheet/js/index.js"></script>
+        <script src="./projects/timesheet/js/timesheet-alert.js"></script>
+        <script src="./projects/timesheet/js/index-maintenance.js"></script>
+        <script src="./projects/timesheet/js/timesheet-maintenance-manager.js"></script>
+</body>
+
+</html>

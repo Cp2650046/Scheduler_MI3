@@ -1,0 +1,147 @@
+#modal-pre-pallet .modal-dialog .modal-content .modal-body table tbody tr td:last-child input {
+    margin-left: 5px;
+    padding: 0px 0px 0px 5px;
+}
+
+#modal-pre-pallet .modal-dialog {
+    max-width: 80%;
+    height: 400px;
+    max-height: 100%;
+}
+
+#modal-pre-pallet .modal-content {
+    height: auto;
+    min-height: 100%;
+}
+
+#modal-pre-pallet .table {
+    width: 90%;
+}
+
+#modal-pre-pallet .table td,
+.table th {
+    padding: .50rem;
+}
+
+.input-readonly {
+    width: 100%;
+    pointer-events: none;
+    background-color: #454d55 !important;
+    color: rgba(255, 255, 255, 0.438) !important;
+    border: none;
+    border-radius: .25rem;
+}
+
+.input-list {
+    margin-left: 5px;
+    margin-bottom: 5px;
+    width: 100%;
+    height: 60%;
+}
+
+.input-wait-dry-disable {
+    background-color: rgb(214, 214, 214);
+    border: none;
+}
+
+.input-wait-dry {
+    width: 45%;
+}
+
+.input-part-name,
+.input-part-name:disabled {
+    background-color: rgb(214, 214, 214);
+    border: none;
+    margin-left: 5px;
+    margin-bottom: 5px;
+    width: 100%;
+    height: 60%;
+}
+
+#btn_cal {
+    padding: 2px 5px;
+}
+
+.control-input-pallet {
+    width: 100%;
+}
+
+#modal-pre-pallet-view .modal-dialog {
+    max-width: 90%;
+    max-height: 50%;
+}
+
+#modal-pre-pallet-view .modal-dialog .modal-content .modal-body table tbody tr td:last-child input {
+    margin-left: 5px;
+}
+
+#modal-pre-pallet-view .modal-dialog .modal-content .modal-body table thead th {
+    margin-left: 5px;
+    max-width: 7%;
+}
+
+.pallet_qty {
+    background-color: #DDF7DF;
+    max-width: 70%;
+    border: 1px solid #929292;
+    text-align: center;
+}
+
+.pallet_remark {
+    max-width: 100%;
+    border: 1px solid #929292;
+    background: #FEF9E7;
+    padding: 3px 5px 3px 5px;
+}
+
+#modal-upload_img .modal-dialog {
+    max-width: 50%;
+}
+
+.addimg {
+    cursor: pointer;
+}
+
+#upload_img tr th {
+    text-align: left;
+}
+
+.red {
+    color: red;
+}
+
+.pre_pallet_delete {
+    text-decoration: underline;
+    cursor: pointer;
+    background-color: red;
+    font-size: 25px;
+    border-radius: 0.25rem;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+a.pallet_code_view {
+    color: #ffc107;
+    text-decoration: underline;
+    background-color: transparent;
+}
+
+div#modal-pre-pallet .modal-body {
+    max-height: 75vh;
+    overflow: auto;
+}
+
+button.btn_del_trimming_detail {
+    width: 2rem;
+    border-radius: 5px;
+}
+
+button#btn_add_trimming_detail {
+    width: 5rem;
+    border-radius: 5px;
+}
+
+span.text_warning_trimming {
+    font-size: 8pt;
+    color: #e74c3c;
+}

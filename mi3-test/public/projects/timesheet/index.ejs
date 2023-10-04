@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MI v.3 - Timesheet</title>
+    <%- include('../includes/script-top'); %>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+        <link rel="stylesheet" type="text/css" href="./projects/timesheet/css/index.css">
+        <link rel="stylesheet" type="text/css" href="./projects/timesheet/css/process-type.css">
+        <link rel="stylesheet" type="text/css" href="./projects/timesheet/css/machines.css">
+        <link rel="stylesheet" type="text/css" href="./projects/timesheet/css/workers.css">
+        <link rel="stylesheet" type="text/css" href="./projects/timesheet/css/plans.css">
+        <link rel="stylesheet" type="text/css" href="./projects/timesheet/css/timesheet-modal.css">
+        <link rel="stylesheet" type="text/css" href="./projects/timesheet/css/sweet-alert.css">
+        <link rel="stylesheet" type="text/css" href="./projects/timesheet/css/jquery.keypad.css">
+</head>
+
+<body class="dark-mode hold-transition sidebar-mini">
+    <div class="wrapper">
+
+        <%- include('../includes/navbar'); %>
+
+            <div class="content-wrapper">
+                <div class="container-fluid" id="main_board">
+                    <div class="content-header">
+                        <div class="col-lg-12" id="action_bar">
+                            <div class="row mb-2">
+                                <div class="col-sm-6">
+                                    <ol class="breadcrumb float-sm-left" id="show_navigation_group"></ol>
+                                </div>
+                                <div class="col-sm-6">
+                                    <ol class="breadcrumb float-sm-right" id="show_action_group"></ol>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Start page content below -->
+                        <div class="container-fluid" id="second_board" hidden>
+                            <div class="div-process-type">
+                            </div>
+                            <div class="row d-flex justify-content-center flex-nowrap">
+                                <div class="col-12 col-sm-6 col-md-3 timesheet-box" id="div-machines">
+                                    <div class="timesheet-head-box">
+                                        <span>Machine</span>
+                                    </div>
+                                    <div class="timesheet-body-box machines" id="child-machines">
+                                    </div>
+                                    <div class="timesheet-body-box span-alternate-machines">
+                                        <span>ALTERNATE MACHINES</span>
+                                    </div>
+                                    <div class="timesheet-body-box machines2" id="child-machines2">
+                                    </div>
+                                </div>
+                                <div class="col-12 col-sm-6 col-md-3 timesheet-box">
+                                    <div class="timesheet-head-box">
+                                        <span>Plan</span>
+                                    </div>
+                                    <div class="timesheet-body-box plans-shift">
+                                        <div class="plans-shift-container">
+                                            <input name="plan-shift" type="radio" id="day" value="กลางวัน"
+                                                onclick="click_type(this)" />
+                                            <label for="day" name="plan-shift" id="label-day"
+                                                class="day"><span>DAY</span></label>
+                                            <span>กะกลางวัน</span>
+                                            <br />
+                                            <input name="plan-shift" type="radio" id="night" value="กลางคืน"
+                                                onclick="click_type(this)" />
+                                            <label for="night" name="plan-shift" id="label-night"
+                                                class="night"><span>NIGHT</span></label>
+                                            <span>กะกลางคืน</span>
+                                        </div>
+                                        <hr>
+                                    </div>
+                                    <div class="timesheet-body-box plans"></div>
+                                    <div class="timesheet-body-box button-option pt-2 pl-4 pr-4 pb-4">
+                                        <button class="btn btn-lg btn-block btn-danger"
+                                            onclick="timesheet_maintenance_machine()"><strong>งานซ่อมเครื่องจักร</strong></button>
+                                        <button class="btn btn-lg btn-block btn-secondary" 
+                                            onclick="plans_on_other_machines(this)"><strong>Plans on other machines</strong></button>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-sm-6 col-md-3 timesheet-box">
+                                    <div class="timesheet-head-box">
+                                        <span>Signature</span>
+                                    </div>
+                                    <div class="timesheet-body-box signature">
+                                        <div class="date-container">
+                                            <span>วันทำงานตามกะ</span>
+                                            <div class="input-group date" id="timesheet-date"
+                                                data-target-input="nearest">
+                                                <input type="text" class="form-control datetimepicker-input"
+                                                    data-target="#timesheet-date" />
+                                                <div class="input-group-append" data-target="#timesheet-date"
+                                                    data-toggle="datetimepicker">
+                                                    <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <hr>
+                                        <div class="shift-container">
+                                            <span>กะการทำงาน</span>
+                                            <div class="shift">
+                                                <input name="shift" type="radio" id="1" value="กลางวัน"
+                                                    onclick="click_type(this)" />
+                                                <label for="1" name="shift" id="label-1"><span>กลางวัน</span></label>
+                                                <input name="shift" type="radio" id="2" value="กลางคืน"
+                                                    onclick="click_type(this)" />
+                                                <label for="2" name="shift" id="label-2"><span>กลางคืน</span></label>
+                                            </div>
+                                        </div>
+                                        <div class="sig1-container">
+                                            <span>กรอบ 1</span>
+                                            <div class="sig1">
+                                                <input type="text" class="form-control sig"
+                                                    oninput="set_input_numeric(this)" placeholder="จำนวนยก"
+                                                    onfocus="show_numeric_keypad(this, this.value)">
+                                                <span>/</span>
+                                                <input type="text" class="form-control subsig"
+                                                    oninput="set_input_numeric(this)" placeholder="จำนวนกรอบ"
+                                                    onfocus="show_numeric_keypad(this, this.value)">
+                                            </div>
+                                        </div>
+                                        <div class="print-container">
+                                            <div class="print">
+                                                <input name="print" type="radio" id="print1"
+                                                    onclick="click_type(this)" />
+                                                <label for="print1" name="print"
+                                                    id="label-print1"><span>พิมพ์หน้าเดียว</span></label>
+                                                <br />
+                                                <input name="print" type="radio" id="print2"
+                                                    onclick="click_type(this)" />
+                                                <label for="print2" name="print"
+                                                    id="label-print2"><span>พิมพ์สองหน้า</span></label>
+                                            </div>
+                                        </div>
+                                        <div class="sig2-container">
+                                            <span>กรอบ 2</span>
+                                            <div class="sig2">
+                                                <input type="text" class="form-control sig"
+                                                    oninput="await set_input_numeric(this)" placeholder="จำนวนยก" readonly>
+                                                <span>/</span>
+                                                <input type="text" class="form-control subsig"
+                                                    oninput="await set_input_numeric(this)" placeholder="จำนวนกรอบ" readonly>
+                                            </div>
+                                        </div>
+                                        <div class="lpg-container">
+                                            <div class="use-lpg">
+                                                <input name="lpg" type="checkbox" id="use-lpg"
+                                                    onclick="click_type(this)" />
+                                                <label for="use-lpg" name="lpg"
+                                                    id="label-use-lpg"><span>ใช้แก๊ส</span></label>
+                                            </div>
+                                        </div>
+                                        <div class="detail-container">
+                                        </div>
+                                        <hr>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-sm-6 col-md-3 timesheet-box">
+                                    <div class="timesheet-head-box">
+                                        <span>Worker</span>&nbsp;<span class="text-success"
+                                            id="number-worker">(0/0)</span>
+                                    </div>
+                                    <div class="timesheet-body-box workers"></div>
+                                    <div class="timesheet-body-box add-workers pt-2 pl-4 pr-4 pb-4">
+                                        <button class="btn btn-lg btn-block btn-warning"
+                                            onclick="open_modal_add_workers(1)"><strong>เพิ่มพนักงานชั่วคราว</strong></button>
+                                        <button class="btn btn-lg btn-block btn-success"
+                                            onclick="open_modal_add_workers(2)"><strong>เพิ่มพนักงานในหน่วยงาน</strong></button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="div-start">
+                                <button class="btn btn-block btn-lg" onclick="start_timesheet()">Start<i
+                                        class="bi bi-caret-right-fill"></i></button>
+                            </div>
+                        </div>
+                        <!-- End page content above -->
+                    </div>
+                </div>
+            </div>
+    </div>
+
+    <!-- Modal Checklist -->
+    <div class="modal fade" id="checklist" data-backdrop="static" tabindex="-1" role="dialog"
+        aria-labelledby="checklist-label" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl" role="document">
+            <div class="modal-content">
+                <div class="modal-body text-center">
+                    <div><button class="btn btn-danger" id="checklist-repair">
+                            <h1>!</h1>
+                        </button></div>
+                    <input type="hidden" id="checklist_doc_id" value="">
+                    <h3></h3>
+                    <div class="mb-2 pre-work" hidden>
+                        <div class="row row-pre-work">
+                            <div class="col-4 text-right d-flex align-items-center justify-content-end">จำนวนกระดาษที่รับ</div>
+                            <div class="col-4">
+                                <input type="text" class="form-control is-invalid" id="qty-paper" placeholder="ใส่ตัวเลข"
+                                oninput="manage_qty_paper($(this))"
+                                onfocus="manage_qty_paper($(this))" 
+                                onblur="manage_qty_paper($(this))" ></div>
+                            <div class="col-4 text-left d-flex align-items-center">แผ่น</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer d-flex justify-content-center">
+                    <button type="button" class="btn btn-success btn-save save-checklist">บันทึก</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Maintenance -->
+    <div class="modal fade" id="maintenance" data-backdrop="static" tabindex="-1" role="dialog"
+        aria-labelledby="maintenance-label" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-body text-center">
+                    <!-- body -->
+                    <ul class="nav nav-tabs">
+                        <li class="nav-item" id="nav-edit">
+                            <a class="nav-link active" href="#edit" data-toggle="tab">แก้ไขเอง</a>
+                        </li>
+                        <li class="nav-item" id="nav-repair">
+                            <a class="nav-link" href="#repair" data-toggle="tab">แจ้งซ่อม</a>
+                        </li>
+                        <li class="nav-item" id="nav-repair-again">
+                            <a class="nav-link" href="#repair-again" data-toggle="tab">แจ้งซ่อมซ้ำ</a>
+                        </li>
+                    </ul>
+                    <div class="tab-content">
+                        <div class="tab-pane" id="repair">
+                            <div class="row">
+                                <div class="col-6">
+                                    <table class="table table-borderless table-repair table-left">
+                                        <tbody>
+                                            <tr>
+                                                <td scope="row" class="col-6 text-right"><span>แจ้งซ่อมเครื่อง:</span>
+                                                </td>
+                                                <td class="col-6 text-left"><input class="form-control machine-name"
+                                                        type="text">
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td scope="row" class="col-6 text-right">
+                                                    <span><strong
+                                                            class="text-danger">*</strong>ที่ตั้งเครื่องจักร:</span>
+                                                </td>
+                                                <td class="col-6 text-left"><input class="form-control location-machine"
+                                                        type="text" onchange="check_edit_value(this, this.value)">
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td scope="row" class="col-6 text-right"><span>วันที่ต้องการ:</span>
+                                                </td>
+                                                <td class="col-6 text-left">
+                                                    <input type="text" class="form-control date-text">
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td scope="row" class="col-6 text-right"><span><strong
+                                                            class="text-danger">*</strong>แจ้งโดย:</span></td>
+                                                <td class="col-6 text-left">
+                                                    <select class="form-control" name="worker" id=""
+                                                        onchange="check_edit_value(this, this.value)">
+                                                        <option value="none" disabled><--เลือก--></option>
+                                                    </select>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td scope="row" class="col-6 text-right"><span><strong
+                                                            class="text-danger">*</strong>เบอร์ติดต่อ:</span></td>
+                                                <td class="col-6 text-left">
+                                                    <input class="call-number form-control" type="text"
+                                                        onchange="check_edit_value(this, this.value)">
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td scope="row" class="col-6 text-right">
+                                                    <span><strong
+                                                            class="text-danger">*</strong>หัวข้อที่พบสิ่งผิดปกติ:</span>
+                                                </td>
+                                                <td class="col-6 text-left">
+                                                    <select class="form-control" name="checklist" id=""
+                                                        onchange="check_edit_value(this, this.value)">
+                                                        <option value="none" disabled><--เลือก--></option>
+                                                    </select>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="col-6">
+                                    <table class="table table-borderless table-repair table-right">
+                                        <tbody>
+                                            <tr>
+                                                <td scope="row" class="col-5 text-right"><span><strong
+                                                            class="text-danger">*</strong>สถานะเครื่อง:</span></td>
+                                                <td class="col-7 text-center">
+                                                    <div class="div-repair">
+                                                        <input name="status-id" type="radio" id="status-0" value="0"
+                                                            class="repair-setting-btn" />
+                                                        <label class="repair-setting-btn" for="status-0"
+                                                            name="status-id"
+                                                            onclick="set_active(this)">เสียยังวิ่งงานได้</label>
+                                                        <input name="status-id" type="radio" id="status-1" value="1"
+                                                            class="repair-setting-btn" />
+                                                        <label class="repair-setting-btn" for="status-1"
+                                                            name="status-id"
+                                                            onclick="set_active(this)">เสียวิ่งงานไม่ได้</label>
+                                                        <span><strong class="text-danger"
+                                                                style="font-size: 10pt;">**กรุณาระบุสถานะเครื่อง**</strong></span>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td scope="row" class="col-5 text-right"><span><strong
+                                                            class="text-danger">*</strong>Process:</span></td>
+                                                <td class="col-7 text-left">
+                                                    <select class="form-control" name="process_status_machine" id=""
+                                                        onchange="check_edit_value(this, this.value)">
+                                                        <option value="none" disabled><--เลือก--></option>
+                                                        <option value="1">เครื่องวิ่งงานอยู่</option>
+                                                        <option value="2">เครื่องไม่มีงาน</option>
+                                                        <option value="3">เครื่องรอ pm</option>
+                                                        <option value="4">สั่งซื้อ/ส่งซ่อม</option>
+                                                    </select>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td scope="row" class="col-5 text-right"><span><strong
+                                                            class="text-danger">*</strong>ประเภทปัญหา:</span></td>
+                                                <td class="col-7 text-left">
+                                                    <select class="form-control" name="problem" id=""
+                                                        onchange="check_edit_value(this, this.value)">
+                                                        <option value="none" disabled><--เลือก--></option>
+                                                    </select>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td scope="row" class="col-5 text-right"><span><strong
+                                                            class="text-danger">*</strong>อาการเครื่อง:</span></td>
+                                                <td class="col-7 text-left"><textarea class="form-control"
+                                                        id="repair_textarea" rows="3"
+                                                        onchange="check_edit_value(this, this.value)"></textarea></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <button type="button" class="btn btn-success btn-save save-maintenance"
+                                onclick="check_maintenance_input(1)">บันทึก</button>
+                            <button type="button" class="btn btn-danger btn-close close-maintenance"
+                                data-dismiss="modal">ยกเลิก</button>
+                        </div>
+                        <div class="tab-pane active" id="edit">
+                            <div class="row d-flex justify-content-center">
+                                <table class="table table-borderless table-edit" id="table-edit">
+                                    <tbody>
+                                        <tr>
+                                            <td class="text-right col-4">เครื่อง: </td>
+                                            <td class="text-left"><input class="form-control machine-name" type="text">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-right col-4"><strong
+                                                    class="text-danger">*</strong>หัวข้อที่พบสิ่งผิดปกติ</td>
+                                            <td class="text-left">
+                                                <select class="form-control" name="checklist" id=""
+                                                    onchange="check_edit_value(this, this.value)">
+                                                    <option value="none" disabled><--เลือก--></option>
+                                                </select>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-right col-4"><strong class="text-danger">*</strong>สาเหตุ
+                                            </td>
+                                            <td class="text-left"><input class="form-control remark" type="text"
+                                                    onchange="check_edit_value(this, this.value)"></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-right col-4"><strong class="text-danger">*</strong>วิธีแก้ไข
+                                            </td>
+                                            <td class="text-left">
+                                                <textarea class="form-control" id="solution" rows="3"
+                                                    onchange="check_edit_value(this, this.value)"></textarea>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-right col-4"><strong class="text-danger">*</strong>แก้ไขโดย
+                                            </td>
+                                            <td class="text-left">
+                                                <select class="form-control" name="worker" id=""
+                                                    onchange="check_edit_value(this, this.value)">
+                                                    <option value="none" disabled><--เลือก--></option>
+                                                </select>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <button type="button" class="btn btn-success btn-save save-maintenance"
+                                onclick="check_maintenance_input(2)">บันทึก</button>
+                            <button type="button" class="btn btn-danger btn-close close-maintenance"
+                                data-dismiss="modal">ยกเลิก</button>
+                        </div>
+                        <div class="tab-pane" id="repair-again">
+                            <div class="text-center">
+                                <h5 id="title-machine">รายการแจ้งซ่อม</h5>
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th class="ma_id">เลขใบแจ้งซ่อม</th>
+                                            <th class="ma_remark">รายละเอียด</th>
+                                            <th class="ma_emp_id">แจ้งซ่อม</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+
+                                    </tbody>
+                                </table>
+                            </div>
+                            <button type="button" class="btn btn-success btn-save save-maintenance"
+                                onclick="check_maintenance_input(3)">แจ้งซ่อมซ้ำ</button>
+                            <button type="button" class="btn btn-danger btn-close close-maintenance"
+                                data-dismiss="modal">ยกเลิก</button>
+                        </div>
+                    </div>
+                </div>
+                <!-- end body -->
+                <div class="modal-footer d-flex justify-content-center">
+                    <!-- <button type="button" class="btn btn-success btn-save save-maintenance">บันทึก</button> -->
+                    <!-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal add worker -->
+    <div class="modal fade" id="add-workers" data-backdrop="static" tabindex="-1" role="dialog"
+        aria-labelledby="checklist-label" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+            <div class="modal-content">
+                <div class="modal-body text-center">
+                    <h3 class="modal-title"></h3>
+                    <input type="text" class="form-control text-center" placeholder="พิมพ์ชื่อ หรือ รหัสพนักงาน"
+                        id="search-emp">
+                    <div style="max-height: 30vh; min-height: 30vh;" id="finding-emp">
+
+                    </div>
+                </div>
+                <div class="modal-footer d-flex justify-content-center">
+                    <button type="button" class="btn btn-success btn-save save-workers">เพิ่มพนักงาน</button>
+                    <button type="button" class="btn btn-danger btn-close close-add-workers"
+                        data-dismiss="modal">ยกเลิก</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Insert Sig/Subsig -->
+    <div class="modal fade" id="insert-sig" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog"
+        aria-labelledby="insert-sig-label" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-body text-center">
+                    <h3>จำนวนยก</h3>
+                    <input id="sig" type="text" class="input-total form-control text-center"
+                        oninput="set_input_numeric(this)" placeholder="เลือกเพื่อใส่จำนวน">
+                    <h3>จำนวนกรอบ</h3>
+                    <input id="subsig" type="text" class="input-total form-control text-center"
+                        oninput="set_input_only_alphanumeric(this)" placeholder="เลือกเพื่อใส่จำนวน">
+                    <div id="keypad"></div>
+                </div>
+                <div class="modal-footer d-flex justify-content-center">
+                    <button type="button" class="btn btn-success save-sig" onclick="save_sig_subsig()">บันทึก</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">ปิด</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <%- include('../includes/script-bottom'); %>
+        <script src="./projects/timesheet/js/timesheet-manager.js"></script>
+        <script src="./projects/timesheet/js/timesheet-alert.js"></script>
+        <script src="./projects/timesheet/js/index.js"></script>
+        <script src="./projects/timesheet/jquery/jquery.keypad.js"></script>
+        </div>
+</body>
+
+</html>

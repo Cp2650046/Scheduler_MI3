@@ -1,0 +1,25 @@
+{
+  "name": "frontend01",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "SET NODE_ENV=development& nodemon index.js",
+    "production": "SET NODE_ENV=production& pm2 start index.js --name mi3-test"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.20.1",
+    "config": "^3.3.8",
+    "cors": "^2.8.5",
+    "ejs": "^3.1.8",
+    "express": "^4.18.1",
+    "html2pdf.js": "^0.10.1",
+    "json2xls": "^0.1.2",
+    "moment": "^2.29.4",
+    "numeral": "^2.0.6",
+    "path": "^0.12.7"
+  }
+}

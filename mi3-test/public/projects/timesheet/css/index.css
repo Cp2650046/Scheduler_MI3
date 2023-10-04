@@ -1,0 +1,329 @@
+div.content-header {
+    height: 100vh;
+    padding: 0;
+    box-sizing: border-box;
+    overflow-x: hidden;
+}
+
+div#second_board {
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+div#main_board {
+    padding: 0
+}
+
+/* input.form-control {
+    background-color: #454d55 !important;
+} */
+
+div.timesheet-box {
+    margin: 5px;
+    background-color: #343a40;
+    box-shadow: 0 0 1px rgba(0, 0, 0, .125), 0 1px 3px rgba(0, 0, 0, .2);
+    border-radius: 0.5em;
+    min-height: 80vh;
+    overflow: auto;
+}
+
+div.col-md-3 {
+    max-width: 24%;
+    padding: 0;
+}
+
+div.div-start {
+    padding: 1rem;
+    display: flex;
+    justify-content: center;
+}
+
+div.div-start button {
+    background: #208838;
+    color: #2f343a;
+    font-size: 28pt;
+    text-transform: uppercase;
+    font-weight: bolder;
+    box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+    border: none;
+    max-width: auto;
+}
+
+div.div-start button:active {
+    transform: translateY(4px);
+    box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+}
+
+div.timesheet-head-box {
+    z-index: 999;
+    border-top-left-radius: 0.5em;
+    border-top-right-radius: 0.5em;
+    text-align: center;
+    vertical-align: baseline;
+    background: #2f343a;
+    border-bottom: #575e66 solid 1px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-transform: uppercase;
+    margin-bottom: unset;
+    position: sticky;
+    top: 0;
+}
+
+div.timesheet-body-box.workers {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+div.div-process-type {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+/* signature */
+div.timesheet-body-box.signature div.date-container,
+div.timesheet-body-box.signature div.shift-container,
+div.timesheet-body-box.signature div.sig1-container,
+div.timesheet-body-box.signature div.sig2-container,
+div.timesheet-body-box.signature div.detail-container {
+    display: block;
+    text-align: center;
+    padding: .3rem 1rem;
+}
+
+div.timesheet-body-box.signature div.detail-container {
+    cursor: not-allowed;
+    margin: 1rem 1.1rem;
+    background-color: #454d55;
+    color: #9fa4aa;
+    border-radius: .3rem;
+}
+
+div.print-container div.print {
+    text-align: center;
+    padding: 1rem 0;
+}
+
+div.lpg-container div.use-lpg {
+    text-align: center;
+    padding-top: 1rem;
+}
+
+div.sig1,
+div.sig2 {
+    display: flex;
+    justify-content: center;
+}
+
+div.sig1 span,
+div.sig2 span {
+    margin: 0 .5rem;
+}
+
+input.sig,
+input.subsig {
+    width: 45%;
+}
+
+div.sig2-container div.sig2 input.form-control.sig,
+div.sig2-container div.sig2 input.form-control.subsig {
+    background-color: #454d55;
+    color: #9fa4aa;
+    cursor: not-allowed;
+    border: none;
+}
+
+input.form-control.datetimepicker-input {
+    line-height: 0;
+    pointer-events: none;
+}
+
+div.shift-container div.shift input[name='shift'],
+div.print-container div.print input[name='print'],
+div.lpg-container div.use-lpg input[name='lpg'] {
+    visibility: hidden;
+    position: absolute;
+}
+
+
+div.print-container div.print label[name='print'],
+div.lpg-container div.use-lpg label[name='lpg'] {
+    width: 89%;
+    background: #545b62;
+    box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+    border-radius: .3rem;
+    padding: .5rem 1rem;
+    margin: .1rem auto;
+}
+
+div.shift-container div.shift label[name='shift'] {
+    width: 49%;
+    padding: .5rem 1rem;
+    margin: .1rem auto;
+
+    background: #545b62;
+    box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+    border-radius: .3rem;
+}
+
+div.shift-container div.shift label[name='shift'].active,
+div.print-container div.print label[name='print'].active,
+div.lpg-container div.use-lpg label[name='lpg'].active {
+    background: #208838;
+    color: #2f343a;
+}
+
+div.timesheet-body-box.signature hr,
+div.timesheet-body-box.plans-shift hr {
+    background-color: #454c52;
+    margin-bottom: 0;
+}
+
+img.img_worker {
+    width: 119px;
+    height: 110px;
+    object-fit: cover;
+    object-position: 25% 25%;
+
+    box-shadow: rgb(38, 57, 77) 0px 20px 30px -10px;
+    border-radius: 0.5rem;
+}
+
+div.timesheet-body-box.add-workers button {
+    box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+}
+
+div.timesheet-body-box.button-option button.btn {
+    box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+}
+
+/* width */
+@media (min-width: 1140px),
+(max-width: 1140px) {
+
+    div.timesheet-head-box span {
+        font-size: 24pt;
+        white-space: nowrap;
+        font-weight: bolder;
+    }
+
+    input.form-control.datetimepicker-input,
+    div.sig1 span,
+    div.sig2 span {
+        font-size: 18pt;
+    }
+
+    div.timesheet-body-box.signature div.detail-container {
+        font-size: 16pt;
+    }
+
+    div.print-container div.print label[name='print'],
+    div.shift-container div.shift label[name='shift'] span,
+    div.lpg-container div.use-lpg label[name='lpg'] span {
+        font-size: 18pt;
+    }
+
+}
+
+@media (max-width: 960px) {
+
+    div.timesheet-head-box span {
+        font-size: 20pt;
+        white-space: nowrap;
+        font-weight: bolder;
+    }
+
+    input.form-control.datetimepicker-input,
+    div.sig1 span,
+    div.sig2 span {
+        font-size: 14pt;
+    }
+
+    div.timesheet-body-box.signature div.detail-container {
+        font-size: 14pt;
+    }
+
+    div.print-container div.print label[name='print'],
+    div.shift-container div.shift label[name='shift'] span,
+    div.lpg-container div.use-lpg label[name='lpg'] span {
+        font-size: 14pt;
+    }
+}
+
+@media (max-width: 720px) {
+
+    div.timesheet-head-box span {
+        font-size: 16pt;
+        white-space: nowrap;
+        font-weight: bolder;
+    }
+
+    input.form-control.datetimepicker-input,
+    div.sig1 span,
+    div.sig2 span {
+        font-size: 10pt;
+    }
+
+    div.timesheet-body-box.signature div.detail-container {
+        font-size: 12pt;
+    }
+
+    div.print-container div.print label[name='print'],
+    div.shift-container div.shift label[name='shift'] span,
+    div.lpg-container div.use-lpg label[name='lpg'] span {
+        font-size: 10pt;
+    }
+}
+
+@media (max-width: 540px) {
+
+    div.timesheet-head-box span {
+        font-size: 12pt;
+        white-space: nowrap;
+        font-weight: bolder;
+    }
+
+    input.form-control.datetimepicker-input,
+    div.sig1 span,
+    div.sig2 span {
+        font-size: 6pt;
+    }
+
+    div.timesheet-body-box.signature div.detail-container {
+        font-size: 10pt;
+    }
+
+    div.print-container div.print label[name='print'],
+    div.shift-container div.shift label[name='shift'] span,
+    div.lpg-container div.use-lpg label[name='lpg'] span {
+        font-size: 6pt;
+    }
+}
+
+/* hieght */
+@media (min-height: 1280px),
+(max-height: 1280px) {
+    div.timesheet-box {
+        max-height: 80vh;
+    }
+}
+
+@media (max-width: 960px) {
+    div.timesheet-box {
+        max-height: 75vh;
+    }
+}
+
+@media (max-width: 720px) {
+    div.timesheet-box {
+        max-height: 70vh;
+    }
+}
+
+@media (max-width: 540px) {
+    div.timesheet-box {
+        max-height: 65vh;
+    }
+}

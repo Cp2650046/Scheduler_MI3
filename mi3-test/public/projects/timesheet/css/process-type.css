@@ -1,0 +1,38 @@
+div.process-type input {
+    visibility: hidden;
+}
+
+div.process-type label {
+    width: auto;
+    padding: .5rem 1rem;
+    margin: .3rem 0;
+    font-size: 18pt;
+    color: #ffffff;
+    font-weight: bolder;
+    line-height: 1.5;
+    border-radius: .3rem;
+    text-align: center;
+    text-transform: uppercase;
+    border: 1px solid #3c4249;
+    background: #545b62;
+    box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+}
+
+div.process-type label.active {
+    background: #208838;
+    color: #2f343a;
+}
+
+div.text-caret-fill {
+    width: auto;
+    padding: .5rem 1rem;
+    margin: 0 .5rem;
+    font-size: 18pt;
+    color: #ffffff;
+    font-weight: bolder;
+    line-height: 1.5;
+    border-radius: .3rem;
+    text-align: center;
+    text-transform: uppercase;
+    text-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+}

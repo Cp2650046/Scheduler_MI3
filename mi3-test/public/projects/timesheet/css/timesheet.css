@@ -1,0 +1,434 @@
+div.content-header {
+    height: 100vh;
+    padding: 0;
+    box-sizing: border-box;
+    overflow-x: hidden;
+    display: inline;
+}
+
+div#second_board {
+    padding-left: 5px;
+    padding-right: 5px;
+    overflow-x: hidden;
+}
+
+div#main_board {
+    padding: 0;
+    overflow-x: hidden;
+}
+
+div.timesheet-left-box,
+div.timesheet-right-box {
+    margin: 5px;
+    background-color: #343a40;
+    box-shadow: 0 0 1px rgba(0, 0, 0, .125), 0 1px 3px rgba(0, 0, 0, .2);
+    border-radius: 0.5em;
+    min-height: 98vh;
+    max-height: 98vh;
+    overflow: auto;
+}
+
+div.timesheet-title h2 {
+    font-weight: bolder;
+}
+
+div.timesheet-title h5 {
+    line-height: 1.5;
+}
+
+/* css title */
+div.timesheet-title h2 span#machine-title,
+div#show-process h1 span {
+    color: #ffc107;
+}
+
+div.timesheet-title h2 span#plan-title {
+    color: #007bff;
+}
+
+div.timesheet-title h5 span#job-title {
+    color: #17a2b8;
+}
+
+div.timesheet-title h5 span#remark-title {
+    color: #d2d6de;
+}
+
+/* end css title */
+
+/* css timesheet history */
+div.timesheet-history {
+    height: 30vh;
+    background-color: #454d55;
+    border-radius: .3rem;
+    margin-right: 7.5px;
+    overflow: hidden;
+}
+
+div.history-footer h6 {
+    line-height: 0.7;
+}
+
+div.history-body {
+    height: 85%;
+    overflow: auto;
+
+}
+
+/* end css timesheet history */
+
+/* css show current process */
+div.timesheet-current-process {
+    padding: .4rem 0;
+    margin-right: 7.5px;
+}
+
+/* end css show current process */
+div.timesheet-btn-right,
+div.div-btn-back {
+    margin-right: 7.5px;
+}
+
+div.timesheet-btn-right div.view-checklist-box,
+div.timesheet-btn-right div.ot-request-box,
+div.timesheet-btn-right div.pallet-box,
+div.timesheet-btn-right div.other-box,
+div.timesheet-btn-right div.end-timesheet-box {
+    min-height: 7vh;
+}
+
+div.timesheet-btn-right div.ot-request-box div button {
+    background-color: rgb(79, 160, 149);
+}
+
+div.timesheet-btn-right div.ot-request-box div button:active {
+    background-color: rgb(79, 160, 149, 0.7);
+}
+
+div.timesheet-btn-right div.end-timesheet-box div button {
+    background-color: rgb(230, 72, 72);
+}
+
+div.timesheet-btn-right div.end-timesheet-box div button:active {
+    background-color: rgb(230, 72, 72, 0.7);
+}
+
+div.timesheet-btn-right div.view-checklist-box div button,
+div.timesheet-btn-right div.pallet-box div button {
+    background-color: rgb(83, 127, 231);
+}
+
+div.timesheet-btn-right div.view-checklist-box div button:active,
+div.timesheet-btn-right div.pallet-box div button:active {
+    background-color: rgb(83, 127, 231, 0.7);
+}
+
+div.timesheet-btn-right div.other-box div button#open_ok_limit_color_report {
+    background-color: rgb(79, 160, 149);
+}
+
+div.timesheet-btn-right div.other-box div button#open_ok_limit_color_report:active {
+    background-color: rgb(79, 160, 149, 0.7);
+}
+
+div.timesheet-btn-right div.other-box div button#upload_img {
+    background-color: rgb(83, 127, 231);
+}
+
+div.timesheet-btn-right div.other-box div button#upload_img:active {
+    background-color: rgb(83, 127, 231, 0.7);
+}
+
+div.timesheet-btn-right div.other-box div button.view-checklist {
+    background-color: rgb(173, 141, 36);
+}
+
+div.timesheet-btn-right div.other-box div button.view-checklist:active {
+    background-color: rgb(173, 141, 36, 0.7);
+}
+
+div.timesheet-btn-right div.other-box div button#cancel_timesheet {
+    background-color: rgb(230, 72, 72);
+}
+
+div.timesheet-btn-right div.other-box div button#cancel_timesheet:active {
+    background-color: rgb(230, 72, 72, 0.7);
+}
+
+div.timesheet-left-box {
+    padding-top: 1.5rem;
+}
+
+div.history-body hr {
+    background-color: rgba(255, 255, 255, 0.5);
+    /* padding: 0; */
+    margin-bottom: 5px;
+    margin-left: 1rem;
+    margin-right: 1rem;
+}
+
+div#help button {
+    font-size: 12pt;
+    border-radius: 5rem;
+    box-shadow: 0 0 1px rgba(0, 0, 0, .125), 0 1px 3px rgba(0, 0, 0, .2);
+    background-color: rgb(83, 127, 231);
+    color: white;
+    width: 100%;
+    margin-top: 7px;
+}
+
+div#wi button {
+    font-size: 12pt;
+    border-radius: 5rem;
+    box-shadow: 0 0 1px rgba(0, 0, 0, .125), 0 1px 3px rgba(0, 0, 0, .2);
+    background-color: rgb(79, 160, 149);
+    color: white;
+    width: 100%;
+    margin-top: 7px;
+}
+
+div#help button:hover,
+div#help button:active,
+div#wi button:hover,
+div#wi button:active {
+    color: black;
+    font-weight: bolder;
+}
+
+
+div.timesheet-btn-left {
+    display: flex;
+    flex-wrap: wrap;
+    margin-left: 15px;
+    margin-right: 7.5px;
+    /* margin-top: 2rem; */
+    justify-content: space-between;
+}
+
+div.timesheet-btn-left button {
+    display: inline-block;
+    width: 49%;
+    height: 3em;
+    margin-bottom: 1rem;
+    border-radius: 0.3rem;
+    font-size: 16pt;
+    line-height: 1.1;
+    box-shadow: rgba(0, 0, 0, 0.4) 0px 12px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+    border: none;
+    font-weight: bold;
+    color: rgb(255, 255, 255, 0.7);
+    background-color: #545b62;
+}
+
+div.timesheet-btn-left button:active {
+    box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+    transform: translateY(4px);
+}
+
+div.timesheet-btn-left button.active {
+    box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+    transform: translateY(4px);
+}
+
+/* div.timesheet-btn-left#group-id-1 button.active {
+    background-color: rgb(255, 193, 7, 1);
+    color: #191c20;
+} */
+
+div.timesheet-btn-left#group-id-1 button {
+    background-color: rgb(255, 193, 7, 0.5);
+}
+
+/* div.timesheet-btn-left#group-id-2 button.active {
+    background-color: rgb(40, 167, 69, 1);
+    color: #191c20;
+} */
+
+div.timesheet-btn-left#group-id-2 button {
+    background-color: rgba(40, 167, 69, 0.4);
+}
+
+/* div.timesheet-btn-left#group-id-3 button.active {
+    background-color: rgb(255, 115, 29, 1);
+    color: #191c20;
+} */
+
+div.timesheet-btn-left#group-id-3 button {
+    background-color: rgb(255, 115, 29, 0.5);
+}
+
+/* div.timesheet-btn-left#group-id-4 button.active {
+    background-color: rgb(191, 219, 56, 1);
+    color: #191c20;
+} */
+
+div.timesheet-btn-left#group-id-4 button {
+    background-color: rgb(191, 219, 56, 0.5);
+}
+
+/* div.timesheet-btn-left#group-id-5 button.active {
+    background-color: rgb(58, 176, 255, 1);
+    color: #191c20;
+} */
+
+div.timesheet-btn-left#group-id-5 button {
+    background-color: rgb(58, 176, 255, 0.5);
+}
+
+/* div.timesheet-btn-left#group-id-6 button.active {
+    background-color: rgb(220, 53, 69, 1);
+    color: #191c20;
+} */
+
+div.timesheet-btn-left#group-id-6 button {
+    background-color: rgb(220, 53, 69, 0.5);
+}
+
+div.timesheet-btn-left#group-id-6 button.active,
+div.timesheet-btn-left#group-id-5 button.active,
+div.timesheet-btn-left#group-id-4 button.active,
+div.timesheet-btn-left#group-id-3 button.active,
+div.timesheet-btn-left#group-id-2 button.active,
+div.timesheet-btn-left#group-id-1 button.active {
+    background-color: #208838;
+    color: black;
+}
+
+
+div.timesheet-btn-right div div.button-box button {
+    min-width: 49.5%;
+    min-height: 7vh;
+    display: inline-block;
+    margin-bottom: .3rem;
+    border-radius: .3rem;
+    font-size: 12pt;
+    /* background-color: #545b62; */
+    box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+    border: none;
+    color: #fff;
+}
+
+div.button-box {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+div.about-box {
+    background-color: #454d55;
+    /* min-height: 14vh; */
+    max-height: 10vh;
+    border-radius: .3rem;
+    margin-bottom: .3rem;
+    overflow: auto;
+}
+
+table.table#process-history tbody tr {
+    font-size: 11pt;
+}
+
+table.table#process-history tbody tr td {
+    margin: 0;
+    padding: 0;
+}
+
+table.table#process-history tbody tr[data-process="R"]:hover,
+table.table#process-history tbody tr[data-process="R"]:active {
+    background-color: #343a40;
+    color: #ffc107;
+    cursor: pointer;
+}
+
+table.table#process-history tbody tr td.index-col {
+    width: 3%;
+}
+
+table.table#process-history tbody tr td.process-name-col {
+    width: 60%;
+}
+
+table.table#process-history tbody tr td.waste-col,
+table.table#process-history tbody tr td.qty-col {
+    min-width: 20%;
+    max-width: 20%;
+}
+
+table.table#process-history tbody tr td.time-col {
+    width: 9%;
+}
+
+button.insert_qty {
+    background-color: rgb(40, 167, 69, 0.7);
+    border-radius: .3rem;
+    border: none;
+    padding: 0 1rem;
+    box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+    font-weight: bold;
+}
+
+button.insert_qty:active,
+button.insert_qty:hover {
+    background-color: rgb(40, 167, 69, 1);
+}
+
+button#back-to-timesheet {
+    box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+}
+
+@media (min-width: 1140px),
+(max-width: 1140px) {
+    div.timesheet-current-process div#show-timer {
+        font-size: 40pt;
+        line-height: 100%;
+    }
+}
+
+@media (max-width: 960px) {
+    div.timesheet-title h2 {
+        font-size: 16pt;
+    }
+
+    div.timesheet-title h5 {
+        font-size: 14pt;
+    }
+
+    div.timesheet-current-process div#show-timer {
+        font-size: 36pt;
+        line-height: 100%;
+    }
+
+}
+
+@media (max-width: 720px) {
+    div.timesheet-title h2 {
+        font-size: 12pt;
+    }
+
+    div.timesheet-title h5 {
+        font-size: 10pt;
+    }
+
+    div.timesheet-current-process div#show-timer {
+        font-size: 32pt;
+        line-height: 100%;
+    }
+}
+
+@media (max-width: 540px) {
+    div.timesheet-title h2 {
+        font-size: 8pt;
+    }
+
+    div.timesheet-title h5 {
+        font-size: 6pt;
+    }
+
+    div.timesheet-current-process div#show-timer {
+        font-size: 28pt;
+        line-height: 100%;
+    }
+}
+
+.check-box-sup {
+    width: 19.5px;
+}

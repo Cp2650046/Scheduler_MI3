@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>MI v.3</title>
+    <%- include('../../includes/script-top'); %>
+</head>
+<body class="hold-transition sidebar-mini layout-fixed">
+    <div class="wrapper">
+        <%- include('../../includes/navbar'); %>
+        <div class="content-wrapper">
+            <div class="container-fluid" id="main_board">
+                <div class="content-header">
+                    <div class="col-lg-12" id="action_bar">
+                        <div class="row mb-2">
+                            <div class="col-sm-6">
+                                <ol class="breadcrumb float-sm-left" id="show_navigation_group"></ol>
+                            </div>
+                            <div class="col-sm-6">
+                                <ol class="breadcrumb float-sm-right" id="show_action_group"></ol>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="container-fluid" id="second_board">
+                    <!-- Start page content below -->
+                        <div class="card card-outline card-purple">
+                            <div class="card-header">
+                                <h5 class="card-title text-bold"></h5>
+                            </div>
+                            <div class="card-body">
+                                <form id="dr_data" method="post" enctype="multipart/form-data">
+                                    <input type="hidden" name="action">
+                                    <input type="hidden" name="unique_id">
+                                    <input type="hidden" name="is_wrap">
+                                    <div class="row mt-2 mb-2">
+                                        <div class="col-sm-5">
+                                            <div class="row">
+                                                <div class="col-sm-4 text-right">
+                                                    <label class="col-form-label col-form-label-sm">DR No.</label>
+                                                </div>
+                                                <div class="col-sm-8">
+                                                    <input type="text" class="form-control form-control-sm text-left" name="dr_number" readonly>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-7">
+                                            <div class="row">
+                                                <div class="col-sm-4 text-right">
+                                                    <label class="col-form-label col-form-label-sm">วันเวลาจัดส่ง<span class="txt-alert ml-1">*</span></label>
+                                                </div>
+                                                <div class="col-sm-8">
+                                                    <div class="input-group date" id="delivery_date" data-target-input="nearest">
+                                                        <input type="text" name="delivery_date" class="form-control form-control-sm text-center datetimepicker datetimepicker-input postpone-event" data-toggle="datetimepicker" data-target="#delivery_date" required>
+                                                        <div class="input-group-append" data-target="#delivery_date" data-toggle="datetimepicker">
+                                                            <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mt-2 mb-2">
+                                        <div class="col-sm-5">
+                                            <div class="row">
+                                                <div class="col-sm-4 text-right">
+                                                    <label class="col-form-label col-form-label-sm">Job No.</label>
+                                                </div>
+                                                <div class="col-sm-8">
+                                                    <input type="text" class="form-control form-control-sm text-left" name="job_id" readonly>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-7">
+                                            <div class="row">
+                                                <div class="col-sm-4 text-right">
+                                                    <label class="col-form-label col-form-label-sm">สถานที่รถออก</label>
+                                                </div>
+                                                <div class="col-sm-8">
+                                                    <select class="form-control form-control-sm text-left" name="source_place" id="source_place" required></select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mt-2 mb-2">
+                                        <div class="col-sm-5">
+                                            <div class="row">
+                                                <div class="col-sm-4 text-right">
+                                                    <label class="col-form-label col-form-label-sm">Job Name</label>
+                                                </div>
+                                                <div class="col-sm-8">
+                                                    <input type="text" class="form-control form-control-sm" name="job_name" readonly>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-7">
+                                            <div class="row">
+                                                <div class="col-sm-4 text-right">
+                                                    <label class="col-form-label col-form-label-sm">สถานที่ส่งงาน<span class="txt-alert ml-1">*</span></label>
+                                                </div>
+                                                <div class="col-sm-8">
+                                                    <div class="form-group form-group-sm">
+                                                        <textarea class="form-control form-control-sm" list="list_delivery_place" id="delivery_place" name="delivery_place" rows="2" placeholder="Type to Search..." required></textarea>
+                                                        <datalist id="list_delivery_place"></datalist>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mt-2 mb-2">
+                                        <div class="col-sm-5">
+                                            <div class="row">
+                                                <div class="col-sm-4 text-right">
+                                                    <label class="col-form-label col-form-label-sm">จำนวน</label>
+                                                </div>
+                                                <div class="col-sm-8">
+                                                    <input type="text" class="form-control form-control-sm text-right" name="dr_quantity" readonly>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mt-2 mb-2">
+                                        <div class="col-sm-5">
+                                            <div class="row">
+                                                <div class="col-sm-4 text-right">
+                                                    <label class="col-form-label col-form-label-sm">ประเภทงาน<span class="txt-alert ml-1">*</span></label>
+                                                </div>
+                                                <div class="col-sm-8">
+                                                    <select class="form-control form-control-sm text-left dr-item" name="request_work_type_id" id="request_work_type_id" required></select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-7">
+                                            <div class="row">
+                                                <div class="col-sm-4 text-right">
+                                                    <label class="col-form-label col-form-label-sm" for="contact_person">ชื่อผู้ติดต่อ<span class="txt-alert ml-1">*</span></label>
+                                                </div>
+                                                <div class="col-sm-8">
+                                                    <input class="form-control form-control-sm text-left is-validate" list="list_contact_person" id="contact_person" name="contact_person" placeholder="Type to Search..." required>
+                                                    <datalist id="list_contact_person"></datalist>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mt-2 mb-2">
+                                        <div class="col-sm-5">
+                                            <div class="row">
+                                                <div class="col-sm-4 text-right">
+                                                    <label class="col-form-label col-form-label-sm">ประเภทการส่ง<span class="txt-alert ml-1">*</span></label>
+                                                </div>
+                                                <div class="col-sm-8">
+                                                    <div class="form-check form-check-inline">
+                                                        <input class="form-check-input is-validate" type="radio" name="delivery_type_id" id="delivery_type_1" value="1" required>
+                                                        <label class="form-check-label col-form-label-sm" for="delivery_type_1">ส่งงาน</label>
+                                                    </div>
+                                                    <div class="form-check form-check-inline">
+                                                        <input class="form-check-input is-validate" type="radio" name="delivery_type_id" id="delivery_type_2" value="2" required>
+                                                        <label class="form-check-label col-form-label-sm" for="delivery_type_2">รับคืน</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-7">
+                                            <div class="row">
+                                                <div class="col-sm-4 text-right">
+                                                    <label class="col-form-label col-form-label-sm" for="contact_number">โทรศัพท์<span class="txt-alert ml-1">*</span></label>
+                                                </div>
+                                                <div class="col-sm-8">
+                                                    <input type="text" class="form-control form-control-sm" name="contact_number" id="contact_number" readonly required>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mt-2 mb-2">
+                                        <div class="col-sm-5">
+                                            <div class="row">
+                                                <div class="col-sm-4 text-right">
+                                                    <label class="col-form-label col-form-label-sm">ประเภทสินค้า<span class="txt-alert ml-1">*</span></label>
+                                                </div>
+                                                <div class="col-sm-8">
+                                                    <div class="form-check form-check-inline">
+                                                        <input class="form-check-input dr-item" type="radio" name="commercial_type" id="commercial_type_1" value="1" required>
+                                                        <label class="form-check-label col-form-label-sm" for="commercial_type_1">สินค้า</label>
+                                                    </div>
+                                                    <div class="form-check form-check-inline">
+                                                        <input class="form-check-input dr-item" type="radio" name="commercial_type" id="commercial_type_2" value="2" required>
+                                                        <label class="form-check-label col-form-label-sm" for="commercial_type_2">ไม่ใช่สินค้า</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-7">
+                                            <div class="row">
+                                                <div class="col-sm-4 text-right">
+                                                    <label class="col-form-label col-form-label-sm">ส่งของพร้อมวางบิล<span class="txt-alert ml-1">*</span></label>
+                                                </div>
+                                                <div class="col-sm-8">
+                                                    <div class="form-check form-check-inline">
+                                                        <input class="form-check-input" type="radio" name="with_invoice" id="with_invoice_1" value="1" required>
+                                                        <label class="form-check-label col-form-label-sm" for="with_invoice_1">Yes</label>
+                                                    </div>
+                                                    <div class="form-check form-check-inline">
+                                                        <input class="form-check-input" type="radio" name="with_invoice" id="with_invoice_0" value="0" required>
+                                                        <label class="form-check-label col-form-label-sm" for="with_invoice_0">No</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mt-2 mb-2">
+                                        <div class="col-sm-5">
+                                            <div class="row">
+                                                <div class="col-sm-4 text-right">
+                                                    <label class="col-form-label col-form-label-sm">สร้างโดย</label>
+                                                </div>
+                                                <div class="col-sm-8">
+                                                    <input type="hidden" name="created">
+                                                    <input type="hidden" name="created_emp_id">
+                                                    <input type="text" class="form-control form-control-sm" name="created_data" readonly>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-7">
+                                            <div class="row">
+                                                <div class="col-sm-4 text-right">
+                                                    <label class="col-form-label col-form-label-sm">หมายเหตุ</label>
+                                                </div>
+                                                <div class="col-sm-8">
+                                                    <div class="form-group form-group-sm">
+                                                        <textarea class="form-control form-control-sm" name="remark" rows="2"></textarea>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mt-2 mb-2">
+                                        <div class="col-sm-5">
+                                            <div class="row">
+                                                <div class="col-sm-4 text-right">
+                                                    <label class="col-form-label col-form-label-sm">แก้ไขล่าสุด</label>
+                                                </div>
+                                                <div class="col-sm-8">
+                                                    <input type="hidden" name="updated">
+                                                    <input type="hidden" name="updated_emp_id">
+                                                    <input type="text" class="form-control form-control-sm" name="updated_data" readonly>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-7">
+                                            <div class="row">
+                                                <div class="col-sm-4 text-right">
+                                                    <label class="col-form-label col-form-label-sm">PO No.</label>
+                                                </div>
+                                                <div class="col-sm-4">
+                                                    <input type="text" class="form-control form-control-sm text-right" name="po_number">
+                                                </div>
+                                                <div class="col-sm-1"></div>
+                                                <div class="col-sm-1 text-right">
+                                                    <div class="form-check form-check-inline">
+                                                        <input class="form-check-input" type="checkbox" name="is_coa" id="is_coa" value="1">
+                                                        <label class="col-form-label col-form-label-sm" for="is_coa">COA</label>
+                                                    </div> 
+                                                </div>
+                                                <div class="col-sm-3"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mt-2 mb-2">
+                                        <div class="col-sm-5"></div>
+                                        <div class="col-sm-7">
+                                            <div class="row">
+                                                <div class="col-sm-4 text-right">
+                                                    <label class="col-form-label col-form-label-sm">สาเหตุการเลื่อนส่ง</label>
+                                                </div>
+                                                <div class="col-sm-8">
+                                                    <select class="form-control form-control-sm text-left" name="postpone_remark" id="postpone_remark" disabled></select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mt-2 mb-2">
+                                        <div class="col-sm-5">
+                                            <div class="row">
+                                                <div class="col-sm-4 text-right">
+                                                    <label class="col-form-label col-form-label-sm">เอกสาร</label>
+                                                </div>
+                                                <div class="col-sm-8">
+                                                    <button type="button" class="btn btn-block btn-sm btn-info btn-action-group" style="width:30%" id="btn_attachment" data-toggle="modal" data-target="#dataModal">
+                                                        Attachment
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-5"></div>
+                                    </div>
+
+
+
+                                    <div class="row mt-5 mb-5 align-items-center">
+                                        <div class="col-sm-1"></div>
+                                        <div class="col-sm-10 text-center">
+                                            <div class="row bg-purple">
+                                                <div class="col-sm-12">
+                                                    <span>
+                                                        <div class="row mt-1">
+                                                            <div class="col-sm-2">
+                                                                <a class="btn btn-sm btn-default" id="add_item">
+                                                                    <i class="fas fa-plus-circle mr-1"></i>ADD
+                                                                </a>
+                                                            </div>
+                                                            <div class="col-sm-10 text-center">
+                                                                <p class="text-xl-center h5" id="title_item">รายการสินค้า</p>
+                                                            </div>
+                                                        </div>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div class="row bg-purple disabled">
+                                                <div class="col-sm-12">
+                                                    <div class="row bg-purple ">
+                                                        <div class="col-sm-12">
+                                                            <div class="row bg-white mt-2 mb-2 ml-2 mr-2">
+                                                                <div class="col-sm-12">
+                                                                    <table id="tb_data_item" class="table table-sm text-sm table-borderedless table-hover dtr-inline display" aria-describedby="tb_data_item">
+                                                                        <thead>
+                                                                            <tr>
+                                                                                <th class="text-center" width="45%">ชื่อสินค้า</th>
+                                                                                <th class="text-center edition" width="20%">Edition</th>
+                                                                                <th class="text-center" width="18%">จำนวน</th>
+                                                                                <th class="text-center" width="13%">หน่วย</th>
+                                                                                <th class="text-center" width="4%"></th>
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody>
+                                                                            <tr id="item_1">
+                                                                                <td>
+                                                                                    <input type="hidden" class="item-major-id" name="item_major_id[]">
+                                                                                    <input type="hidden" class="item-minor-id" name="item_minor_id[]">
+                                                                                    <input type="hidden" class="item-part-type" name="item_part_type[]">
+                                                                                    <input type="hidden" class="item-sig" name="item_sig[]">
+                                                                                    <input type="hidden" class="item-minor" name="item_minor[]">
+                                                                                    <input type="text" class="form-control form-control-sm text-left item-name" name="item_name[]">
+                                                                                </td>
+                                                                                <td class="edition">
+                                                                                    <div class="select2-purple">
+                                                                                        <select class="select2 form-control form-control-sm item-edition" name="item_edition[0][]" id="edition_1" data-dropdown-css-class="select2-purple" multiple></select>
+                                                                                    </div>
+                                                                                </td>
+                                                                                <td>
+                                                                                    <input type="text" class="form-control form-control-sm text-right item-quantity number postpone-event" name="item_quantity[]">
+                                                                                </td>
+                                                                                <td>
+                                                                                    <input type="hidden" class="item-unit-id" name="item_unit_id[]">
+                                                                                    <input type="text" class="form-control form-control-sm text-center item-unit-name" name="item_unit_name[]" readonly>
+                                                                                </td>
+                                                                                <td>
+                                                                                    <div class="btn-group btn-group-sm">
+                                                                                        <a class="btn btn-sm btn-danger remove-item postpone-event" id="remove_item_1"><i class="fas fa-minus-circle"></i></a>
+                                                                                    </div>
+                                                                                </td>
+                                                                            </tr>
+                                                                        </tbody>
+                                                                    </table>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-1"></div>
+                                    </div>
+                                </form>
+
+                                <!-- Modal -->
+                                <div class="modal fade" id="dataModal" tabindex="-1" role="dialog" aria-labelledby="dataModalCenterTitle" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="dataModalLabel">Attachment : <span id="dr_number_attach"></span></h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="row">
+                                                    <div class="col-sm-12">
+                                                        <form id="attachment" enctype="multipart/form-data">
+                                                            <div class="custom-file">
+                                                                <input type="file" class="custom-file-input" id="dr_attach" name="dr_attach">
+                                                                <label class="custom-file-label form-control form-control-sm" for="dr_attach">Choose File ...</label>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                    <div class="col-sm-12">
+                                                        <ul>
+                                                            <a href="#">DR6600001_20230130_140328.pdf</a>
+                                                            <a href="#">DR6600001_20230130_140328.pdf</a>
+                                                            <a href="#">DR6600001_20230130_140328.pdf</a>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-primary" id="upload">Upload</button>
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <%- include('../../includes/script-bottom'); %>
+        <script src="../projects/delivery/js/dr/dr_manage.js"></script>
+    </div>
+</body>
+</html>

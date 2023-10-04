@@ -1,0 +1,28 @@
+.keypad button {
+    width: 31%;
+    background: #545b62;
+    color: white;
+    border: none;
+    border-radius: .5rem;
+    font-size: 36pt;
+    margin-top: 1rem;
+    box-shadow: rgba(0, 0, 0, 0.4) 0px 12px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+}
+
+.keypad button.delete,
+.keypad button.submit {
+    background: rgb(220, 53, 69, 1);
+    color: white;
+}
+
+div.keypad {
+    line-height: 1.1;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+input.keypad {
+    border: 1px solid rgb(58, 176, 255, 0.5) !important;
+    background: rgb(58, 176, 255, 0.5) !important;
+}

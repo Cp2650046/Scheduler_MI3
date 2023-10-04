@@ -1,0 +1,139 @@
+div.plans input {
+    visibility: hidden;
+    position: absolute;
+}
+
+div.plans label {
+    display: block;
+    width: 90%;
+    padding: .5rem 1rem;
+    margin: 12px auto;
+    font-size: 18pt;
+    color: #ffffff;
+    /* font-weight: bolder; */
+    line-height: 1.2;
+    border-radius: .3rem;
+    text-align: center;
+    /* border: 1px solid #3c4249; */
+    background: #545b62;
+    box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+}
+
+div.plans label.active {
+    background: #208838;
+    color: #2f343a;
+}
+
+div.plans label div span.shift-text {
+    z-index: 1;
+    font-weight: bold;
+    position: absolute;
+    /* padding-bottom: .3rem; */
+    width: 25%;
+    padding: 0 0 .3rem 0;
+    border-radius: 3rem;
+    box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+    left: 0;
+    margin-top: -1rem;
+}
+
+div.plans-shift-container {
+    text-align: center;
+    padding-top: .5rem;
+}
+
+div.plans label div span.shift-text.day,
+div.plans-shift label#label-day {
+    background-color: #ffc107;
+    color: #000;
+}
+
+div.plans label div span.shift-text.night,
+div.plans-shift label#label-night {
+    background-color: #605ca8;
+    color: #ffffff;
+}
+
+div.plans-shift label#label-all {
+    background-color: #545b62;
+    color: #ffffff;
+}
+
+div.plans-shift input[name="plan-shift"] {
+    visibility: hidden;
+    position: absolute;
+}
+
+div.plans-shift label[name="plan-shift"] {
+    /* display: inline; */
+    width: 25%;
+    text-align: center;
+    z-index: 1;
+    font-weight: bold;
+    padding-left: .3rem;
+    padding-right: .3rem;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 3rem;
+    box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+}
+
+/* div.plans {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+} */
+
+div.plans-shift {
+    display: block;
+}
+
+@media (min-width: 1140px),
+(max-width: 1140px) {
+
+    div.plans label {
+        font-size: 18pt;
+    }
+
+    div.plans label div span.shift-text,
+    div.plans-shift label[name="plan-shift"] {
+        font-size: 16pt;
+    }
+}
+
+
+@media (max-width: 960px) {
+
+    div.plans label {
+        font-size: 16pt;
+    }
+
+    div.plans label div span.shift-text,
+    div.plans-shift label[name="plan-shift"] {
+        font-size: 12pt;
+    }
+}
+
+@media (max-width: 720px) {
+
+    div.plans label {
+        font-size: 12pt;
+    }
+
+    div.plans label div span.shift-text,
+    div.plans-shift label[name="plan-shift"] {
+        font-size: 8pt;
+    }
+}
+
+@media (max-width: 540px) {
+
+    div.plans label {
+        font-size: 8pt;
+    }
+
+    div.plans label div span.shift-text,
+    div.plans-shift label[name="plan-shift"] {
+        font-size: 4pt;
+    }
+}

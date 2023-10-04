@@ -1,0 +1,128 @@
+div.workers input {
+    visibility: hidden;
+    position: absolute;
+}
+
+div.workers label {
+    display: block;
+    width: 90%;
+    padding: .5rem 1rem;
+    margin: 12px auto;
+    font-size: 18pt;
+    color: #ffffff;
+    /* font-weight: bolder; */
+    line-height: 1.5;
+    border-radius: .6rem;
+    text-align: center;
+    text-transform: uppercase;
+    border: 1px solid #3c4249;
+    background: #545b62;
+    box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+div.workers label.active {
+    background: #208838;
+    color: #2f343a;
+}
+
+div.workers label div {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+div.workers label div img {
+    min-width: 30%;
+    max-width: 40%;
+}
+
+div.workers label div p {
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+div.workers label div span.emp-id {
+    background-color: #5e666d;
+    width: 30%;
+    z-index: 1;
+    position: absolute;
+    color: #ffffff;
+    padding: 0 0 .3rem 0;
+    border-radius: 3rem;
+    box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+    left: 0;
+    margin-top: -1rem;
+}
+
+div.workers label div span.emp-id.active {
+    background-color: #28a745;
+}
+
+div.workers label div button {
+    border-radius: .3rem;
+    margin: .1rem .3rem;
+    width: 25%;
+    box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+    border: .1rem;
+}
+
+div.workers label div button#edit-worker {
+    background: #ffc107;
+}
+
+div.workers label div button#delete-worker {
+    background: #dc3545;
+}
+
+@media (min-width: 1140px),
+(max-width: 1140px) {
+
+    div.workers label div span,
+    div.workers label div p {
+        font-size: 18pt;
+    }
+
+    div.workers label div span.emp-id {
+        font-size: 16pt;
+    }
+}
+
+
+@media (max-width: 960px) {
+
+    div.workers label div span,
+    div.workers label div p {
+        font-size: 16pt;
+    }
+
+    div.workers label div span.emp-id {
+        font-size: 12pt;
+    }
+}
+
+@media (max-width: 720px) {
+
+    div.workers label div span,
+    div.workers label div p {
+        font-size: 12pt;
+    }
+
+    div.workers label div span.emp-id {
+        font-size: 8pt;
+    }
+}
+
+@media (max-width: 540px) {
+
+    div.workers label div span,
+    div.workers label div p {
+        font-size: 8pt;
+    }
+
+    div.workers label div span.emp-id {
+        font-size: 4pt;
+    }
+}

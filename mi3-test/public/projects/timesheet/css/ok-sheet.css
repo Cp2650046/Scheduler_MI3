@@ -1,0 +1,15 @@
+div.modal#ok-sheet div.modal-body table tbody tr td input.disabled-text {
+    background-color: #586c81 !important;
+    color: #ffffff8a !important;
+    border: none;
+    cursor: not-allowed;
+    pointer-events: none;
+    /* font-size: 14pt; */
+}
+
+
+div.modal#ok-sheet div.modal-body table tbody tr td select {
+    background-color: #001f3f;
+    border: none;
+    border-radius: .3rem;
+}

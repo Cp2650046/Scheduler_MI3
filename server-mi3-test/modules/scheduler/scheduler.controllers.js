@@ -1,0 +1,183 @@
+const models = require('./scheduler.models')
+const services = require('./scheduler.services')
+
+const getMenu = async (req) => {
+    const res = await models.getMenuModel(req)
+    let data = await models.getDefaultMachineListModel(res.menuIdArray);
+    result = {
+        machineList: data.machineList,
+        machineTypeList: data.machineTypeList,
+        userGroupId: res.userGroupId,
+        menuList: res.menuList,
+        saddleList: data.saddleList
+    }
+    return result
+}
+
+const getData = async (req) => {
+    const res = await models.getDataModel(req)
+    return res
+}
+
+const getMachine = async (req) => {
+    const res = await models.getMachineModel(req)
+    return res
+}
+
+const getPlanSearch = async (req) => {
+    var res = await models.getPlanSearchModel(req);
+    res.planList = await services.chkValuePlanList(res.planList);
+    return res
+}
+
+const insertPlan = async (req) => {
+    var numRow = await services.chkIsCaseIn(req.e_machine_id);
+    var res
+    if (numRow === 0) {
+        if (req.is_printing !== undefined && req.is_printing === 1) {
+            res = {
+                success: 0,
+                msg: "ส่วนของ Printing ยังปรับปรุงอยู่"
+            }
+        } else {
+            res = await models.insertPlanModel(req);
+            if (res.success === 1) {
+                await models.insertLogMachinePlanningModel(res);
+            }
+
+        }
+    } else {
+        res = {
+            success: 0,
+            msg: "ไม่สามารถบันทึกข้อมูลได้ เนื่องจากมีระบบวางแผนตัวไหม่แล้ว"
+        }
+    }
+    return res
+}
+
+const updatePlan = async (req) => {
+    const res = await models.updatePlanModel(req)
+    if (res.success === 1) {
+        await models.insertLogMachinePlanningModel(res);
+    }
+    return res
+}
+
+const deletePlan = async (req) => {
+    const numRow = await services.chkTimesheet(req.plan_id)
+    var res
+    if (numRow === 0) {
+        res = await models.deletePlanModel(req)
+        if (res.success === 1) {
+            await models.insertLogMachinePlanningModel(res);
+        }
+    } else {
+        res = {
+            success: 2
+        }
+    }
+    return res
+}
+
+const getDataJob = async (req) => {
+    const res = await models.getDataJobModel(req)
+    return res
+}
+
+const getCapacityLabor = async (req) => {
+    const res = await models.getCapacityLaborModel(req)
+    return res
+}
+
+const getItem = async (req) => {
+    const res = await models.getItemModel(req)
+    return res
+}
+
+const cancelPlan = async (req) => {
+    const numRow = await services.chkTimesheet(req.plan_id)
+    var res
+    if (numRow === 0) {
+        res = await models.cancelPlanModel(req)
+        if (res.success === 1) {
+            await models.insertLogMachinePlanningModel(res);
+        }
+    } else {
+        res = {
+            success: 2
+        }
+    }
+    return res
+}
+
+const getNextMachineList = async () => {
+    const res = await models.getNextMachineListModel()
+    return res
+}
+
+const getDefaultMachineList = async () => {
+    const res = await models.getDefaultMachineListModel()
+    return res
+}
+
+const getMenuGroupData = async (menuID) => {
+    var res = {}
+    res.responseText = await models.getMachineType(menuID)
+    res.group_data = await models.getGroupData(menuID)
+    return res
+}
+
+const getDataToExcel = async (req) => {
+    const res = await models.getDataToExcelModel(req)
+    return res
+}
+
+const updateMultiPlan = async (req) => {
+    const res = await models.updateMultiPlanModel(req)
+    return res
+}
+
+const cancelMultiPlan = async (req) => {
+    const res = await models.cancelMultiPlanModel(req)
+    return res
+}
+
+const deleteMultiPlan = async (req) => {
+    const res = await models.deleteMultiPlanModel(req)
+    return res
+}
+
+const getWorkType = async (req) => {
+    const res = await models.getWorkTypeModel(req)
+    return res
+}
+
+const getPlanSearchCaseIn = async (req) => {
+    var res = await models.getPlanSearchCaseInModel(req);
+    res.planList = await services.chkValuePlanListCaseIn(res.planList);
+    return res
+}
+
+
+module.exports = {
+    getMenu,
+    getData,
+    getPlanSearch,
+    insertPlan,
+    updatePlan,
+    deletePlan,
+    getMachine,
+    getDataJob,
+    getCapacityLabor,
+    getItem,
+    cancelPlan,
+    getNextMachineList,
+    getDefaultMachineList,
+    getMenuGroupData,
+    getDataToExcel,
+    updateMultiPlan,
+    deleteMultiPlan,
+    cancelMultiPlan,
+    getWorkType,
+    getPlanSearchCaseIn
+}

@@ -1,0 +1,84 @@
+div.machines input,
+div.machines2 input {
+    visibility: hidden;
+    position: absolute;
+}
+
+div.machines label,
+div.machines2 label {
+    display: block;
+    width: 90%;
+    padding: .5rem 1rem;
+    margin: 12px auto;
+    font-size: 18pt;
+    color: #ffffff;
+    /* font-weight: bolder; */
+    line-height: 1.5;
+    border-radius: .3rem;
+    text-align: center;
+    text-transform: uppercase;
+    border: 1px solid #3c4249;
+    background: #545b62;
+    box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+}
+
+div.machines2 label {
+    color: #e74c3c;
+}
+
+div.machines2 label.active {
+    background: #e74c3c;
+    color: #fff;
+}
+
+div.machines label.active {
+    background: #208838;
+    color: #2f343a;
+}
+
+
+div.machines,
+div.machines2 {
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+div.span-alternate-machines {
+    text-align: center;
+    color: #e74c3c;
+    font-weight: bold;
+}
+
+@media (min-width: 1140px),
+(max-width: 1140px) {
+
+    div.machines label,
+    div.machines2 label  {
+        font-size: 18pt;
+    }
+}
+
+
+@media (max-width: 960px) {
+
+    div.machines label,
+    div.machines2 label  {
+        font-size: 16pt;
+    }
+}
+
+@media (max-width: 720px) {
+
+    div.machines label,
+    div.machines2 label  {
+        font-size: 12pt;
+    }
+}
+
+@media (max-width: 540px) {
+
+    div.machines label,
+    div.machines2 label  {
+        font-size: 8pt;
+    }
+}

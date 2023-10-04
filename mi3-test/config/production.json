@@ -1,0 +1,7 @@
+{
+    "data": {
+        "PORT": 3031,
+        "API_URL": "localhost:3031",
+        "BASE_URL": "localhost:41"
+    }
+}

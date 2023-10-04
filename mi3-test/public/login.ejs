@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>MI v.3</title>
+    <%- include('./projects/includes/script-top'); %>
+</head>
+<body class="login-page">
+    <div class="login-box">
+        <!-- <div class="text-center" style="margin-bottom:10px;">
+            <img src="./images/sirivatana.jpg" class="rounded mx-auto d-block" width="360px" height="110px">
+        </div> -->
+        <div class="login-logo text-nowrap">
+            <a href="#"><b>Master Information V3.0</b></a>
+        </div>
+        <div class="card bg-gradient-purple">
+            <div class="card-header text-center bg-gradient-purple">
+                <p class="align-middle" style="margin-bottom:0;">SIRIVATANA INTERPRINT PUBLIC CO.,LTD.</p>
+            </div>
+            <div class="card-body login-card-body">
+                <p class="login-box-msg"></p>
+                <form>
+                    <div class="input-group mb-3">
+                        <input type="text" name="username" class="form-control" placeholder="Username" required>
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                <span class="fas fa-user"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="input-group mb-3">
+                        <input type="password" name="password" class="form-control" placeholder="Password" required>
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                <span class="fas fa-lock"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="login-box-msg txt-alert"></p>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <button type="button" name="login" class="btn btn-success btn-block">Log In</button>
+                        </div>
+                        <div class="col-lg-6">
+                            <button type="reset" name="reset" class="btn btn-warning btn-block">Reset</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <%- include('./projects/includes/script-bottom'); %>
+    <script src="./js/login.js"></script>
+</html>

@@ -1,0 +1,428 @@
+.modal-header,
+.modal-footer {
+    border: none;
+}
+
+#total-running,
+#total-waste {
+    font-size: 16pt;
+}
+
+table.table-repair td {
+    vertical-align: middle;
+    padding: .5rem;
+}
+
+table tbody tr td input.machine-name,
+table tbody tr td input.date-text,
+div.modal#checklist div.modal-body table input#leader-position {
+    background-color: #454d55 !important;
+    color: #ffffff8a !important;
+    border: none;
+    cursor: not-allowed;
+    pointer-events: none;
+    font-size: 14pt;
+}
+
+table#tb_input_detail tbody tr.unit-packing-mole td {
+    padding: 0 5%;
+}
+
+
+
+table.table-repair.table-right td {
+    vertical-align: top !important;
+    /* padding: .5rem; */
+}
+
+table.table-repair td span,
+table.table-repair td select {
+    font-size: 14pt;
+}
+
+ul.nav.nav-tabs li.nav-item a {
+    font-size: 14pt;
+}
+
+label.repair-setting-btn {
+    text-align: center;
+    font-size: 14pt;
+    background-color: #20883860;
+    color: rgba(255, 255, 255, 0.49);
+    border-radius: .3rem;
+    padding: .3rem;
+    box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+    width: 100%;
+}
+
+input.datetimepicker-input {
+    font-size: 14pt;
+}
+
+div.modal#maintenance div.modal-body {
+    padding: 0;
+}
+
+input.form-control.datetimepicker-input {
+    line-height: 0;
+    pointer-events: none;
+}
+
+.nav {
+    margin-bottom: 1rem;
+}
+
+button.btn.btn-save,
+button.btn.btn-close {
+    font-size: 16pt;
+    box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+    width: 30%;
+}
+
+label.repair-setting-btn.active {
+    background: #208838;
+    color: #2f343a;
+}
+
+input.repair-setting-btn {
+    visibility: hidden;
+    position: absolute;
+}
+
+div.tab-pane div.row table.table#table-edit {
+    width: 80%;
+}
+
+div.tab-pane div.row table.table#table-edit tbody tr td {
+    font-size: 14pt;
+}
+
+div.tab-pane div.row table.table#table-edit tbody tr td.text-left {
+    vertical-align: top;
+}
+
+textarea {
+    font-size: 14pt;
+}
+
+select option {
+    font-size: 14pt;
+}
+
+div.tab-pane#repair-again div.text-center {
+    min-height: 20vh;
+    max-height: 70vh;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+div.tab-pane#repair-again div table tbody tr:hover {
+    background-color: #208838;
+    color: #191c1f;
+}
+
+div.tab-pane#repair-again div table tbody tr.active {
+    background-color: #208838;
+    color: #191c1f;
+}
+
+div#dep-suggesstion-box ul,
+div#mac-suggesstion-box ul,
+div#finding-emp ul {
+    list-style-type: none;
+    text-align: left;
+    cursor: pointer;
+    padding: 0;
+    margin: 0;
+}
+
+div#dep-suggesstion-box ul li,
+div#mac-suggesstion-box ul li,
+div#finding-emp ul li {
+    padding: .25rem .5rem;
+}
+
+div#dep-suggesstion-box ul li:hover,
+div#dep-suggesstion-box ul li:active,
+div#mac-suggesstion-box ul li:hover,
+div#mac-suggesstion-box ul li:active,
+div#finding-emp ul li:hover,
+div#finding-emp ul li:active {
+    background-color: #208838;
+    color: #191c1f;
+}
+
+div#dep-suggesstion-box,
+div#mac-suggesstion-box {
+    background-color: #2f343a;
+    border: 1px #656d75 solid;
+    border-radius: .1rem;
+    position: fixed;
+    width: 18.1em;
+    max-height: 10em;
+    overflow: auto;
+}
+
+div#finding-emp {
+    background-color: #2f343a;
+    border: 1px #656d75 solid;
+    border-radius: .1rem;
+    position: fixed;
+    width: 29.20em;
+    max-height: 30em;
+    min-height: 30em;
+    overflow: auto;
+}
+
+th.ma_remark {
+    width: 50%;
+    font-size: 14pt;
+    position: sticky;
+    font-weight: bold;
+    top: 0;
+    background-color: #191c1f;
+}
+
+td.ma_remark {
+    text-align: left;
+}
+
+th.ma_emp_id {
+    width: 30%;
+    font-size: 14pt;
+    font-weight: bold;
+    position: sticky;
+    top: 0;
+    background-color: #191c1f;
+}
+
+th.ma_id {
+    width: 20%;
+    font-size: 14pt;
+    font-weight: bold;
+    position: sticky;
+    top: 0;
+    background-color: #191c1f;
+
+}
+
+/* checklist */
+div.modal#checklist div.modal-body {
+    overflow: auto;
+    min-height: 70vh;
+}
+
+div.modal#checklist div.modal-body h3 {
+    line-height: 3;
+}
+
+
+
+div.modal#checklist div.modal-body table tr td,
+div.modal#checklist div.modal-body table tr th {
+    padding: auto 0rem;
+    font-size: 14pt;
+    color: #fff;
+}
+
+div.modal#checklist div.modal-body table tr td.disbled-text {
+    color: #ffffff85;
+}
+
+div.modal#checklist div.modal-body table tr th {
+    /* วิศวะให้เปลี่ยนจากเขียวเป็นขาว */
+    color: #ffffff;
+    font-weight: bolder;
+}
+
+div.modal#checklist div.modal-body table tr td:first-child {
+    padding-left: 2rem;
+}
+
+div.modal#checklist div.modal-body table#table-checker tr td {
+    padding: 0;
+}
+
+
+div.modal#ok-sheet div.modal-body table.table-ok-detail tr td,
+div.modal#ok-sheet div.modal-body table.table-ok-detail tr th {
+    padding: 2px 0;
+}
+
+div.modal#ok-sheet div.modal-body table.table-ok-detail#table-ok-detail-5 tr td {
+    text-align: center;
+    padding: 2px 5%;
+}
+
+div.modal#ok-sheet div.modal-body table.table-ok-detail#table-ok-detail-3 tr td {
+    text-align: center;
+    padding-right: 5%;
+}
+
+
+div.modal#ok-sheet div.modal-body table.table-ok-detail {
+    margin-bottom: 0;
+}
+
+div.modal#ok-sheet div.modal-body div.div-ok-detail {
+    background-color: #454d55;
+    /* padding: .1rem .3rem; */
+    padding-left: 1rem;
+    padding-right: 1rem;
+    border-radius: 1rem;
+    margin-top: .3rem;
+}
+
+div.modal#ok-sheet div.modal-body {
+    max-height: 80vh;
+    overflow: auto;
+}
+
+div.modal#checklist div.modal-body button#checklist-repair {
+    position: absolute;
+    right: 0;
+    margin-right: 1rem;
+    width: 5rem;
+    box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+}
+
+/* end css checklist */
+
+/* ink usage */
+div.modal#modal_ink_usage div.modal-body {
+    font-size: 16pt;
+    max-height: 80vh;
+    overflow: auto;
+}
+
+div.modal#modal_ink_usage div.modal-body .btn-add-special-ink {
+    font-size: 14pt;
+    position: absolute;
+    right: 0;
+    margin-right: 1rem;
+    box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+}
+
+div.modal#modal_ink_usage div.modal-body div.ink-container-button {
+    padding-top: 1rem;
+}
+
+div.modal#modal_ink_usage div.modal-body div.ink-container-button label.ink-usage {
+    font-size: 26pt;
+    width: 3rem;
+    background-color: #454d55;
+    margin: .5rem;
+    text-align: center;
+    border-radius: .3rem;
+    box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+}
+
+div.modal#modal_ink_usage div.modal-body div.ink-container-button label.ink-usage.active,
+div.modal#modal_ink_usage div.modal-body div.coating-button label.coating-usage.active {
+    background-color: #208838;
+}
+
+div.modal#modal_ink_usage div.modal-body div.coating-button label.coating-usage {
+    font-size: 26pt;
+    width: auto;
+    padding: .3rem;
+    background-color: #454d55;
+    margin: .5rem;
+    text-align: center;
+    border-radius: .3rem;
+    box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+}
+
+div.modal#modal_ink_usage div.modal-body div.div-add-ink input.ink-usage-test {
+    height: 3rem;
+    border-radius: .3rem;
+    background-color: darkgray;
+    border: none;
+    width: 30%;
+    margin: .3rem 0;
+}
+
+/* end usage */
+
+/* request ot */
+
+div#modal-request-ot div.modal-body {
+    font-size: 16pt;
+    /* max-height: 80vh;
+    overflow: auto; */
+}
+
+div#checklist-qc div.modal-body input.disabled,
+div#checklist-outsource div.modal-body input.disabled,
+div#modal-request-ot div.modal-body input.disabled {
+    pointer-events: none;
+    background-color: #656d75;
+    color: rgba(255, 255, 255, 0.527);
+    border: none;
+    border-radius: .3rem;
+}
+
+div#modal-request-ot div.modal-body div.div-request-ot h5 {
+    font-weight: bolder;
+    font-size: 18pt;
+}
+
+div#modal-request-ot div.modal-body div.div-request-ot select[name="worker"] {
+    width: 70%;
+    height: auto;
+}
+
+div#modal-request-ot div.modal-body div.div-request-ot div.col-9 {
+    justify-content: end !important;
+    display: flex !important;
+}
+
+div#modal-request-ot div.modal-body div.div-request-ot div.col-3 {
+    justify-content: start !important;
+    display: flex !important;
+}
+
+div#modal-request-ot div.modal-footer button {
+    font-size: 16pt;
+}
+
+.div-show-worker-request-ot {
+    margin-top: 1rem;
+    max-height: 8em;
+    overflow: auto;
+    background-color: #454d55;
+    border-radius: .3rem;
+}
+
+div.ot-request-box div.about-box table#table_request_ot tr td {
+    padding: 0 !important;
+}
+
+input[name='sheet_upload'] {
+    width: 100%;
+}
+
+.form-control.is-valid,
+.form-control.is-invalid {
+    padding-right: 0 !important;
+}
+
+div#checklist-outsource div.modal-body {
+    max-height: 80vh;
+    overflow: auto;
+}
+
+div#checklist-outsource div.modal-body div.checklist-div-box-1 div.row,
+div#checklist-outsource div.modal-body div.checklist-div-box-3 div.row {
+    margin: .25rem 0;
+}
+
+div#checklist-outsource div.modal-body div.checklist-div-box-1 input {
+    height: 1.5rem;
+}
+
+div#checklist-outsource div.modal-body div.checklist-div-box-3 textarea,
+div#checklist-outsource div.modal-body div.checklist-div-box-3 select,
+div#checklist-outsource div.modal-body div.checklist-div-box-1 input:not(.disabled) {
+    background-color: #2f343a;
+}

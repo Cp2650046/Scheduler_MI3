@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Scheduler - MI3</title>
+    <%- include('../includes/script-top'); %>
+    <link rel="stylesheet" href="./projects/master_plans/css/master-plan-afterpress.css">
+    <link rel="stylesheet" href="./projects/master_plans/css/dragAndDrop.css">
+</head>
+
+<body class="hold-transition sidebar-mini layout-fixed">
+    <!-- <div class="content-wrapper"> -->
+        <div class="container-fluid" id="main_board">
+            <div class="content-header">
+                <div class="col-lg-12" id="action_bar">
+                    <div class="container-fluid" id="second_board">
+                        <div id="master_plans_tab1" class="card card_masterplan">
+                            <div class="card-header pl-2 pb-1 pt-2 border-0">
+                                <div class="card-title">
+                                    <span class="project_name">
+                                        <i class="fas fa-clipboard"></i>
+                                        Master Plan - Drag and Drop
+                                    </span>
+                                </div>
+                                <div class="card-tools">
+                                    <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                                        <i class="fas fa-minus"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="row mb-2 justify-content-center">
+                                        <table>
+                                            <tbody>
+                                                <tr>
+                                                    <td>Navigation: </td>
+                                                    <td>
+                                                        <select id="naviagate_masterplan_typeID" name="naviagate_masterplan_typeID" class="form-select form-select-sm">
+                                                            <option value="36">Roll Cutter</option>
+                                                            <option value="35">Sheet</option>
+                                                            <option value="34">Web</option>
+                                                            <option value="afterpress1" selected>Afterpress1</option>
+                                                            <option value="afterpress2">Afterpress2</option>
+                                                            <option value="afterpress3">Afterpress3</option>
+                                                            <option value="cutting">ตัดป้อนแท่น</option>
+                                                            <option value="10">Die-cut</option>
+                                                        </select>
+                                                    </td>
+                                                    <td>Year:</td>
+                                                    <td>
+                                                        <select name="naviagate_masterPlan_year" id="naviagate_masterPlan_year"class="form-select form-select-sm">
+                                                            <option value="2022">2022</option>
+                                                        </select>
+                                                    </td>
+                                                    <td>Month: </td>
+                                                    <td>
+                                                        <select name="naviagateMasterPlan_month" id="naviagateMasterPlan_month"class="form-select form-select-sm">
+                                                            <option value="1">1</option>
+                                                            <option value="2">2</option>
+                                                            <option value="3">3</option>
+                                                            <option value="4">4</option>
+                                                            <option value="5">5</option>
+                                                            <option value="6">6</option>
+                                                            <option value="7">7</option>
+                                                            <option value="8">8</option>
+                                                            <option value="9">9</option>
+                                                            <option value="10">10</option>
+                                                            <option value="11">11</option>
+                                                            <option value="12">12</option>
+                                                        </select>
+                                                    </td>
+                                                    <td>
+                                                        <button id="naviagateMasterPlan_go" class="btn btn-sm btn-primary" >Go</button>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                </div>
+                                <div class="row mb-2 justify-content-center">
+                                    <span class="box-color-size" style="background-color:#0066FF;"></span>&nbsp;Work(NO OK)&nbsp;&nbsp;&nbsp;
+                                    <span class="box-color-size" style="background-color:#33CC00;"></span>&nbsp;Work(OK)&nbsp;&nbsp;&nbsp;
+                                    <span class="box-color-size" style="background-color: #FFFFFF;"></span>&nbsp;Work(Success)&nbsp;&nbsp;&nbsp;
+                                    <span class="box-color-size" style="background-color:#CC0000;"></span>&nbsp;OK Important job&nbsp;&nbsp;&nbsp;
+                                    <span class="box-color-size" style="background-color:#FF8F8F;"></span>&nbsp;Waiting for Ok Important job&nbsp;&nbsp;&nbsp;
+                                    <span class="box-color-size" style="background-color:purple;"></span>&nbsp;PM&nbsp;&nbsp;&nbsp;
+                                    <span class="box-color-size" style="background-color:yellow;"></span>&nbsp;No operator&nbsp;&nbsp;&nbsp;
+                                    <span class="box-color-size" style="background-color:pink;"></span>&nbsp;5S&nbsp;&nbsp;&nbsp;
+                                    <span class="box-color-size" style="background-color:#FFCC33;"></span>&nbsp;Breakdown
+                                </div>
+                            </div>
+                        </div>
+                        <div id="master_plans_tab2" class="card card_masterplan">
+                            <div class="card-body">
+                                <div class="tab-content">
+                                    <div id='fixtb'>
+                                        <table cellSpacing='0' cellPadding='0' width='' id='tb_fix'>
+                                            <tbody>
+
+                                            </tbody>
+                                            <!-- <tr>
+                                                <td rowspan="1">Machiine</td>
+                                                <td>2023-10-01</td>
+                                                <td>2023-10-02</td>
+                                            </tr>
+                                            <tr>
+                                                <td rowspan="4">5103 Heidelberg</td>
+                                                <td plan_date="2023-10-01" machine_id="5103" class="5103 2023-10-01 day dropZone" bgcolor="#494949" id="day51032023-10-01"></td>
+                                            </tr>
+                                            <tr>
+                                                <td class="shiftSeparator"></td>
+                                            </tr>
+                                            <tr>
+                                                <td plan_date="2023-10-01" machine_id="5103" class="5103 2023-10-01 night dropZone" bgcolor="#494949" id="night51032023-10-01"></td>
+                                            </tr>
+                                            <tr><td class="sumhr">[5103 Heidelberg] Total <span class="5103 2023-10-01 ">0</span></td></tr>
+
+                                            <tr>
+                                                <td rowspan="4">5104 Heidelberg</td>
+                                                <td plan_date="2023-10-02" machine_id="5103" class="5103 2023-10-01 day dropZone" bgcolor="#494949" id="day51032023-10-01"></td>
+                                            </tr>
+                                            <tr>
+                                                <td class="shiftSeparator"></td>
+                                            </tr> -->
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <!-- </div> -->
+    <%- include('../includes/script-bottom'); %>
+    <script src="./projects/master_plans/js/master-plans.js"></script>
+    <script src="./projects/master_plans/js/master-plan-afterpress.js"></script>
+</body>
+
+</html>

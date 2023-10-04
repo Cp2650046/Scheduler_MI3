@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>MI v.3</title>
+    <%- include('../../includes/script-top'); %>
+</head>
+<body class="hold-transition sidebar-mini layout-fixed">
+    <div class="wrapper">
+        <%- include('../../includes/navbar'); %>
+        <div class="content-wrapper">
+            <div class="container-fluid" id="main_board">
+                <div class="content-header">
+                    <div class="col-lg-12" id="action_bar">
+                        <div class="row mb-2">
+                            <div class="col-sm-6">
+                                <ol class="breadcrumb float-sm-left" id="show_navigation_group"></ol>
+                            </div>
+                            <div class="col-sm-6">
+                                <ol class="breadcrumb float-sm-right" id="show_action_group"></ol>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="container-fluid" id="second_board">
+                    <!-- Start page content below -->
+                        <form id="delivery_data">
+                            <input type="hidden" name="action">
+                            <input type="hidden" name="unique_id">
+                            <input type="hidden" name="created_emp_id">
+                            <input type="hidden" name="updated_emp_id">
+                            <input type="hidden" name="request_type">
+                            <input type="hidden" name="commercial_type_id">
+                            <input type="hidden" name="delivery_type_id">
+                            <div class="row" id="section_delivery">
+                                <div class="col-md-6">
+                                    <div class="card card-purple card-outline">
+                                        <div class="card-header">
+                                            <h3 class="card-title text-bold">
+                                                <i class="fas fa-clipboard mr-1"></i>
+                                                DR Infomation
+                                            </h3>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="row mt-2 mb-2">
+                                                <div class="col-sm-6">
+                                                    <div class="row">
+                                                        <div class="col-sm-4 text-right">
+                                                            <label class="col-form-label col-form-label-sm">DR No.</label>
+                                                        </div>
+                                                        <div class="col-sm-8">
+                                                            <input type="text" class="form-control form-control-sm text-left" name="dr_number" readonly>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <div class="row">
+                                                        <div class="col-sm-4 text-right">
+                                                            <label class="col-form-label col-form-label-sm">วันเวลาจัดส่ง</label>
+                                                        </div>
+                                                        <div class="col-sm-8">
+                                                        <input type="text" class="form-control form-control-sm text-left" name="delivery_date" readonly>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row mt-2 mb-2">
+                                                <div class="col-sm-2 text-right">
+                                                    <label class="col-form-label col-form-label-sm">ลูกค้า</label>
+                                                </div>
+                                                <div class="col-sm-10">
+                                                    <input type="text" class="form-control form-control-sm text-left" name="customer_name" readonly>
+                                                </div>
+                                            </div>
+                                            <div class="row mt-2 mb-2">
+                                                <div class="col-sm-2 text-right">
+                                                    <label class="col-form-label col-form-label-sm">ที่อยู่ลูกค้า</label>
+                                                </div>
+                                                <div class="col-sm-10">
+                                                    <input type="text" class="form-control form-control-sm text-left" name="delivery_place" readonly>
+                                                </div>
+                                            </div>
+                                            <div class="row mt-2 mb-2">
+                                                <div class="col-sm-6">
+                                                    <div class="row">
+                                                        <div class="col-sm-4 text-right">
+                                                            <label class="col-form-label col-form-label-sm">ประเภทส่ง</label>
+                                                        </div>
+                                                        <div class="col-sm-8">
+                                                            <input type="text" class="form-control form-control-sm text-left" name="delivery_type_name" readonly>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <div class="row">
+                                                        <div class="col-sm-4 text-right">
+                                                            <label class="col-form-label col-form-label-sm">ประเภทงาน</label>
+                                                        </div>
+                                                        <div class="col-sm-8">
+                                                        <input type="text" class="form-control form-control-sm text-left" name="request_work_type_id" readonly>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row mt-2 mb-2">
+                                                <div class="col-sm-6">
+                                                    <div class="row">
+                                                        <div class="col-sm-4 text-right">
+                                                            <label class="col-form-label col-form-label-sm">Job No.</label>
+                                                        </div>
+                                                        <div class="col-sm-8">
+                                                            <input type="text" class="form-control form-control-sm text-left" name="job_id" readonly>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <div class="row">
+                                                        <div class="col-sm-4 text-right">
+                                                            <label class="col-form-label col-form-label-sm">Job Name</label>
+                                                        </div>
+                                                        <div class="col-sm-8">
+                                                        <input type="text" class="form-control form-control-sm text-left" name="job_name" readonly>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row mt-2 mb-2">
+                                                <div class="col-sm-6">
+                                                    <div class="row">
+                                                        <div class="col-sm-4 text-right">
+                                                            <label class="col-form-label col-form-label-sm">Quantity</label>
+                                                        </div>
+                                                        <div class="col-sm-8">
+                                                            <input type="text" class="form-control form-control-sm text-left" name="dr_quantity" readonly>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <div class="row">
+                                                        <div class="col-sm-4 text-right">
+                                                            <label class="col-form-label col-form-label-sm">Run On</label>
+                                                        </div>
+                                                        <div class="col-sm-8">
+                                                        <input type="text" class="form-control form-control-sm text-left" name="run_on" readonly>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row mt-2 mb-2">
+                                                <div class="col-sm-2 text-right">
+                                                    <label class="col-form-label col-form-label-sm">หมายเหตุ</label>
+                                                </div>
+                                                <div class="col-sm-10">
+                                                    <input type="text" class="form-control form-control-sm text-left" name="remark" readonly>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            
+                                <div class="col-md-6">
+                                    <div class="card card-purple card-outline" id="do_information">
+                                        <div class="card-header">
+                                            <h3 class="card-title text-bold">
+                                                <i class="fas fa-clipboard-list mr-1"></i>
+                                                DO Information
+                                            </h3>
+                                        </div>
+                                        <div class="card-body clearfix">
+                                            <div class="row mt-2 mb-2">
+                                                <div class="col-sm-6">
+                                                    <div class="row">
+                                                        <div class="col-sm-5 text-right">
+                                                            <label class="col-form-label col-form-label-sm">DO No.</label>
+                                                        </div>
+                                                        <div class="col-sm-7">
+                                                            <input type="text" class="form-control form-control-sm text-left" name="do_number" readonly>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <div class="row">
+                                                        <div class="col-sm-5 text-right">
+                                                            <label class="col-form-label col-form-label-sm">สถานะส่งงาน</label>
+                                                        </div>
+                                                        <div class="col-sm-7">
+                                                            <input type="text" class="form-control form-control-sm text-left" name="do_status_name" readonly>
+                                                            <input type="hidden" name="do_status_id" readonly>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row mt-2 mb-2">
+                                                <div class="col-sm-6">
+                                                    <div class="row">
+                                                        <div class="col-sm-5 text-right">
+                                                            <label class="col-form-label col-form-label-sm">ออกจากโรงงาน<span class="txt-alert ml-1">*</span></label>
+                                                        </div>
+                                                        <div class="col-sm-7">
+                                                            <div class="input-group date" id="departed" data-target-input="nearest">
+                                                                <input type="text" name="departed" class="form-control form-control-sm text-center datetimepicker-input" data-target="#departed" required>
+                                                                <div class="input-group-append" data-target="#departed" data-toggle="datetimepicker">
+                                                                    <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <div class="row">
+                                                        <div class="col-sm-5 text-right">
+                                                            <label class="col-form-label col-form-label-sm">ถึงโรงงาน<span class="txt-alert ml-1">*</span></label>
+                                                        </div>
+                                                        <div class="col-sm-7">
+                                                        <input type="text" class="form-control form-control-sm text-left" name="arrived" readonly>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row mt-2 mb-2">
+                                                <div class="col-sm-6">
+                                                    <div class="row">
+                                                        <div class="col-sm-5 text-right">
+                                                            <label class="col-form-label col-form-label-sm">ระยะเวลา<span class="txt-alert ml-1">*</span></label>
+                                                        </div>
+                                                        <div class="col-sm-7">
+                                                            <input type="number" min="1" class="form-control form-control-sm text-left number" name="duration" readonly required>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <div class="row">
+                                                        <div class="col-sm-5 text-right">
+                                                            <label class="col-form-label col-form-label-sm">ระยะทาง(KM)</label>
+                                                        </div>
+                                                        <div class="col-sm-7">
+                                                        <input type="text" class="form-control form-control-sm text-left number" name="distance" value="0.00" readonly>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row mt-2 mb-2">
+                                                <div class="col-sm-6">
+                                                    <div class="row">
+                                                        <div class="col-sm-5 text-right">
+                                                            <label class="col-form-label col-form-label-sm">จำนวนส่ง</label>
+                                                        </div>
+                                                        <div class="col-sm-7">
+                                                            <input type="text" class="form-control form-control-sm text-left" name="do_quantity" readonly>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <div class="row">
+                                                        <div class="col-sm-5 text-right">
+                                                            <label class="col-form-label col-form-label-sm">น้ำหนัก</label>
+                                                        </div>
+                                                        <div class="col-sm-7">
+                                                            <input type="text" class="form-control form-control-sm text-left" name="do_weight" readonly>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="row mt-2 mb-2 pallet" id="pallet_1">
+                                                <div class="col-sm-6">
+                                                    <div class="row">
+                                                        <div class="col-sm-5 text-right">
+                                                            <button type="button" class="btn btn-block btn-sm btn-primary add-pallet" id="add_pallet">
+                                                                <i class="fas fa-plus-circle mr-1"></i> Add
+                                                            </button>
+                                                        </div>
+                                                        <div class="col-sm-7">
+                                                            <input type="hidden" class="pallet-quantity" name="pallet_quantity[]" id="pallet_quantity_1">
+                                                            <input type="hidden" class="pallet-weight" name="pallet_weight[]" id="pallet_weight_1">
+                                                            <input type="hidden" class="pallet-unit-id" name="pallet_unit_id[]" id="pallet_unit_id_1">
+                                                            <input type="hidden" class="pallet-part-type" name="pallet_part_type[]" id="pallet_part_type_1">
+                                                            <input type="hidden" class="pallet-sig" name="pallet_sig[]" id="pallet_sig_1">
+                                                            <input type="hidden" class="pallet-edition" name="pallet_edition[]" id="pallet_edition_1">
+                                                            <input type="text" class="form-control form-control-sm text-left pallet-barcode" name="pallet_barcode[]" id="pallet_barcode_1">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <div class="row">
+                                                        <div class="col-sm-2 mt-1">
+                                                            <button type="button" class="btn btn-block btn-xs btn-danger remove-pallet" id="remove_pallet_1">
+                                                                <i class="fas fa-minus-circle"></i>
+                                                            </button>
+                                                        </div>
+                                                        <div class="col-sm-10 mt-1">
+                                                            <span class="form-control-sm text-left quantity-name" name="quantity_name[]" id="quantity_name_1"></span>
+                                                            <span class="form-control-sm text-left unit-name" name="unit_name[]" id="unit_name_1"></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row" id="section_vehicle" style="display:none;">
+                                <div class="col-md-12">
+                                    <div class="card card-purple card-outline">
+                                        <div class="card-header">
+                                            <div class="row">
+                                                <div class="col-sm-11">
+                                                    <h3 class="card-title  text-bold">
+                                                        <i class="fas fa-truck mr-1"></i>
+                                                        Vehicle Infomation
+                                                    </h3>
+                                                </div>
+                                                <div class="col-sm-1">
+                                                    <button type="button" class="btn btn-block btn-xs btn-primary" id="add_vehicle">
+                                                        <i class="fas fa-plus-circle mr-1"></i>Add
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="card-body clearfix">
+                                            <table id="tb_do_vehicle" class="table table-sm text-sm table-borderedless table-hover dtr-inline display" aria-describedby="tb_do_vehicle_info">
+                                                <thead>
+                                                    <th class="text-center" width="26%">บริษัทรถรับจ้าง</th>
+                                                    <th class="text-center" width="10%">ทะเบียนรถ</th>
+                                                    <th class="text-center" width="15%">พนักงานขับรถ</th>
+                                                    <th class="text-center" width="15%">พนักงานขนของ</th>
+                                                    <th class="text-center" width="9%">จำนวนส่ง (Pcs)</th>
+                                                    <th class="text-center hidden-planned" width="9%">Reject (Pcs)</th>
+                                                    <th class="text-center hidden-planned" width="15%">สาเหตุที่ไม่รับ</th>
+                                                    <th class="text-center" width="1%"></th>
+                                                </thead>
+                                                <tbody>
+                                                    <tr id="vehicle_1">
+                                                        <td>
+                                                            <input type="hidden" class="vehicle-owner-id" name="vehicle_owner_id[]">
+                                                            <input type="text" class="form-control form-control-sm text-left vehicle-owner" name="vehicle_owner[]" disabled>
+                                                        </td>
+                                                        <td>
+                                                            <input type="hidden" class="vehicle-licens-id" name="vehicle_licens_id[]">
+                                                            <input type="text" class="form-control form-control-sm text-center vehicle-licens" name="vehicle_licens[]" disabled>
+                                                        </td>
+                                                        <td>
+                                                            <input type="hidden" class="vehicle-driver-id" name="vehicle_driver_id[]">
+                                                            <input type="text" class="form-control form-control-sm text-left vehicle-driver-name" name="vehicle_driver_name[]" disabled>
+                                                        </td>
+                                                        <td class="follower">
+                                                            <div class="select2-purple">
+                                                                <select class="select2 form-control form-control-sm vehicle-follower" name="vehicle_follower[0][]" id="vehicle_follower_1"
+                                                                    data-dropdown-css-class="select2-purple" style="width:100%" multiple></select>
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <input type="text" class="form-control form-control-sm text-right vehicle-quantity number" name="vehicle_quantity[]" disabled>
+                                                        </td>
+                                                        <td class="hidden-planned">
+                                                            <input type="text" class="form-control form-control-sm text-right vehicle-reject hidden-planned number" name="vehicle_reject[]" disabled>
+                                                        </td>
+                                                        <td class="hidden-planned">
+                                                            <input type="text" class="form-control form-control-sm text-left vehicle-reject-remark hidden-planned" name="vehicle_reject_remark[]" disabled>
+                                                        </td>
+                                                        <td>
+                                                            <button type="button" class="btn btn-block btn-sm btn-danger remove-vehicle" id="remove_vehicle_1">
+                                                                <i class="fas fa-minus-circle"></i>
+                                                            </button>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="section_pallet_return" style="display:none;"></div>
+                        </form>
+
+                        <!-- Modal -->
+                        <div class="modal fade" id="dataModal" tabindex="-1" role="dialog" aria-labelledby="dataModalCenterTitle" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="dataModalLabel">คืน Pallet ให้กับ FG</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <table id="tb_pallet_return" class="table table-sm text-sm table-borderedless" aria-describedby="tb_pallet_return_ifo">
+                                                    <thead>
+                                                        <th width="35%" class="text-center">Pallet No.</th>
+                                                        <th width="30%" class="text-center">จำนวน (Pcs)</th>
+                                                        <th width="20%" class="text-center">น้ำหนัก</th>
+                                                        <th width="15%" class="text-center">คืนพาเลท</th>
+                                                    </thead>
+                                                    <tbody></tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- <div class="modal-footer">
+                                        <button type="button" class="btn btn-primary" id="save">Save</button>
+                                        <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+                                    </div> -->
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <%- include('../../includes/script-bottom'); %>
+        <script src="../projects/delivery/js/do/do_manage.js"></script>
+    </div>
+</body>
+</html>

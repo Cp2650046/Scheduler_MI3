@@ -1,0 +1,53 @@
+*{
+    margin: 0px;
+    padding: 0px;
+    box-sizing: border-box;
+}
+
+.lable_start{
+    border-radius: 10px 0 0 10px;
+    width: 200px;
+}
+.lable_end{
+    border-radius: 0 10px 10px 0;
+    width: 50px;
+    text-align: center;
+}
+.has_value{
+    transition: 0.5s;
+    width: 30%;
+}
+#qty{
+    background: #c7c7c7;
+    cursor: default;
+}
+/* .title{    
+    position: absolute;
+    top: 5%;
+    left: 5%;
+    background: rebeccapurple;
+    color: white;
+    font-size: 2rem;
+    padding: 15px;
+    border-radius: 15px;
+} */
+.background-backdrop{
+    position: fixed;
+    z-index: 1;
+    padding-top: 100px;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.4);
+    /* opacity: 0.1 ; */
+}
+
+#modal-cal-paper .input-group-prepend .input-group-text{
+    background-color: #b4aa52;
+}
+
+#modal-cal-paper .input-group-append .input-group-text{
+    background-color: #b4aa52;
+}

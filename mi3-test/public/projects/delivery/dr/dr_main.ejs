@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>MI v.3</title>
+    <%- include('../../includes/script-top'); %>
+</head>
+<body class="hold-transition sidebar-mini layout-fixed">
+    <div class="wrapper">
+        <%- include('../../includes/navbar'); %>
+        <div class="content-wrapper">
+            <div class="container-fluid" id="main_board">
+                <div class="content-header">
+                    <div class="col-lg-12" id="action_bar">
+                        <div class="row mb-2">
+                            <div class="col-sm-6">
+                                <ol class="breadcrumb float-sm-left" id="show_navigation_group"></ol>
+                            </div>
+                            <div class="col-sm-6">
+                                <ol class="breadcrumb float-sm-right" id="show_action_group"></ol>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="container-fluid" id="second_board">
+                    <!-- Start page content below -->
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="card card-outline card-purple">
+                                    <div class="card-header">
+                                        <h5 class="card-title text-bold">
+                                            <i class="fas fa-list-alt mr-1"></i>ข้อมูลตารางการจัดส่ง (Delivery Detail)
+                                        </h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-sm-2"></div>
+                                            <div class="col-sm-9">
+                                                <table class="table table-borderless table-sm">
+                                                    <tbody>
+                                                        <tr>
+                                                            <td align="right">Job No. :</td>
+                                                            <td align="left"><span name="job_id"></span></td>
+                                                            <td align="right">Job Name :</td>
+                                                            <td align="left"><span name="job_name"></span></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td align="right">AE :</td>
+                                                            <td align="left"><input type="hidden" name="ae_emp_id"><span name="ae_emp_name"></span></td>
+                                                            <td align="right">Customer Name :</td>
+                                                            <td align="left"><input type="hidden" name="customer_id"><span name="customer_name"></span></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td align="right">Quantity :</td>
+                                                            <td align="left"><span name="quantity"></span></td>
+                                                            <td align="right">Delivery Due Date :</td>
+                                                            <td align="left"><span name="due_date"></span></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td align="right">Balance :</td>
+                                                            <td align="left"><span name="balance"></span></td>
+                                                            <td align="right">การส่งปกไปโรงงานลาว :</td>
+                                                            <td align="left">
+                                                                <input type="radio" id="is_wrap_1" name="is_wrap" value="1">
+                                                                <label for="is_wrap_1" class="text-sm font-weight-normal">หุ้มปก</label>
+                                                                &emsp;
+                                                                <input type="radio" id="is_wrap_2" name="is_wrap" value="2">
+                                                                <label for="is_wrap_2" class="text-sm font-weight-normal">ไม่หุ้มปก</label>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                            <div class="col-sm-1"></div>
+                                        </div>
+                                    </div> 
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div id="table_data_wrapper" class="dataTables_wrapper dt-bootstrap4">
+                                            <div class="row">
+                                                <div class="col-sm-12">
+                                                    <table id="table_data" class="table table-sm text-sm table-bordered table-hover dataTable dtr-inline display" aria-describedby="table_data_info">
+                                                        <thead>
+                                                            <tr>
+                                                                <th width="5%" class="sorting sorting_asc text-center" tabindex="0" aria-controls="table_data" aria-sort="ascending">DR No.</th>
+                                                                <th width="7%" class="sorting text-center" tabindex="0" aria-controls="table_data">Delivery Date</th>
+                                                                <th width="6%" class="sorting text-center" tabindex="0" aria-controls="table_data">จำนวนส่ง</th>
+                                                                <th width="10%" class="sorting text-center" tabindex="0" aria-controls="table_data">ประเภทงาน</th>
+                                                                <th width="7%" class="sorting text-center" tabindex="0" aria-controls="table_data">จาก</th>
+                                                                <th width="20%" class="sorting text-center" tabindex="0" aria-controls="table_data">ถึง</th>
+                                                                <!-- <th width="1%" class="sorting text-center" tabindex="0" aria-controls="table_data">เวลารถออก</th> -->
+                                                                <th width="7%" class="sorting text-center" tabindex="0" aria-controls="table_data">จำนวนส่งจริง</th>
+                                                                <th width="7%" class="sorting text-center" tabindex="0" aria-controls="table_data">จำนวน Reject</th>
+                                                                <th width="7%" class="sorting text-center" tabindex="0" aria-controls="table_data">สถานะการส่งสินค้า</th>
+                                                                <th width="12%" class="sorting text-center" tabindex="0" aria-controls="table_data">หมายเหตุ</th>
+                                                                <th width="11%" class="sorting text-center" tabindex="0" aria-controls="table_data">สาเหตุการเลื่อนส่ง</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody></tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <%- include('../../includes/script-bottom'); %>
+        <script src="../projects/delivery/js/dr/dr_main.js"></script>
+    </div>
+</body>
+</html>

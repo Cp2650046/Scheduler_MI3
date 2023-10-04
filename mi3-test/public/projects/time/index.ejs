@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>MI v.3</title>
+    <%- include('../../includes/script-top'); %>
+</head>
+<body class="hold-transition sidebar-mini layout-fixed">
+    <div class="wrapper">
+        
+        <%- include('../../includes/navbar'); %>
+        
+        <div class="content-wrapper">
+            <div class="container-fluid" id="main_board">
+                <div class="content-header">
+                    <div class="col-lg-12" id="action_bar">
+                        <div class="row mb-2">
+                            <div class="col-sm-6">
+                                <ol class="breadcrumb float-sm-left">
+                                    <li class="breadcrumb-item"><a href="#">Home</a></li>
+                                    <li class="breadcrumb-item active">Text1</li>
+                                    <li class="breadcrumb-item active">Text2</li>
+                                </ol>
+                            </div>
+                            <div class="col-sm-6">
+                                <ol class="breadcrumb float-sm-right" id="show_action_group">
+                                    <li class="breadcrumb-item">mockup-data-Button</li>
+                                    <li class="breadcrumb-item">mockup-data-Create</li>
+                                    <li class="breadcrumb-item">mockup-data-Update</li>
+                                    <li class="breadcrumb-item">mockup-data-Delete</li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="container-fluid" id="second_board">
+                    <!-- Start page content below -->
+                        <div class="col-lg-12">
+                            <h1>โดยที่ประชาชนแห่งสหประชาชาติได้ยืนยันอีกครั้งไว้ในกฎบัตรถึงศรัทธาในสิทธิมนุษยชนขั้นพื้นฐาน</h1>
+                            <%
+                            for(i=0;i<100;i++){
+                            %>
+                            <%-i%><br/>
+                            <%
+                            }
+                            %>
+                        </div>
+                    <!-- End page content above -->    
+                    </div>
+
+                </div>
+
+               
+            </div>
+        </div>
+
+        <%- include('../../includes/script-bottom'); %>
+        <script src="./projects/time/js/index.js"></script>
+    </div>
+</body>
+</html>

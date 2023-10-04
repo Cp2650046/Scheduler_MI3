@@ -1,0 +1,11 @@
+body{font-family: 'Sarabun', sans-serif; height: 100vh;overflow: hidden;}
+.content-header{height: 95vh;overflow: auto;padding:10px 0;}
+.m-05{margin: 0 5px;}
+.m-10{margin: 0 10px;}
+.m-20{margin: 0 20px;}
+.m-20{margin: 0 20px;}
+.form-m-10 {margin-bottom: 10px;}
+.loading-overlay{z-index: 1200 !important;cursor: wait;}
+.txt-validate{border: 1px solid slateblue; border-radius: .25rem;}
+.txt-alert{font-size:smaller; color:red;}
+.txt-link {color: #007bff; text-decoration: none; cursor:pointer; background-color: transparent;}

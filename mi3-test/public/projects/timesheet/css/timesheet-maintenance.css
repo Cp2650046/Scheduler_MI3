@@ -1,0 +1,313 @@
+div.content-header {
+    height: 100vh;
+    padding: 0;
+    box-sizing: border-box;
+    overflow-x: hidden;
+    display: inline;
+}
+
+div#second_board {
+    padding-left: 5px;
+    padding-right: 5px;
+    overflow-x: hidden;
+}
+
+div#main_board {
+    padding: 0;
+    overflow-x: hidden;
+}
+
+div.timesheet-left-box,
+div.timesheet-right-box {
+    margin: 5px;
+    background-color: #343a40;
+    box-shadow: 0 0 1px rgba(0, 0, 0, .125), 0 1px 3px rgba(0, 0, 0, .2);
+    border-radius: 0.5em;
+    min-height: 98vh;
+    max-height: 98vh;
+    overflow: auto;
+}
+
+div.timesheet-title h2 {
+    font-weight: bolder;
+}
+
+div.timesheet-title h5 {
+    line-height: 2.1;
+}
+
+/* css title */
+div.timesheet-title h2 span#machine-title,
+div#show-process h1 span {
+    color: #ffc107;
+}
+
+div.timesheet-title h2 span#plan-title {
+    color: #007bff;
+}
+
+div.timesheet-title h5 span#job-title {
+    color: #17a2b8;
+}
+
+div.timesheet-title h5 span#remark-title {
+    color: #d2d6de;
+}
+
+/* end css title */
+
+/* css timesheet history */
+div.timesheet-history {
+    height: 30vh;
+    background-color: #454d55;
+    border-radius: .3rem;
+    margin-right: 7.5px;
+    overflow: hidden;
+}
+
+div.history-footer h6 {
+    line-height: 0.7;
+}
+
+div.history-body {
+    height: 85%;
+    overflow: auto;
+
+}
+
+/* end css timesheet history */
+
+/* css show current process */
+div.timesheet-current-process {
+    padding: .4rem 0;
+    margin-right: 7.5px;
+}
+
+/* end css show current process */
+div.timesheet-btn-right,
+div.div-btn-back {
+    margin-right: 7.5px;
+}
+
+div.timesheet-btn-right div.ot-request-box,
+div.timesheet-btn-right div.pallet-box,
+div.timesheet-btn-right div.other-box,
+div.timesheet-btn-right div.end-timesheet-box {
+    min-height: 7vh;
+}
+
+div.timesheet-left-box {
+    padding-top: 1.5rem;
+}
+
+div.history-body hr {
+    background-color: rgba(255, 255, 255, 0.5);
+    /* padding: 0; */
+    margin-bottom: 5px;
+    margin-left: 1rem;
+    margin-right: 1rem;
+}
+
+div.timesheet-btn-left {
+    display: flex;
+    flex-wrap: wrap;
+    margin-left: 15px;
+    margin-right: 7.5px;
+    /* margin-top: 2rem; */
+    /* justify-content: space-between; */
+    height: 48%;
+}
+
+div.timesheet-btn-left button {
+    display: inline-block;
+    width: 49%;
+    height: 3em;
+    margin-bottom: 1rem;
+    border-radius: 0.3rem;
+    font-size: 16pt;
+    line-height: 1.1;
+    box-shadow: rgba(0, 0, 0, 0.4) 0px 12px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+    border: none;
+    font-weight: bold;
+    color: rgb(255, 255, 255, 0.7);
+    background-color: #545b62;
+}
+
+div.timesheet-btn-left button:active {
+    box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+    transform: translateY(4px);
+}
+
+/* div.timesheet-btn-left button.active {
+    box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+    transform: translateY(4px);
+} */
+
+div.timesheet-btn-right div div.button-box button {
+    min-width: 49.5%;
+    min-height: 7vh;
+    display: inline-block;
+    margin-bottom: .3rem;
+    border-radius: .3rem;
+    font-size: 14pt;
+    /* background-color: #545b62; */
+    box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+    border: none;
+    color: #fff;
+}
+
+div.button-box {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+div.about-box {
+    background-color: #454d55;
+    /* min-height: 14vh; */
+    max-height: 10vh;
+    border-radius: .3rem;
+    margin-bottom: .3rem;
+    overflow: auto;
+}
+
+table.table#process-history tbody tr {
+    font-size: 11pt;
+}
+
+table.table#process-history tbody tr td {
+    margin: 0;
+    padding: 0;
+}
+
+table.table#process-history tbody tr td.index-col {
+    width: 3%;
+}
+
+table.table#process-history tbody tr td.process-name-col {
+    width: 60%;
+}
+
+table.table#process-history tbody tr td.waste-col,
+table.table#process-history tbody tr td.qty-col {
+    min-width: 20%;
+    max-width: 20%;
+}
+
+table.table#process-history tbody tr td.time-col {
+    width: 9%;
+}
+
+@media (min-width: 1140px),
+(max-width: 1140px) {
+    div.timesheet-current-process div#show-timer {
+        font-size: 40pt;
+        line-height: 100%;
+    }
+}
+
+@media (max-width: 960px) {
+    div.timesheet-title h2 {
+        font-size: 16pt;
+    }
+
+    div.timesheet-title h5 {
+        font-size: 14pt;
+    }
+
+    div.timesheet-current-process div#show-timer {
+        font-size: 36pt;
+        line-height: 100%;
+    }
+
+}
+
+@media (max-width: 720px) {
+    div.timesheet-title h2 {
+        font-size: 12pt;
+    }
+
+    div.timesheet-title h5 {
+        font-size: 10pt;
+    }
+
+    div.timesheet-current-process div#show-timer {
+        font-size: 32pt;
+        line-height: 100%;
+    }
+}
+
+@media (max-width: 540px) {
+    div.timesheet-title h2 {
+        font-size: 8pt;
+    }
+
+    div.timesheet-title h5 {
+        font-size: 6pt;
+    }
+
+    div.timesheet-current-process div#show-timer {
+        font-size: 28pt;
+        line-height: 100%;
+    }
+}
+
+div.timesheet-btn-left#div-carry-out button {
+    z-index: 999;
+}
+
+div.timesheet-btn-left#div-carry-out button.active {
+    background-color: rgb(40, 167, 69, 1);
+    color: #191c20;
+    box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+    transform: translateY(4px);
+}
+
+/* div.timesheet-btn-left#div-carry-out button.active:hover {
+    background-color: #dc3545;
+}
+
+div.timesheet-btn-left#div-carry-out button.active:hover:after {
+    content: ' (หยุด)';
+} */
+
+div.timesheet-btn-left#div-insert-worker {
+    background-color: #454d55;
+    border-radius: 1rem;
+    display: block;
+    text-align: center;
+    padding: 1rem;
+}
+
+div.timesheet-btn-left#div-carry-out span {
+    font-size: 36pt;
+    float: left;
+    padding-left: 30%;
+    position: fixed;
+}
+
+div.timesheet-btn-left#div-insert-worker table {
+    width: 100%;
+    font-size: 16pt;
+}
+
+div.timesheet-btn-left#div-insert-worker table thead {
+    background: #c9ad5a;
+    color: #191c20;
+}
+
+div.timesheet-btn-left#div-insert-worker table tbody tr td.left {
+    text-align: left;
+}
+
+div.timesheet-btn-left#div-insert-worker table tbody tr:nth-child(even) {
+    background: #343a40;
+}
+
+div.timesheet-btn-right div.end-timesheet-box div.button-box button#maintenance-success {
+    background: #17a2b8;
+}
+
+div.timesheet-btn-right div.end-timesheet-box div.button-box button#end-ma {
+    background: #dc3545;
+}

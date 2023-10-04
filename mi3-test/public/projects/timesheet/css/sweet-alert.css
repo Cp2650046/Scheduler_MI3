@@ -1,0 +1,18 @@
+div.swal2-popup {
+    border: none;
+}
+
+div.swal2-popup.swal2-toast {
+    background-color: #ffc107;
+}
+
+div.swal2-popup.swal2-toast h2#swal2-title {
+    font-size: 14pt !important;
+    line-height: 1.8 !important;
+    color: #343a40;;
+}
+
+div.swal2-popup.swal2-toast div.swal2-icon.swal2-warning {
+    color: #343a40;
+    border-color: #343a40;
+}

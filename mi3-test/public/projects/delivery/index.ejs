@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>MI v.3</title>
+    <%- include('../includes/script-top'); %>
+</head>
+<body class="hold-transition sidebar-mini layout-fixed">
+    <div class="wrapper">
+        <%- include('../includes/navbar'); %>
+        <div class="content-wrapper">
+            <div class="container-fluid" id="main_board">
+                <div class="content-header">
+                    <div class="col-lg-12" id="action_bar">
+                        <div class="row mb-2">
+                            <div class="col-sm-6">
+                                <ol class="breadcrumb float-sm-left" id="show_navigation_group"></ol>
+                            </div>
+                            <div class="col-sm-6">
+                                <ol class="breadcrumb float-sm-right" id="show_action_group"></ol>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="container-fluid" id="second_board">
+                    <!-- Start page content below -->
+                        <div class="col-lg-12">
+                            <h1>Hello Delivery</h1>
+                        </div>
+                    <!-- End page content above -->    
+                    </div>
+                </div>
+            </div>
+        </div>
+        <%- include('../includes/script-bottom'); %>
+        <script src="./projects/delivery/js/index.js"></script>
+    </div>
+</body>
+</html>

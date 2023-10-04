@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Scheduler - MI3</title>
+    <%- include('../includes/script-top'); %>
+    <link rel="stylesheet" href="./projects/scheduler/css/scheduler.css">
+    <link rel="stylesheet" href="./projects/scheduler/css/scheduler-alert.css">
+    <link rel="stylesheet" href="./projects/scheduler/css/select2.css">
+</head>
+
+<body class="hold-transition sidebar-mini layout-fixed">
+    <!-- <div class="wrapper"> -->
+    <div class="content-wrapper">
+        <div class="container-fluid" id="main_board">
+            <div class="content-header">
+                <div class="col-lg-12" id="action_bar">
+                </div>
+                <% if(machineTypeID == 47){ %>
+                <%- include('../scheduler/views/casein.ejs'); %>
+                <script src="./projects/scheduler/js/scheduler-casein.js"></script>
+                <% }else{ %>
+                <%- include('../scheduler/views/all.ejs'); %>
+                <script src="./projects/scheduler/js/scheduler-all.js"></script>
+                <% } %>
+            </div>
+        </div>
+    </div>
+    <%- include('../includes/script-bottom'); %>
+        <script src="./projects/scheduler/js/scheduler-main.js"></script>
+        <script src="./projects/scheduler/js/scheduler.js"></script>
+        <script src="./projects/scheduler/js/scheduler-alert.js"></script>
+        <script src="./projects/scheduler/js/index.js"></script>
+        <!-- </div> -->
+</body>
+
+</html>

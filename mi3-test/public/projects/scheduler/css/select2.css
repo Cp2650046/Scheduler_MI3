@@ -1,0 +1,35 @@
+.select2-container--default .select2-selection--single {
+    padding: 0 0;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__rendered {
+    line-height: 1.5;
+}
+
+.select2-container .select2-selection--single .select2-selection__rendered {
+    padding-left: 0;
+}
+
+input.select2-search__field {
+    font-size: 9pt;
+}
+
+li.select2-results__option {
+    font-size: 9pt;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__rendered{
+    margin-top: 0;
+}
+
+span.select2 {
+    width: 100% !important;
+}
+
+.select2-selection {
+    font-size: 9pt !important;
+    height: 1.5rem !important;
+    line-height: 1 !important;
+    padding: .160rem !important;
+    border: 1px solid #ced4da !important;
+}

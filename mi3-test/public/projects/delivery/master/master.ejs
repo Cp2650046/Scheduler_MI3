@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>MI v.3</title>
+    <%- include('../includes/script-top'); %>
+</head>
+<body class="hold-transition sidebar-mini layout-fixed">
+    <div class="wrapper">
+        <%- include('../includes/navbar'); %>
+        <div class="content-wrapper">
+            <div class="container-fluid" id="main_board">
+                <div class="content-header">
+                    <div class="col-lg-12" id="action_bar">
+                        <div class="row mb-2">
+                            <div class="col-sm-6">
+                                <ol class="breadcrumb float-sm-left" id="show_navigation_group"></ol>
+                            </div>
+                            <div class="col-sm-6">
+                                <ol class="breadcrumb float-sm-right" id="show_action_group"></ol>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="container-fluid" id="second_board">
+                    <!-- Start page content below -->
+                        <div class="card">
+                            <!-- <div class="card-header">
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-6">
+                                        <h2 class="card-title">ข้อมูลหลัก (Master Data)</h2>
+                                    </div>
+                                    <!-- <div class="col-sm-12 col-md-6 text-right">
+                                        <div class="dt-buttons btn-group flex-wrap">
+                                            <button class="btn btn-default buttons-excel buttons-html5" tabindex="0" aria-controls="table_data" type="button"><span>Excel</span></button>
+                                            <button class="btn btn-default buttons-pdf buttons-html5" tabindex="0" aria-controls="table_data" type="button"><span>PDF</span></button>
+                                            <button class="btn btn-default buttons-print" tabindex="0" aria-controls="table_data" type="button"><span>Print</span></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div> -->
+                            <div class="card-body">
+                                <div id="table_data_wrapper" class="dataTables_wrapper dt-bootstrap4">
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <table id="table_data" class="table table-sm text-sm table-bordered table-hover dataTable dtr-inline display nowrap" aria-describedby="table_data_info">
+                                                <thead>
+                                                    <tr>
+                                                        <th width="10%" class="sorting sorting_asc text-center" tabindex="0" aria-controls="table_data" aria-sort="ascending">ลำดับ</th>
+                                                        <th width="40%" class="sorting text-center" tabindex="0" aria-controls="table_data">ประเภท Request</th>
+                                                        <th width="50%" class="sorting text-center" tabindex="0" aria-controls="table_data">ประเภทงาน</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <!-- <tr class="odd">
+                                                        <td class="dtr-control sorting_1" tabindex="0">1</td>
+                                                        <td>งานในประเทศ</td>
+                                                        <td>Request เพื่อส่งสินค้า</td>
+                                                    </tr>
+                                                    <tr class="even">
+                                                        <td class="dtr-control sorting_1" tabindex="0">2</td>
+                                                        <td>งานในประเทศ</td>
+                                                        <td>Request เพื่อส่งสินค้า</td>
+                                                    </tr>
+                                                    <tr class="odd">
+                                                        <td class="dtr-control sorting_1" tabindex="0">3</td>
+                                                        <td>โรงงานลาว</td>
+                                                        <td>Request เพื่อส่งวัตถุดิบ</td>
+                                                    </tr> -->
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Modal -->
+                        <div class="modal fade" id="dataModal" tabindex="-1" role="dialog" aria-labelledby="dataModalCenterTitle" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="dataModalLabel">ประเภทการส่ง</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body"></div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                        <button type="button" class="btn btn-primary" id="save">Save</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    <!-- End page content above -->    
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <%- include('../includes/script-bottom'); %>
+        <script src="./projects/delivery/js/master.js"></script>
+    </div>
+</body>
+</html>

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>MI v.3</title>
+    <%- include('../../includes/script-top'); %>
+</head>
+<body class="hold-transition sidebar-mini layout-fixed">
+    <div class="wrapper">
+        <%- include('../../includes/navbar'); %>
+        <div class="content-wrapper">
+            <div class="container-fluid" id="main_board">
+                <div class="content-header">
+                    <div class="col-lg-12" id="action_bar">
+                        <div class="row mb-2">
+                            <div class="col-sm-6">
+                                <ol class="breadcrumb float-sm-left" id="show_navigation_group"></ol>
+                            </div>
+                            <div class="col-sm-6">
+                                <ol class="breadcrumb float-sm-right" id="show_action_group"></ol>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="container-fluid" id="second_board">
+                    <!-- Start page content below -->
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="card card-outline card-purple">
+                                    <div class="card-header">
+                                        <h5 class="card-title text-bold">
+                                            <i class="fas fa-list-alt mr-1"></i>รายการ DO
+                                        </h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <div id="table_data_wrapper" class="dataTables_wrapper dt-bootstrap4">
+                                            <div class="row">
+                                                <div class="col-sm-12">
+                                                    <table id="table_data" class="table table-responsive text-sm table-bordered table-hover dataTable dtr-inline display" aria-describedby="table_data_info">
+                                                        <thead>
+                                                            <tr>
+                                                                <th width="5%" class="sorting sorting_asc text-center" tabindex="0" aria-controls="table_data" aria-sort="ascending">No.</th>
+                                                                <th width="5%" class="sorting text-center" tabindex="0" aria-controls="table_data">DO No.</th>
+                                                                <th width="5%" class="sorting text-center" tabindex="0" aria-controls="table_data">Delivery Status</th>
+                                                                <!-- <th width="5%" class="sorting text-center" tabindex="0" aria-controls="table_data">สาเหตุตีกลับ</th> -->
+                                                                <th width="10%" class="sorting text-center" tabindex="0" aria-controls="table_data">ทะเบียนรถ</th>
+                                                                <th width="5%" class="sorting text-center" tabindex="0" aria-controls="table_data">ประเภทสินค้า</th>
+                                                                <th width="5%" class="sorting text-center" tabindex="0" aria-controls="table_data">ประเภทการส่ง</th>
+                                                                <th width="5%" class="sorting text-center" tabindex="0" aria-controls="table_data">DR No.</th>
+                                                                <th width="5%" class="sorting text-center finish_goods" tabindex="0" aria-controls="table_data">Pallet</th>
+                                                                <th width="5%" class="sorting text-center materials" tabindex="0" aria-controls="table_data">วัตถุดิบ</th>
+                                                                <th width="5%" class="sorting text-center" tabindex="0" aria-controls="table_data">Job No.</th>
+                                                                <!-- <th width="5%" class="sorting text-center" tabindex="0" aria-controls="table_data">Job Name</th>
+                                                                <th width="10%" class="sorting text-center" tabindex="0" aria-controls="table_data">ประเภทงาน</th>
+                                                                <th width="10%" class="sorting text-center" tabindex="0" aria-controls="table_data">AE</th>
+                                                                <th width="10%" class="sorting text-center" tabindex="0" aria-controls="table_data">ลูกค้า</th>
+                                                                <th width="10%" class="sorting text-center" tabindex="0" aria-controls="table_data">ที่อยู่จัดส่ง</th>
+                                                                <th width="10%" class="sorting text-center" tabindex="0" aria-controls="table_data">Contact</th>
+                                                                <th width="10%" class="sorting text-center" tabindex="0" aria-controls="table_data">Tel.</th>
+                                                                <th width="10%" class="sorting text-center" tabindex="0" aria-controls="table_data">ทะเบียนรถ</th>
+                                                                <th width="10%" class="sorting text-center" tabindex="0" aria-controls="table_data">พนักงานขับรถ</th>
+                                                                <th width="10%" class="sorting text-center" tabindex="0" aria-controls="table_data">พนักงานขนของ</th>
+                                                                <th width="5%" class="sorting text-center" tabindex="0" aria-controls="table_data">Delivery Date</th>
+                                                                <th width="10%" class="sorting text-center" tabindex="0" aria-controls="table_data">รถออกจากโรงงาน</th>
+                                                                <th width="10%" class="sorting text-center" tabindex="0" aria-controls="table_data">รถกลับโรงงาน</th> -->
+                                                                <th width="5%" class="sorting text-center finish_goods" tabindex="0" aria-controls="table_data">FG Quantity</th>
+                                                                <th width="5%" class="sorting text-center materials" tabindex="0" aria-controls="table_data">Component Quantity</th>
+                                                                <th width="5%" class="sorting text-center" tabindex="0" aria-controls="table_data">DR Quantity</th>
+                                                                <th width="5%" class="sorting text-center" tabindex="0" aria-controls="table_data">DO Quantity</th>
+                                                                <th width="5%" class="sorting text-center" tabindex="0" aria-controls="table_data">ยอด DR ค้างส่ง</th>
+                                                                <th width="5%" class="sorting text-center finish_goods" tabindex="0" aria-controls="table_data">ยอด Job ค้างส่ง</th>
+                                                                <th width="5%" class="sorting text-center materials" tabindex="0" aria-controls="table_data">ยอด Component ค้างส่ง</th>
+                                                                <th width="5%" class="sorting text-center" tabindex="0" aria-controls="table_data">DO ส่งจริง</th>
+                                                                <th width="5%" class="sorting text-center" tabindex="0" aria-controls="table_data">DO Reject</th>
+                                                                <!-- <th width="10%" class="sorting text-center" tabindex="0" aria-controls="table_data">ส่งของพร้อมวางบิล</th>
+                                                                <th width="10%" class="sorting text-center" tabindex="0" aria-controls="table_data">หมายเหตุ</th>
+                                                                <th width="10%" class="sorting text-center" tabindex="0" aria-controls="table_data">เอกสารแนบ</th>
+                                                                <th width="5%" class="sorting text-center" tabindex="0" aria-controls="table_data">Delivery ปิด Job</th> -->
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody></tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <%- include('../../includes/script-bottom'); %>
+        <script src="../projects/delivery/js/do/do_order.js"></script>
+    </div>
+</body>
+</html>

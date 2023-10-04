@@ -1,0 +1,55 @@
+/* sarabun-200 - thai */
+@font-face {
+  font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+  font-family: 'Sarabun';
+  font-style: normal;
+  font-weight: 200;
+  src: url('./fonts/sarabun-v13-thai-200.eot'); /* IE9 Compat Modes */
+  src: url('./fonts/sarabun-v13-thai-200.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+       url('./fonts/sarabun-v13-thai-200.woff2') format('woff2'), /* Super Modern Browsers */
+       url('./fonts/sarabun-v13-thai-200.woff') format('woff'), /* Modern Browsers */
+       url('./fonts/sarabun-v13-thai-200.ttf') format('truetype'), /* Safari, Android, iOS */
+       url('./fonts/sarabun-v13-thai-200.svg#Sarabun') format('svg'); /* Legacy iOS */
+}
+
+/* sarabun-regular - thai */
+@font-face {
+  font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+  font-family: 'Sarabun';
+  font-style: normal;
+  font-weight: 400;
+  src: url('./fonts/sarabun-v13-thai-regular.eot'); /* IE9 Compat Modes */
+  src: url('./fonts/sarabun-v13-thai-regular.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+       url('./fonts/sarabun-v13-thai-regular.woff2') format('woff2'), /* Super Modern Browsers */
+       url('./fonts/sarabun-v13-thai-regular.woff') format('woff'), /* Modern Browsers */
+       url('./fonts/sarabun-v13-thai-regular.ttf') format('truetype'), /* Safari, Android, iOS */
+       url('./fonts/sarabun-v13-thai-regular.svg#Sarabun') format('svg'); /* Legacy iOS */
+}
+
+/* sarabun-500 - thai */
+@font-face {
+  font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+  font-family: 'Sarabun';
+  font-style: normal;
+  font-weight: 500;
+  src: url('./fonts/sarabun-v13-thai-500.eot'); /* IE9 Compat Modes */
+  src: url('./fonts/sarabun-v13-thai-500.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+       url('./fonts/sarabun-v13-thai-500.woff2') format('woff2'), /* Super Modern Browsers */
+       url('./fonts/sarabun-v13-thai-500.woff') format('woff'), /* Modern Browsers */
+       url('./fonts/sarabun-v13-thai-500.ttf') format('truetype'), /* Safari, Android, iOS */
+       url('./fonts/sarabun-v13-thai-500.svg#Sarabun') format('svg'); /* Legacy iOS */
+}
+
+/* sarabun-700 - thai */
+@font-face {
+  font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+  font-family: 'Sarabun';
+  font-style: normal;
+  font-weight: 700;
+  src: url('./fonts/sarabun-v13-thai-700.eot'); /* IE9 Compat Modes */
+  src: url('./fonts/sarabun-v13-thai-700.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+       url('./fonts/sarabun-v13-thai-700.woff2') format('woff2'), /* Super Modern Browsers */
+       url('./fonts/sarabun-v13-thai-700.woff') format('woff'), /* Modern Browsers */
+       url('./fonts/sarabun-v13-thai-700.ttf') format('truetype'), /* Safari, Android, iOS */
+       url('./fonts/sarabun-v13-thai-700.svg#Sarabun') format('svg'); /* Legacy iOS */
+}

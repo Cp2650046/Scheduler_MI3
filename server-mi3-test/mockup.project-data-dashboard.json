@@ -1,0 +1,54 @@
+{
+    "project_id": 1,
+    "project_name": "Dashboard",
+    "project_db": "AUTHEN",
+    "project_link": "/dashboard",
+    "icon": "fa-home",
+    "is_reload": 0,
+    "master": [
+        {
+            "master_id": 1,
+            "master_tb_name": "tb_shift_work",
+            "master_data": [
+                {
+                    "type_work_id": 1,
+                    "type_work_name": "กะกลางวัน"
+                },
+                {
+                    "type_work_id": 2,
+                    "type_work_name": "กะกลางคืน"
+                }
+            ]
+        },
+        {
+            "master_id": 1,
+            "master_tb_name": "tb_contract_type",
+            "master_data": [
+                {
+                    "contract_type_id": 1,
+                    "contract_type_name": "พนักงานรายเดือน"
+                },
+                {
+                    "contract_type_id": 2,
+                    "contract_type_name": "พนักงานรายวัน"
+                }
+            ]
+        }
+    ],
+    "menu": [
+        {
+            "title": "Schedule",
+            "link": "/dashboard/schedule",
+            "icon": "fa-clock"
+        },
+        {
+            "title": "User",
+            "link": [
+                {
+                    "title": "Management",
+                    "link": "/dashboard/management"
+                }
+            ]
+        }
+    ]
+}

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>MI v.3</title>
+    <%- include('../../includes/script-top'); %>
+</head>
+<body class="hold-transition sidebar-mini layout-fixed">
+    <div class="wrapper">
+        <%- include('../../includes/navbar'); %>
+        <div class="content-wrapper">
+            <div class="container-fluid" id="main_board">
+                <div class="content-header">
+                    <div class="col-lg-12" id="action_bar">
+                        <div class="row mb-2">
+                            <div class="col-sm-6">
+                                <ol class="breadcrumb float-sm-left" id="show_navigation_group"></ol>
+                            </div>
+                            <div class="col-sm-6">
+                                <ol class="breadcrumb float-sm-right" id="show_action_group"></ol>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="container-fluid" id="second_board">
+                    <!-- Start page content below -->
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="card card-outline card-purple">
+                                    <div class="card-header">
+                                        <h5 class="card-title text-bold">
+                                            <i class="fas fa-list-alt mr-1"></i>รายการพาเลททั้งหมด (จัดส่ง)
+                                        </h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <div id="table_data_wrapper" class="dataTables_wrapper dt-bootstrap4">
+                                            <div class="row">
+                                                <div class="col-sm-12">
+                                                    <table id="table_data" class="table table-sm text-sm table-bordered table-hover dataTable dtr-inline display" aria-describedby="table_data_info">
+                                                        <thead>
+                                                            <tr>
+                                                                <th width="5%" class="sorting sorting_asc text-center" tabindex="0" aria-controls="table_data" aria-sort="ascending">No.</th>
+                                                                <th width="25%" class="sorting text-center" tabindex="0" aria-controls="table_data">DR No.</th>
+                                                                <th width="25%" class="sorting text-center" tabindex="0" aria-controls="table_data">DO No.</th>
+                                                                <th width="25%" class="sorting text-center" tabindex="0" aria-controls="table_data">Pallet</th>
+                                                                <th width="20%" class="sorting text-center" tabindex="0" aria-controls="table_data">Quantity</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody></tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <%- include('../../includes/script-bottom'); %>
+        <script src="../projects/delivery/js/return/return_pallet.js"></script>
+    </div>
+</body>
+</html>

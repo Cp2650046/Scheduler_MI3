@@ -1,0 +1,1396 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MI v.3</title>
+    <%- include('../../includes/script-top'); %>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+        <link rel="stylesheet" type="text/css" href="./projects/timesheet/css/timesheet.css">
+        <link rel="stylesheet" type="text/css" href="./projects/timesheet/css/timesheet-modal.css">
+        <link rel="stylesheet" type="text/css" href="./projects/timesheet/css/sweet-alert.css">
+        <link rel="stylesheet" type="text/css" href="./projects/timesheet/css/jquery.keypad.css">
+        <link rel="stylesheet" type="text/css" href="./projects/timesheet/css/ok-limit-color.css">
+        <link rel="stylesheet" type="text/css" href="./projects/timesheet/css/sup-check-color.css">
+        <link rel="stylesheet" type="text/css" href="./projects/timesheet/css/ok-sheet.css">
+        <link rel="stylesheet" type="text/css" href="./projects/timesheet/css/pre-pallet.css">
+        <link rel="stylesheet" type="text/css" href="./projects/timesheet/css/paper.css">
+</head>
+
+<body class="dark-mode hold-transition sidebar-mini">
+    <div class="wrapper">
+        <div class="content-wrapper">
+            <div class="container-fluid" id="main_board">
+                <div class="content-header">
+                    <div class="col-lg-12" id="action_bar">
+                        <div class="row mb-2">
+                            <div class="col-sm-6">
+                                <ol class="breadcrumb float-sm-left" id="show_navigation_group"></ol>
+                            </div>
+                            <div class="col-sm-6">
+                                <ol class="breadcrumb float-sm-right" id="show_action_group"></ol>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Start page content below -->
+                    <div class="container-fluid" id="second_board" hidden>
+                        <div class="row d-flex justify-content-center flex-nowrap">
+                            <div class="col-12 col-sm-7 timesheet-left-box">
+                                <div class="timesheet-btn-left" id="group-id-1">
+
+                                </div>
+                                <div class="timesheet-btn-left" id="group-id-2">
+
+                                </div>
+                                <div class="timesheet-btn-left" id="group-id-3">
+
+                                </div>
+                                <div class="timesheet-btn-left" id="group-id-4">
+
+                                </div>
+                                <div class="timesheet-btn-left" id="group-id-5">
+
+                                </div>
+                                <div class="timesheet-btn-left" id="group-id-6">
+
+                                </div>
+                            </div>
+                            <div class="col-12 col-sm-5 timesheet-right-box">
+                                <div class="row" id="need-help" hidden>
+                                    <div class="col-2">
+                                        <div id="help">
+                                            <button class="btn" onclick="help_page()"><i
+                                                    class="bi bi-info-circle-fill"></i>&nbsp;help</button>
+                                        </div>
+                                        <div id="wi">
+                                            <button class="btn" onclick="view_wi()"><i
+                                                    class="bi bi-file-text-fill"></i>&nbsp;WI</button>
+                                        </div>
+                                    </div>
+                                    <div class="col-10">
+                                        <div class="timesheet-title text-center">
+                                            <h2><span id="plan-title"></span><span id="machine-title"></span> </h2>
+                                            <h5><span id="job-title"></span>&nbsp;<span id="remark-title"></span>
+                                                &nbsp;<span id="remark-sig"></span>
+                                            </h5>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="timesheet-title text-center" id="no-need-help">
+                                    <h2><span id="plan-title"></span><span id="machine-title"></span> </h2>
+                                    <h5><span id="job-title"></span>&nbsp;<span id="remark-title"></span>
+                                        &nbsp;<span id="remark-sig"></span>
+                                    </h5>
+                                </div>
+
+
+                                <div class="timesheet-history">
+                                    <div class="text-center history-header"><i
+                                            class="bi bi-clock-history"></i><span>&nbsp;History</span></div>
+                                    <div class="history-body">
+                                        <table class="table table-borderless" id="process-history">
+                                            <tbody></tbody>
+                                        </table>
+                                        <hr>
+                                        <div class="text-center history-footer">
+                                            <h6>Total running = <span class="text-primary"
+                                                    id="sumtotal-qty-running">0</span> pcs.</h6>
+                                            <h6>Total output timesheet all /&nbsp;Total plan = <span
+                                                    class="text-primary"
+                                                    id="sumtotal-qty-timesheet">0</span>&nbsp;/&nbsp;<span
+                                                    class="text-primary" id="sumtotal-qty-plans">0</span> pcs.</h6>
+                                        </div>
+                                    </div>
+                                    <!-- <div class="text-center history-footer">
+                                            <h6>Total running = <span class="text-primary"
+                                                    id="sumtotal-qty-running">0</span> pcs.</h6>
+                                            <h6>Total output timesheet all /&nbsp;Total plan = <span
+                                                    class="text-primary"
+                                                    id="sumtotal-qty-timesheet">0</span>&nbsp;/&nbsp;<span
+                                                    class="text-primary" id="sumtotal-qty-plans">0</span> pcs.</h6>
+                                        </div> -->
+                                </div>
+                                <div class="timesheet-current-process text-center">
+                                    <div id="show-process">
+                                        <h1><span></span></h1>
+                                    </div>
+                                    <div class="text-danger" id="show-timer">0:00</div>
+                                </div>
+                                <div class="timesheet-btn-right text-center">
+                                    <div class="view-checklist-box">
+                                        <div class="button-box"></div>
+                                    </div>
+                                    <div class="ot-request-box">
+                                        <div class="button-box"></div>
+                                        <div class="about-box"></div>
+                                    </div>
+                                    <div class="pallet-box">
+                                        <div class="button-box"></div>
+                                        <div class="about-box"></div>
+                                    </div>
+                                    <div class="other-box">
+                                        <div class="button-box"></div>
+                                    </div>
+                                    <div class="end-timesheet-box">
+                                        <div class="button-box"></div>
+                                    </div>
+                                </div>
+                                <div class="div-btn-back" hidden>
+                                    <button class="btn btn-lg btn-primary btn-block" id="back-to-timesheet">
+                                        <h1>กลับหน้าหลัก</h1>
+                                    </button>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <!-- End page content above -->
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal Insert Qty Running -->
+    <div class="modal fade" id="insert-qty" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog"
+        aria-labelledby="insert-qty-label" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <!-- <div class="modal-header">
+                    <h5 class="modal-title" id="insert-qty-label">Modal title</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div> -->
+                <div class="modal-body text-center">
+                    <h3>Total running</h3>
+                    <input id="total-running" type="text" class="input-total form-control text-center"
+                        oninput="set_input_numeric(this)" placeholder="เลือกเพื่อใส่ยอด">
+                    <h3>Total waste</h3>
+                    <input id="total-waste" type="text" class="input-total form-control text-center"
+                        oninput="set_input_numeric(this)" placeholder="เลือกเพื่อใส่ยอด">
+                    <div id="keypad"></div>
+                </div>
+                <div class="modal-footer d-flex justify-content-center">
+                    <button type="button" class="btn btn-success save-insert-qty">บันทึก</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">ปิด</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Update item timesheet after -->
+    <div class="modal fade" id="force-remark" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog"
+        aria-labelledby="force-remark-label" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <!-- <div class="modal-header">
+            <h5 class="modal-title" id="insert-qty-label">Modal title</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div> -->
+                <div class="modal-body text-center">
+
+                </div>
+                <div class="modal-footer d-flex justify-content-center">
+                    <!-- <button type="button" class="btn btn-success btn-save save-force-remark">บันทึก</button> -->
+                    <!-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Update item timesheet before -->
+    <div class="modal fade" id="force-remark-before" data-backdrop="static" data-keyboard="false" tabindex="-1"
+        role="dialog" aria-labelledby="force-remark-before-label" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <!-- <div class="modal-header">
+            <h5 class="modal-title" id="insert-qty-label">Modal title</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div> -->
+                <div class="modal-body text-center">
+                    force remark
+                </div>
+                <div class="modal-footer d-flex justify-content-center">
+                    <!-- <button type="button" class="btn btn-success btn-save save-force-remark-before">บันทึก</button> -->
+                    <!-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal sup check color before -->
+    <div class="modal fade" id="sup-check-color" data-backdrop="static" data-keyboard="false" tabindex="-1"
+        role="dialog" aria-labelledby="sup-check-color-label" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+            <div class="modal-content">
+                <div class="modal-body text-center">
+                    <div class="checklist-sup-button"><button class="btn btn-danger" id="checklist-sup-repair"
+                            onclick="open_modal_maintenance_sup()">
+                            <h1>!</h1>
+                        </button></div>
+                    <h1> Sup ตรวจสอบสี </h1>
+                    <form id="frm_checklist_sub" method="POST">
+                        <div id="sup-detail">
+                        </div>
+                        <div class="sup-planning-working">
+                        </div>
+                        <div class="sup-make-ready">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer d-flex justify-content-center">
+                    <button type="button" class="btn btn-success btn-save save-sup-check-color"
+                        onclick="save_sup_check_color();">บันทึก</button>
+                    <button type="button" class="btn btn-danger btn-close" data-dismiss="modal">ปิด</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal OK sheet  -->
+    <div class="modal fade" id="ok-sheet" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog"
+        aria-labelledby="ok-sheet-label" aria-hidden="true">
+        <div class="modal-dialog modal-xl" role="document">
+            <div class="modal-content">
+                <!-- <div class="modal-header">
+            <h5 class="modal-title" id="insert-qty-label">Modal title</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div> -->
+                <div class="modal-body text-center">
+                    <h1> OK Sheet </h1>
+                    <table class="table table-borderless table-ok-detail" id="table-ok-detail-1">
+                        <tbody>
+                            <tr>
+                                <td style="width: 10%;" class="align-middle text-right pr-2">Job</td>
+                                <td style="width: 40%;" colspan="6">
+                                    <input type="text" class="form-control disabled-text" id="input-job">
+                                </td>
+                                <td colspan="2" class="align-middle text-right pr-2" style="width: 10%;">Machine</td>
+                                <td colspan="2" class="align-middle text-right pr-2" style="width: 15%;">
+                                    <input type="text" class="form-control disabled-text" id="input-machine">
+                                </td>
+                                <td colspan="2" class="align-middle text-right pr-2" style="width: 10%;">AE Name</td>
+                                <td colspan="2" class="align-middle text-right pr-2" style="width: 15%;">
+                                    <input type="text" class="form-control disabled-text" id="input-ae">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="width: 10%;" class="align-middle text-right pr-2">ชิ้นส่วน</td>
+                                <td style="width: 40%;" colspan="6">
+                                    <select name="part" id="select-part" class="form-control">
+                                    </select>
+                                </td>
+                                <td colspan="2" class="align-middle text-right pr-2" style="width: 10%;">WB : ชนิด</td>
+                                <td colspan="2" class="align-middle text-right pr-2" style="width: 15%;">
+                                    <input type="text" class="form-control disabled-text" id="input-wb-type">
+                                </td>
+                                <td colspan="2" class="align-middle text-right pr-2" style="width: 10%;">ยี่ห้อ : WB
+                                </td>
+                                <td colspan="2" class="align-middle text-right pr-2" style="width: 15%;">
+                                    <input type="text" class="form-control disabled-text" id="input-wb">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="width: 10%;" class="align-middle text-right pr-2">Text</td>
+                                <td style="width: 40%;" colspan="6">
+                                    <input type="text" class="form-control disabled-text" id="input-textname">
+                                </td>
+                                <td colspan="2" class="align-middle text-right pr-2" style="width: 10%;"><span
+                                        class="text-danger">*</span>Ink</td>
+                                <td colspan="2" class="align-middle text-right pr-2" style="width: 15%;">
+                                    <input type="text" class="form-control disabled-text" id="input-ink">
+                                </td>
+                                <td colspan="2" class="align-middle text-right pr-2" style="width: 10%;"><span
+                                        class="text-danger">*</span>ค่าความเงา</td>
+                                <td colspan="2" class="align-middle text-right pr-2" style="width: 15%;">
+                                    <input type="text" class="form-control disabled-text" id="input-shadow">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="width: 10%;" class="align-middle text-right pr-2"><span
+                                        class="text-danger">*</span>เบอร์แป้ง</td>
+                                <td style="width: 15%;" colspan="3">
+                                    <select name="powder" id="select-powder" class="form-control">
+                                        <option value="none" disabled>--เลือกเบอร์แป้ง--</option>
+                                        <option value="20-30 Micron">20-30 Micron</option>
+                                        <option value="30-40 Micron">30-40 Micron</option>
+                                        <option value="none">None</option>
+                                    </select>
+                                </td>
+                                <td style="width: 10%;" class="align-middle text-right pr-2"><span
+                                        class="text-danger">*</span>% การพ่น</td>
+                                <td style="width: 10%;" colspan="2">
+                                    <input type="text" class="form-control disabled-text" id="input-percent-powder">
+                                </td>
+                                <td colspan="2" class="align-middle text-right pr-2" style="width: 10%;"><span
+                                        class="text-danger">*</span>Analog No.</td>
+                                <td colspan="2" class="align-middle text-right pr-2" style="width: 15%;">
+                                    <input type="text" class="form-control disabled-text" id="input-analog">
+                                </td>
+                                <td colspan="2" class="align-middle text-right pr-2"
+                                    style="width: 10%; line-height: 1;"><span
+                                        class="text-danger">*</span>ค่าความหนาของกระดาษ</td>
+                                <td colspan="2" class="align-middle text-right pr-2" style="width: 15%;">
+                                    <input type="text" class="form-control disabled-text" id="input-width-paper">
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table class="table table-borderless table-ok-detail" id="table-ok-detail-2">
+                        <tbody>
+                            <tr>
+                                <td style="width: 10%;" class="align-middle text-right pr-2"><span
+                                        class="text-danger">*</span>STD Density</td>
+                                <td style="width: 20%;" colspan="2" class="pl-1">
+                                    <select name="density" id="select-density" class="form-control"
+                                        onchange="get_density(this)">
+                                        <option value="" disabled>--เลือก Density--</option>
+                                        <option value="Coat">Coat</option>
+                                        <option value="Uncoat">Uncoat</option>
+                                        <option value="UV Ink">UV Ink</option>
+                                    </select>
+                                </td>
+                                <td style="width: 5%;" class="align-middle text-right pr-2">K.</td>
+                                <td style="width: 5%;">
+                                    <input type="text" class="dst form-control disabled-text" id="dst-0" readonly>
+                                </td>
+                                <td style="width: 5%;" class="align-middle text-right pr-2">C.</td>
+                                <td style="width: 5%;">
+                                    <input type="text" class="dst form-control disabled-text" id="dst-1" readonly>
+                                </td>
+                                <td style="width: 5%;" class="align-middle text-right pr-2">M.</td>
+                                <td style="width: 5%;">
+                                    <input type="text" class="dst form-control disabled-text" id="dst-2" readonly>
+                                </td>
+                                <td style="width: 5%;" class="align-middle text-right pr-2">Y.</td>
+                                <td style="width: 5%;">
+                                    <input type="text" class="dst form-control disabled-text" id="dst-3" readonly>
+                                </td>
+                                <td style="width: 5%;" class="align-middle text-right pr-2" id="dst-white">White.</td>
+                                <td style="width: 5%;">
+                                    <input type="text" class="dst form-control disabled-text" id="dst-4" readonly>
+                                </td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="div-ok-detail" id="div-ok-detail-1">
+                        <table class="mt-3 table table-borderless table-ok-detail" id="table-ok-detail-3">
+                            <thead>
+                                <tr>
+                                    <th colspan="2" class="text-right">△E</th>
+                                    <th colspan="9" class="text-left pl-3"><button class="btn btn-success"
+                                            onclick="add_colors()">เพิ่มรายการ</button></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td style="width: 5%;">1.</td>
+                                    <td class="pr-2">สี</td>
+                                    <td><input type="text" class="form-control temp-colors" name="temp-1" value=""></td>
+                                    <td class="pr-2">△E</td>
+                                    <td><input type="text" class="form-control temp-e" name="temp-e-1" value=""></td>
+                                    <td class="pr-2">L</td>
+                                    <td><input type="text" class="form-control temp-L" name="temp-L-1" value=""></td>
+                                    <td class="pr-2">a</td>
+                                    <td><input type="text" class="form-control temp-a" name="temp-a-1" value=""></td>
+                                    <td class="pr-2">b</td>
+                                    <td><input type="text" class="form-control temp-b" name="temp-b-1" value=""></td>
+                                    <td><button class="btn btn-danger" hidden>ลบ</button></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <table class="mt-3 table table-borderless table-ok-detail" id="table-ok-detail-4">
+                        <tbody>
+                            <tr>
+                                <td class="text-right" style="width: 20%;"><span class="text-danger">*</span>Operator
+                                </td>
+                                <td>
+                                    <select class="form-control" name="operator" id="operator" alt="เลือก Opertator">
+
+                                    </select>
+                                </td>
+                                <td class="text-right" style="width: 20%;"><span class="text-danger">*</span>Supervisor
+                                </td>
+                                <td>
+                                    <select class="form-control" name="supervisor" id="supervisor"
+                                        alt="เลือก Supervisor">
+                                        <option value="none" disabled>-เลือกรายชื่อ-</option>
+                                        <!-- <option value="9000065" data-sup-name="ประกอบ โพธิวรรณ">(9000065) ประกอบ โพธิวรรณ</option>
+                                        <option value="2130080" data-sup-name="อนันต์ จำปานวล">(2130080) อนันต์ จำปานวล</option>
+                                        <option value="2130728" data-sup-name="สุทธิดา น้ำขาว">(2130728) สุทธิดา น้ำขาว</option>
+                                        <option value="2133670" data-sup-name="อุทัย บุญเผย">(2133670) อุทัย บุญเผย</option> -->
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text-right" style="width: 20%;">Customer</td>
+                                <td>
+                                    <input type="text" class="form-control" id="customer">
+                                </td>
+                                <td class="text-right" style="width: 20%;"><span class="text-danger">*</span>QA</td>
+                                <td>
+                                    <select class="form-control" name="qa" id="qa" alt="เลือก QA">
+                                        <option value="none" disabled>-เลือกรายชื่อ-</option>
+                                        <option value="2130930" data-qa-name="ภานุวัฒน์ ตีเงิน">(2130930) ภานุวัฒน์
+                                            ตีเงิน</option>
+                                        <option value="9650003" data-qa-name="ชยานิน ตุละวรรณ">(9650003) ชยานิน ตุละวรรณ
+                                        </option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text-right" style="width: 20%;"><span class="text-danger">*</span>Manager
+                                </td>
+                                <td>
+                                    <select class="form-control" name="manager" id="manager" alt="เลือก Manager">
+
+                                    </select>
+                                </td>
+                                <td class="text-right" style="width: 20%;"><span
+                                        class="text-danger">*</span>ค่าความละเอียด</td>
+                                <td>
+                                    <select class="form-control" name="other" id="other" alt="เลือกค่าความละเอียด">
+                                        <option value="none" disabled>-เลือกค่าความละเอียด-</option>
+                                        <option value="120 LPI">120 LPI</option>
+                                        <option value="133 LPI">133 LPI</option>
+                                        <option value="150 LPI">150 LPI</option>
+                                        <option value="175 LPI">175 LPI</option>
+                                        <option value="200 LPI">200 LPI</option>
+                                        <option value="240 LPI">240 LPI</option>
+                                    </select>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="div-ok-detail" id="div-ok-detail-2">
+                        <table class="mt-3 table table-borderless table-ok-detail" id="table-ok-detail-5">
+                            <thead>
+                                <tr>
+                                    <td colspan="2" class="text-center align-middle">Unit Color/Pantone</td>
+                                    <td colspan="1" class="text-center align-middle">Packing ผ้ายาง</td>
+                                    <td colspan="1" class="text-center align-middle">แรงกดโมล</td>
+                                    <td colspan="1" class="text-center align-middle">Density</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+                <div class="modal-footer d-flex justify-content-center">
+                    <button type="button" class="btn btn-success btn-save save-ok-sheet"
+                        onclick="save_ok_sheet()">บันทึก</button>
+                    <button type="button" class="btn btn-danger btn-close" data-dismiss="modal">ปิด</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal OK limit color -->
+    <div class="modal fade" id="ok-limit-color" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog"
+        aria-labelledby="ok-limit-color-label" aria-hidden="true">
+        <div class="modal-dialog modal-xl" role="document">
+            <div class="modal-content">
+                <!-- <div class="modal-header">
+            <h5 class="modal-title" id="insert-qty-label">Modal title</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div> -->
+                <div class="modal-body text-center ok-limit-color-body">
+                    <h1 class="text-center">OK Limit Color</h1>
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="table-responsive-xl">
+                                <table id="left-table">
+                                    <tbody>
+                                        <tr>
+                                            <td class="text-right align-middle pr-4">เครื่องจักร</td>
+                                            <td class=""><input class="form-control hidden" type="text" id="machine">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-right align-middle pr-4">Job ID</td>
+                                            <td class=""><input class="form-control hidden" type="text" id="jobid"></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-right align-middle pr-4">วัน-เดือน-ปี</td>
+                                            <td class=""><input class="form-control hidden" type="text" id="date"></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-right align-middle pr-4">เวลา</td>
+                                            <td class=""><input class="form-control hidden" type="text" id="time"></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-right align-middle pr-4"><span
+                                                    class="text-danger">*</span>ชิ้นส่วน</td>
+                                            <td class="">
+                                                <select class="form-control" name="part" id=""
+                                                    onchange="valid_value(this, this.value)">
+                                                    <option value="" disabled selected>เลือกชิ้นส่วน...</option>
+                                                </select>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-right align-middle pr-4"><span
+                                                    class="text-danger">*</span>ผู้ตรวจสอบ</td>
+                                            <td class="">
+                                                <select class="form-control" name="worker" id=""
+                                                    onchange="valid_value(this, this.value)">
+                                                    <option value="" disabled selected>เลือก Operator...</option>
+                                                </select>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-right align-middle pr-4"><span
+                                                    class="text-danger">*</span>หัวหน้างาน</td>
+                                            <td class="">
+                                                <select class="form-control" name="leader" id=""
+                                                    onchange="valid_value(this, this.value)">
+                                                    <option value="" disabled selected>เลือก Manager...</option>
+                                                </select>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-right align-middle pr-4">หมายเหตุ</td>
+                                            <td class="">
+                                                <input class="form-control" type="text" id="remark">
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="table-responsive-xl">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <td></td>
+                                            <td></td>
+                                            <td class="text-center" colspan="3"><strong>Density</strong></td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td></td>
+                                            <td></td>
+                                            <td class="text-center">Light</td>
+                                            <td class="text-center">Standard</td>
+                                            <td class="text-center">Dark</td>
+                                            <td></td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="text-right align-middle pr-4 col-2">K</td>
+                                            <td class="col-2"><span class="text-center" id="k-lowstd"></span></td>
+                                            <td class="col-2"><input class="form-control text-center" type="text"
+                                                    id="k-light" name="input-density-suggest"
+                                                    oninput="density_suggest(this,'k', 0)"
+                                                    onkeydown="set_dot(this,'k',0)"
+                                                    onfocus="density_light_getdata('k')"></td>
+                                            <td class="col-2"><input class="form-control text-center" type="text"
+                                                    id="k-standard" name="input-density-suggest"
+                                                    oninput="density_suggest(this,'k', 1)"
+                                                    onkeydown="set_dot(this, 'k',1)"></td>
+                                            <td class="col-2"><input class="form-control text-center" type="text"
+                                                    id="k-dark" name="input-density-suggest"
+                                                    oninput="density_suggest(this,'k', 0)"
+                                                    onkeydown="set_dot(this,'k',0)" onfocus="density_dark_getdata('k')">
+                                            </td>
+                                            <td class="col-2"><span class="text-center" id="k-upstd"></span></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-right align-middle pr-4 col-2">C</td>
+                                            <td class="col-2"><span class="text-center" id="c-lowstd"></span></td>
+                                            <td class="col-2"><input class="form-control text-center" type="text"
+                                                    id="c-light" name="input-density-suggest"
+                                                    oninput="density_suggest(this,'c', 0)"
+                                                    onkeydown="set_dot(this,'c',0)"
+                                                    onfocus="density_light_getdata('c')"></td>
+                                            <td class="col-2"><input class="form-control text-center" type="text"
+                                                    id="c-standard" name="input-density-suggest"
+                                                    oninput="density_suggest(this,'c', 1)"
+                                                    onkeydown="set_dot(this,'c',1)"></td>
+                                            <td class="col-2"><input class="form-control text-center" type="text"
+                                                    id="c-dark" name="input-density-suggest"
+                                                    oninput="density_suggest(this,'c', 0)"
+                                                    onkeydown="set_dot(this,'c',0)" onfocus="density_dark_getdata('c')">
+                                            </td>
+                                            <td class="col-2"><span class="text-center" id="c-upstd"></span></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-right align-middle pr-4 col-2">M</td>
+                                            <td class="col-2"><span class="text-center" id="m-lowstd"></span></td>
+                                            <td class="col-2"><input class="form-control text-center" type="text"
+                                                    id="m-light" name="input-density-suggest"
+                                                    oninput="density_suggest(this,'m', 0)"
+                                                    onkeydown="set_dot(this,'m',0)"
+                                                    onfocus="density_light_getdata('m')"></td>
+                                            <td class="col-2"><input class="form-control text-center" type="text"
+                                                    id="m-standard" name="input-density-suggest"
+                                                    oninput="density_suggest(this,'m', 1)"
+                                                    onkeydown="set_dot(this,'m',1)"></td>
+                                            <td class="col-2"><input class="form-control text-center" type="text"
+                                                    id="m-dark" name="input-density-suggest"
+                                                    oninput="density_suggest(this,'m', 0)"
+                                                    onkeydown="set_dot(this,'m',0)" onfocus="density_dark_getdata('m')">
+                                            </td>
+                                            <td class="col-2"><span class="text-center" id="m-upstd"></span></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-right align-middle pr-4 col-2">Y</td>
+                                            <td class="col-2"><span class="text-center" id="y-lowstd"></span></td>
+                                            <td class="col-2"><input class="form-control text-center" type="text"
+                                                    id="y-light" name="input-density-suggest"
+                                                    oninput="density_suggest(this,'y', 0)"
+                                                    onkeydown="set_dot(this,'y',0)"
+                                                    onfocus="density_light_getdata('y')"></td>
+                                            <td class="col-2"><input class="form-control text-center" type="text"
+                                                    id="y-standard" name="input-density-suggest"
+                                                    oninput="density_suggest(this,'y', 1)"
+                                                    onkeydown="set_dot(this,'y',1)"></td>
+                                            <td class="col-2"><input class="form-control text-center" type="text"
+                                                    id="y-dark" name="input-density-suggest"
+                                                    oninput="density_suggest(this,'y', 0)"
+                                                    onkeydown="set_dot(this,'y',0)" onfocus="density_dark_getdata('y')">
+                                            </td>
+                                            <td class="col-2"><span class="text-center" id="y-upstd"></span></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-right align-middle pr-4 col-2">สีพิเศษ</td>
+                                            <td class="col-2"><span class="text-center" id="sp1-lowstd"></span></td>
+                                            <td class="col-2"><input class="form-control text-center" type="text"
+                                                    id="sp1-light" name="input-density-suggest"
+                                                    oninput="density_suggest(this,'sp1', 0)"
+                                                    onkeydown="set_dot(this,'sp1',0)"
+                                                    onfocus="density_light_getdata('sp1')"></td>
+                                            <td class="col-2"><input class="form-control text-center" type="text"
+                                                    id="sp1-standard" name="input-density-suggest"
+                                                    oninput="density_suggest(this,'sp1', 1)"
+                                                    onkeydown="set_dot(this,'sp1', 1)"></td>
+                                            <td class="col-2"><input class="form-control text-center" type="text"
+                                                    id="sp1-dark" name="input-density-suggest"
+                                                    oninput="density_suggest(this,'sp1', 0)"
+                                                    onkeydown="set_dot(this,'sp1', 0)"
+                                                    onfocus="density_dark_getdata('sp1')"></td>
+                                            <td class="col-2"><span class="text-center" id="sp1-upstd"></span></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-right align-middle pr-4 col-2">สีพิเศษ</td>
+                                            <td class="col-2"><span class="text-center" id="sp2-lowstd"></span></td>
+                                            <td class="col-2"><input class="form-control text-center" type="text"
+                                                    id="sp2-light" name="input-density-suggest"
+                                                    oninput="density_suggest(this,'sp2', 0)"
+                                                    onkeydown="set_dot(this,'sp2',0)"
+                                                    onfocus="density_light_getdata('sp2')"></td>
+                                            <td class="col-2"><input class="form-control text-center" type="text"
+                                                    id="sp2-standard" name="input-density-suggest"
+                                                    oninput="density_suggest(this,'sp2', 1)"
+                                                    onkeydown="set_dot(this,'sp2',1)"></td>
+                                            <td class="col-2"><input class="form-control text-center" type="text"
+                                                    id="sp2-dark" name="input-density-suggest"
+                                                    oninput="density_suggest(this,'sp2', 0)"
+                                                    onkeydown="set_dot(this,'sp2',0)"
+                                                    onfocus="density_dark_getdata('sp2')"></td>
+                                            <td class="col-2"><span class="text-center" id="sp2-upstd"></span></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-right align-middle pr-4 col-2">สีพิเศษ</td>
+                                            <td class="col-2"><span class="text-center" id="sp3-lowstd"></span></td>
+                                            <td class="col-2"><input class="form-control text-center" type="text"
+                                                    id="sp3-light" name="input-density-suggest"
+                                                    oninput="density_suggest(this,'sp3', 0)"
+                                                    onkeydown="set_dot(this,'sp3',0)"
+                                                    onfocus="density_light_getdata('sp3')"></td>
+                                            <td class="col-2"><input class="form-control text-center" type="text"
+                                                    id="sp3-standard" name="input-density-suggest"
+                                                    oninput="density_suggest(this,'sp3', 1)"
+                                                    onkeydown="set_dot(this,'sp3',1)"></td>
+                                            <td class="col-2"><input class="form-control text-center" type="text"
+                                                    id="sp3-dark" name="input-density-suggest"
+                                                    oninput="density_suggest(this,'sp3', 0)"
+                                                    onkeydown="set_dot(this,'sp3',0)"
+                                                    onfocus="density_dark_getdata('sp3')"></td>
+                                            <td class="col-2"><span class="text-center" id="sp3-upstd"></span></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-right align-middle pr-4 col-2">สีพิเศษ</td>
+                                            <td class="col-2"><span class="text-center" id="sp4-lowstd"></span></td>
+                                            <td class="col-2"><input class="form-control text-center" type="text"
+                                                    id="sp4-light" name="input-density-suggest"
+                                                    oninput="density_suggest(this,'sp4', 0)"
+                                                    onkeydown="set_dot(this,'sp4',0)"
+                                                    onfocus="density_light_getdata('sp4')"></td>
+                                            <td class="col-2"><input class="form-control text-center" type="text"
+                                                    id="sp4-standard" name="input-density-suggest"
+                                                    oninput="density_suggest(this,'sp4', 1)"
+                                                    onkeydown="set_dot(this,'sp4',1)"></td>
+                                            <td class="col-2"><input class="form-control text-center" type="text"
+                                                    id="sp4-dark" name="input-density-suggest"
+                                                    oninput="density_suggest(this,'sp4', 0)"
+                                                    onkeydown="set_dot(this,'sp4',0)"
+                                                    onfocus="density_dark_getdata('sp4')"></td>
+                                            <td class="col-2"><span class="text-center" id="sp4-upstd"></span></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer d-flex justify-content-center">
+                    <button type="button" class="btn btn-success btn-save save-ok-limit-color"
+                        onclick="save_ok_limit_color()">บันทึก</button>
+                    <button type="button" class="btn btn-danger btn-close" data-dismiss="modal">ปิด</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal insert request ot type 1 & 2 -->
+    <div class="modal fade" tabindex="-1" data-backdrop="static" role="dialog" id="modal-request-ot">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-body text-center">
+                    <datalist id="list-worker" open="open">
+                    </datalist>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success">บันทึก OT</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">ปิด</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal insert ink usage when you click end_timesheet -->
+    <div class="modal fade" tabindex="-1" data-backdrop="static" id="modal_ink_usage" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div id="ink-sig1" class="ink-container" data-header-planning="">
+                        <div class="ink-container-top">
+                            <span></span>
+                            <button id="btn-add-special-ink1" class="btn-add-special-ink btn btn-success"
+                                onclick="add_sp_ink(this, 'ink-sig1')">เพิ่มสีพิเศษ</button>
+                        </div>
+                        <div class="ink-container-button d-flex justify-content-center">
+                            <input type="checkbox" id="ink-usage-c1" value="C" class="ink-usage" hidden />
+                            <label class="ink-usage" for="ink-usage-c1" onclick="toggle_ink_special(this)">C</label>
+                            <input type="checkbox" id="ink-usage-m1" value="M" class="ink-usage" hidden />
+                            <label class="ink-usage" for="ink-usage-m1" onclick="toggle_ink_special(this)">M</label>
+                            <input type="checkbox" id="ink-usage-y1" value="Y" class="ink-usage" hidden />
+                            <label class="ink-usage" for="ink-usage-y1" onclick="toggle_ink_special(this)">Y</label>
+                            <input type="checkbox" id="ink-usage-k1" value="K" class="ink-usage" hidden />
+                            <label class="ink-usage" for="ink-usage-k1" onclick="toggle_ink_special(this)">K</label>
+                        </div>
+                    </div>
+                    <div id="ink-sig2" class="ink-container" data-header-planning="" hidden>
+                        <hr>
+                        <div class="ink-container-top">
+                            <span></span>
+                            <button id="btn-add-special-ink2" class="btn-add-special-ink btn btn-success"
+                                onclick="add_sp_ink(this, 'ink-sig2')">เพิ่มสีพิเศษ</button>
+                        </div>
+                        <div class="ink-container-button d-flex justify-content-center">
+                            <input type="checkbox" id="ink-usage-c2" value="C" class="ink-usage" hidden />
+                            <label class="ink-usage" for="ink-usage-c2" onclick="toggle_ink_special(this)">C</label>
+                            <input type="checkbox" id="ink-usage-m2" value="M" class="ink-usage" hidden />
+                            <label class="ink-usage" for="ink-usage-m2" onclick="toggle_ink_special(this)">M</label>
+                            <input type="checkbox" id="ink-usage-y2" value="Y" class="ink-usage" hidden />
+                            <label class="ink-usage" for="ink-usage-y2" onclick="toggle_ink_special(this)">Y</label>
+                            <input type="checkbox" id="ink-usage-k2" value="K" class="ink-usage" hidden />
+                            <label class="ink-usage" for="ink-usage-k2" onclick="toggle_ink_special(this)">K</label>
+                        </div>
+                    </div>
+                    <div id="coating" class="coating-container">
+                        <hr>
+                        <div class="coating-top">
+                            <span>Coating</span>
+                        </div>
+                        <div class="coating-button d-flex justify-content-center">
+                            <input type="checkbox" id="Waterbase" value="Waterbase" class="coating-usage" hidden />
+                            <label class="coating-usage" for="Waterbase"
+                                onclick="toggle_coating(this)">Waterbase</label>
+                            <input type="checkbox" id="Varnish" value="Varnish" class="coating-usage" hidden />
+                            <label class="coating-usage" for="Varnish" onclick="toggle_coating(this)">Varnish</label>
+                            <input type="checkbox" id="UV" value="UV" class="coating-usage" hidden />
+                            <label class="coating-usage" for="UV" onclick="toggle_coating(this)">UV</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success" onclick="save_ink_usage()">บันทึก</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">ยกเลิก</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal pre pallet -->
+    <div class="modal fade" tabindex="-1" data-backdrop="static" role="dialog" id="modal-pre-pallet">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">สร้างใบติดพาเลท</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body text-center">
+                    <!-- <datalist id="list-pallet-worker" open="open"> -->
+                    <!-- </datalist> -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success" onclick="save_pallet()">บันทึก Pallet</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">ปิด</button>
+                </div>
+                <datalist id="list-type_pallet" open="open">
+                    <option value="พาเลทตัวอย่าง"></option>
+                    <option value="พาเลท NSC"></option>
+                    <option value="Limit สีลูกค้า"></option>
+                    <option value="พาเลททั่วไป"></option>
+                </datalist>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal pre pallet View -->
+    <div class="modal fade" tabindex="-1" data-backdrop="static" role="dialog" id="modal-pre-pallet-view">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">ประวัติการสร้างใบพาเลท</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body text-center">
+                    <table id="list_pallet">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>รหัส pallet</th>
+                                <th>รหัส pre pallet</th>
+                                <th>Job</th>
+                                <th>ชิ้นส่วน</th>
+                                <th>ยก</th>
+                                <th>จำนวน</th>
+                                <th>สะสม</th>
+                                <th>ลำดับพาเลท</th>
+                                <th>อื่นๆ</th>
+                                <th>เวลาสร้าง</th>
+                                <th>สถานะ</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <!-- <button type="button" class="btn btn-success" onclick="update_pallet();">บันทึก Pallet</button> -->
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">ปิด</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal UpLoad Image -->
+    <div class="modal fade" tabindex="-1" data-backdrop="static" role="dialog" id="modal-upload-img">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <!-- <div class="modal-header">
+                    <h5 class="modal-title">Upload รูปภาพ</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div> -->
+                <div class="modal-body text-center">
+                    <!-- from Upload -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success" onclick="saveImage();">บันทึก</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal" onclick="clearImg();">ปิด</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Count Paper In Pallet -->
+    <div class="modal fade" tabindex="-1" role="dialog" id="modal-cal-paper">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">หาจำนวนกระดาษในพาเลท</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body text-center">
+                    <ul>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text lable_start">จำนวนกระดาษ</span>
+                            </div>
+                            <input type="text" class="form-control number cal" id="ex_qty" placeholder="0">
+                            <div class="input-group-append">
+                                <span class="input-group-text lable_end">แผ่น</span>
+                            </div>
+                        </div>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text lable_start" id="text_height">ความสูงกระดาษ 100
+                                    แผ่น</span>
+                            </div>
+                            <input type="text" class="form-control number cal" id="ex_height" placeholder="0">
+                            <div class="input-group-append">
+                                <span class="input-group-text lable_end">mm.</span>
+                            </div>
+                        </div>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text lable_start">ความสูงพาเลท</span>
+                            </div>
+                            <input type="text" class="form-control number cal" id="height" placeholder="0">
+                            <div class="input-group-append">
+                                <span class="input-group-text lable_end">mm.</span>
+                            </div>
+                        </div>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text lable_start">จำนวนแผ่น</span>
+                            </div>
+                            <input type="text" class="form-control number" id="qty_pallet" placeholder="0" readonly>
+                            <div class="input-group-append">
+                                <span class="input-group-text lable_end">แผ่น</span>
+                            </div>
+                        </div>
+                    </ul>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success" id="save_cal_paper">ยืนยัน</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal"
+                        id="cancel_cal_paper">ยกเลิก</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Maintenance -->
+    <div class="modal fade" id="maintenance" data-backdrop="static" tabindex="-1" role="dialog"
+        aria-labelledby="maintenance-label" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-body text-center">
+                    <!-- body -->
+                    <ul class="nav nav-tabs">
+                        <li class="nav-item" id="nav-edit">
+                            <a class="nav-link" href="#edit" data-toggle="tab">แก้ไขเอง</a>
+                        </li>
+                        <li class="nav-item" id="nav-repair">
+                            <a class="nav-link active" href="#repair" data-toggle="tab">แจ้งซ่อม</a>
+                        </li>
+                        <li class="nav-item" id="nav-repair-again">
+                            <a class="nav-link" href="#repair-again" data-toggle="tab">แจ้งซ่อมซ้ำ</a>
+                        </li>
+                    </ul>
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="repair">
+                            <div class="row">
+                                <div class="col-6">
+                                    <table class="table table-borderless table-repair table-left">
+                                        <tbody>
+                                            <tr>
+                                                <td scope="row" class="col-5 text-right"><span>แจ้งซ่อมเครื่อง:</span>
+                                                </td>
+                                                <td class="col-7 text-left"><input class="form-control machine-name"
+                                                        type="text">
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td scope="row" class="col-5 text-right">
+                                                    <span><strong
+                                                            class="text-danger">*</strong>ที่ตั้งเครื่องจักร:</span>
+                                                </td>
+                                                <td class="col-7 text-left"><input class="form-control location-machine"
+                                                        type="text" onchange="check_edit_value(this, this.value)">
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td scope="row" class="col-5 text-right"><span>วันที่ต้องการ:</span>
+                                                </td>
+                                                <td class="col-7 text-left">
+                                                    <input type="text" class="form-control date-text">
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td scope="row" class="col-5 text-right"><span><strong
+                                                            class="text-danger">*</strong>แจ้งโดย:</span></td>
+                                                <td class="col-7 text-left">
+                                                    <select class="form-control" name="worker" id=""
+                                                        onchange="check_edit_value(this, this.value)">
+                                                        <option value="none" disabled><--เลือก--></option>
+                                                    </select>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td scope="row" class="col-5 text-right"><span><strong
+                                                            class="text-danger">*</strong>เบอร์ติดต่อ:</span></td>
+                                                <td class="col-7 text-left"><input class="call-number form-control"
+                                                        type="text" onchange="check_edit_value(this, this.value)">
+                                                </td>
+                                            </tr>
+                                            <tr hidden>
+                                                <td scope="row" class="col-6 text-right">
+                                                    <span><strong
+                                                            class="text-danger">*</strong>หัวข้อที่พบสิ่งผิดปกติ:</span>
+                                                </td>
+                                                <td class="col-6 text-left">
+                                                    <select class="form-control" name="checklist" id=""
+                                                        onchange="check_edit_value(this, this.value)">
+                                                        <option value="none" disabled><--เลือก--></option>
+                                                    </select>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="col-6">
+                                    <table class="table table-borderless table-repair table-right">
+                                        <tbody>
+                                            <tr>
+                                                <td scope="row" class="col-5 text-right"><span><strong
+                                                            class="text-danger">*</strong>สถานะเครื่อง:</span></td>
+                                                <td class="col-7 text-center">
+                                                    <div class="div-repair">
+                                                        <input name="status-id" type="radio" id="status-0" value="0"
+                                                            class="repair-setting-btn" />
+                                                        <label class="repair-setting-btn" for="status-0"
+                                                            name="status-id"
+                                                            onclick="set_active(this)">เสียยังวิ่งงานได้</label>
+                                                        <input name="status-id" type="radio" id="status-1" value="1"
+                                                            class="repair-setting-btn" />
+                                                        <label class="repair-setting-btn" for="status-1"
+                                                            name="status-id"
+                                                            onclick="set_active(this)">เสียวิ่งงานไม่ได้</label>
+                                                        <span><strong class="text-danger"
+                                                                style="font-size: 10pt;">**กรุณาระบุสถานะเครื่อง**</strong></span>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td scope="row" class="col-5 text-right"><span><strong
+                                                            class="text-danger">*</strong>Process:</span></td>
+                                                <td class="col-7 text-left">
+                                                    <select class="form-control" name="process_status_machine" id=""
+                                                        onchange="check_edit_value(this, this.value)">
+                                                        <option value="none" disabled><--เลือก--></option>
+                                                        <option value="1">เครื่องวิ่งงานอยู่</option>
+                                                        <option value="2">เครื่องไม่มีงาน</option>
+                                                        <option value="3">เครื่องรอ pm</option>
+                                                        <option value="4">สั่งซื้อ/ส่งซ่อม</option>
+                                                    </select>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td scope="row" class="col-5 text-right"><span><strong
+                                                            class="text-danger">*</strong>ประเภทปัญหา:</span></td>
+                                                <td class="col-7 text-left">
+                                                    <select class="form-control" name="problem" id=""
+                                                        onchange="check_edit_value(this, this.value)">
+                                                        <option value="none" disabled><--เลือก--></option>
+                                                    </select>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td scope="row" class="col-5 text-right"><span><strong
+                                                            class="text-danger">*</strong>อาการเครื่อง:</span></td>
+                                                <td class="col-7 text-left"><textarea class="form-control"
+                                                        id="repair_textarea" rows="3"
+                                                        onchange="check_edit_value(this, this.value)"></textarea></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <button type="button" class="btn btn-success btn-save save-maintenance"
+                                onclick="check_maintenance_input(1)">บันทึก</button>
+                            <button type="button" class="btn btn-danger btn-close close-maintenance"
+                                data-dismiss="modal">ยกเลิก</button>
+                        </div>
+                        <div class="tab-pane" id="edit">
+                            <div class="row d-flex justify-content-center">
+                                <table class="table table-borderless table-edit" id="table-edit">
+                                    <tbody>
+                                        <tr>
+                                            <td class="text-right col-4">เครื่อง: </td>
+                                            <td class="text-left"><input class="form-control machine-name" type="text">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-right col-4">หัวข้อที่พบสิ่งผิดปกติ</td>
+                                            <td class="text-left">
+                                                <select class="form-control" name="checklist" id="">
+                                                    <option value="none" disabled><--เลือก--></option>
+                                                </select>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-right col-4">สาเหตุ</td>
+                                            <td class="text-left"><input class="form-control remark" type="text"></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-right col-4">วิธีแก้ไข</td>
+                                            <td class="text-left">
+                                                <textarea class="form-control" id="solution" rows="3"></textarea>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-right col-4">แก้ไขโดย</td>
+                                            <td class="text-left">
+                                                <select class="form-control" name="worker" id="">
+                                                    <option value="none" disabled><--เลือก--></option>
+                                                </select>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <button type="button" class="btn btn-success btn-save save-maintenance"
+                                onclick="check_maintenance_input(2)">บันทึก</button>
+                            <button type="button" class="btn btn-danger btn-close close-maintenance"
+                                data-dismiss="modal">ยกเลิก</button>
+                        </div>
+                        <div class="tab-pane" id="repair-again">
+                            <div class="text-center">
+                                <h5 id="title-machine">รายการแจ้งซ่อม</h5>
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th class="ma_id">เลขใบแจ้งซ่อม</th>
+                                            <th class="ma_remark">รายละเอียด</th>
+                                            <th class="ma_emp_id">แจ้งซ่อม</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+
+                                    </tbody>
+                                </table>
+                            </div>
+                            <button type="button" class="btn btn-success btn-save save-maintenance"
+                                onclick="check_maintenance_input(3)">แจ้งซ่อมซ้ำ</button>
+                            <button type="button" class="btn btn-danger btn-close close-maintenance"
+                                data-dismiss="modal">ยกเลิก</button>
+                        </div>
+                    </div>
+                </div>
+                <!-- end body -->
+                <div class="modal-footer d-flex justify-content-center">
+                    <!-- <button type="button" class="btn btn-success btn-save save-maintenance">บันทึก</button> -->
+                    <!-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Checklist outsource -->
+    <div class="modal fade" id="checklist-outsource" data-backdrop="static" data-keyboard="false" tabindex="-1"
+        role="dialog" aria-labelledby="checklist-outsource-label" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+            <div class="modal-content">
+                <div class="modal-body text-center">
+                    <input type="hidden" id="checklist_doc_id" value="">
+                    <h3>Checklist ตรวจสอบคุณภาพก่อนส่งผลิตจัดจ้างนอกบริษัท</h3>
+                    <div class="mb-2 checklist-div-box-1">
+                        <div class="row">
+                            <div class="col-2 text-right">เลขที่เอกสาร : </div>
+                            <div class="col-2 d-flex align-items-center justify-content-end">
+                                <input id="outsource_cqp_code" type="text" class="form-control disabled">
+                                <input id="outsource_cqp_proc" type="hidden" class="form-control" value="add">
+                            </div>
+                            <div class="col-8"></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-2 text-right">Job number : </div>
+                            <div class="col-2 d-flex align-items-center justify-content-end">
+                                <input id="outsource_jobid" type="text" class="form-control disabled">
+                            </div>
+                            <div class="col-4 d-flex align-items-center justify-content-end">
+                                <input id="outsource_job_name" type="text" class="form-control disabled">
+                            </div>
+                            <div class="col-2 text-right">วันที่ : </div>
+                            <div class="col-2 d-flex align-items-center justify-content-end">
+                                <input id="outsource_date" type="text" class="form-control disabled">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-2 text-right">วัตถุดิบ : </div>
+                            <div class="col-2 d-flex align-items-center justify-content-end">
+                                <input id="outsource_material_id" type="text" class="form-control disabled">
+                            </div>
+                            <div class="col-4 d-flex align-items-center justify-content-end">
+                                <input id="outsource_material_name" type="text" class="form-control disabled">
+                            </div>
+                            <div class="col-2 text-right">หน่วยนับ : </div>
+                            <div class="col-2 d-flex align-items-center justify-content-end">
+                                <input id="outsource_unit_name" type="text" class="form-control disabled">
+                                <input id="outsource_unit_id" type="hidden" class="form-control">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-2 text-right">Quantity<span class="text-danger">*</span> : </div>
+                            <div class="col-6 d-flex align-items-center justify-content-end">
+                                <input id="outsource_total_qty_pallet" type="text" class="form-control disabled">
+                            </div>
+                            <div class="col-2 text-right">Hight(Pallet)<span class="text-danger">*</span> : </div>
+                            <div class="col-2 d-flex align-items-center justify-content-end">
+                                <input id="outsource_trim_height" type="text" class="form-control disabled">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-2 text-right">Outsource(Name)<span class="text-danger">*</span> : </div>
+                            <div class="col-6 d-flex align-items-center justify-content-end">
+                                <input id="outsource_name" type="text" class="form-control">
+                            </div>
+                            <div class="col-2 text-right">Quantity(Pallet)<span class="text-danger">*</span> : </div>
+                            <div class="col-2 d-flex align-items-center justify-content-end">
+                                <input id="outsource_count_pallet" type="text" class="form-control disabled">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-2 text-right">รายการจัดจ้าง(Name)<span class="text-danger">*</span> : </div>
+                            <div class="col-2 d-flex justify-content-end">
+                                <input type="radio" id="coat_hologram" value="1" name="coat_option">
+                                <label for="coat_hologram">เคลือบ Hologram</label>
+                            </div>
+                            <div class="col-2 d-flex justify-content-end">
+                                <input type="radio" id="coat_laminate" value="2" name="coat_option">
+                                <label for="coat_laminate">เคลือบ Laminate</label>
+                            </div>
+                            <div class="col-2 d-flex justify-content-end">
+                                <input type="radio" id="coat_foil" value="3" name="coat_option">
+                                <label for="coat_foil">เคลือบฟอยด์</label>
+                            </div>
+                            <div class="col-1 d-flex justify-content-end">
+                                <input type="radio" id="coat_other" value="4" name="coat_option">
+                                <label for="coat_other">อื่นๆ</label>
+                            </div>
+                            <div class="col-3 d-flex justify-content-end">
+                                <input type="text" id="coat_other_text" class="form-control disabled">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-2 checklist-div-box-2"></div>
+                    <div class="mb-2 checklist-div-box-3">
+                        <div class="row">
+                            <div class="col-2 text-right">
+                                หมายเหตุ :
+                            </div>
+                            <div class="col-10 d-flex align-items-center justify-content-end">
+                                <textarea class="form-control" id="outsource_remark" rows="4"></textarea>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-8"></div>
+                            <div class="col-1 text-right">
+                                ผู้ประเมิน :
+                            </div>
+                            <div class="col-3 d-flex align-items-center justify-content-end">
+                                <select class="form-control" name="worker" id="outsource_inspector">
+                                    <option value="" disabled selected>เลือก ผู้ประเมิน...</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer d-flex justify-content-center">
+                    <button type="button" class="btn btn-success btn-save save-checklist-outsource"
+                        onclick="save_checklist_outsource();">บันทึก</button>
+                    <button type="button" class="btn btn-danger btn-close" data-dismiss="modal">ยกเลิก</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Checklist Post-Work -->
+    <div class="modal fade" id="checklist-qc" data-backdrop="static" tabindex="-1" role="dialog"
+        aria-labelledby="checklist-qc-label" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl" role="document">
+            <div class="modal-content">
+                <div class="modal-body text-center">
+                    <h3></h3>
+                    <div class="modal-body text-center">
+                        <div class="mb-2 checklist-div-box-1">
+                            <input type="hidden" name="" id="checklist-id">
+                            <input type="hidden" name="" id="qc-code">
+                            <div class="mb-2 pre-work">
+                                <div class="row row-pre-work">
+                                    <div class="col-4 d-flex align-items-center justify-content-end">
+                                        จำนวนกระดาษที่รับ</div>
+                                    <div class="col-4">
+                                        <input type="text" class="form-control disabled" id="qty-paper">
+                                    </div>
+                                    <div class="col-4 text-left d-flex align-items-center">แผ่น</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-2 checklist-div-box-2">
+                        </div>
+                        <div class="mb-2 checklist-div-box-3">
+                            <div class="row">
+                                <div class="col-8"></div>
+                                <div class="col-1 d-flex align-items-center justify-content-end">
+                                    ผู้บันทึก :
+                                </div>
+                                <div class="col-3 d-flex align-items-center justify-content-end">
+                                    <select class="form-control" name="worker" id="qc_inspector">
+                                        <option value="" disabled selected>-- เลือกรายชื่อ --</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <!-- <div class="row mt-2">
+                                <div class="col-8"></div>
+                                <div class="col-1 d-flex align-items-center justify-content-end">
+                                    ตำแหน่ง :
+                                </div>
+                                <div class="col-3 d-flex align-items-center justify-content-end">
+                                    <input type="text" class="form-control disabled">
+                                </div>
+                            </div> -->
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer d-flex justify-content-center">
+                    <button type="button" class="btn btn-success btn-save save-checklist"
+                        onclick="save_checklist_qc();">บันทึก</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <%- include('../../includes/script-bottom'); %>
+        <!-- <script src="./projects/timesheet/js/leader.js"></script> -->
+        <script src="./projects/timesheet/jquery/jquery.keypad.js"></script>
+        <script src="./projects/timesheet/js/base-64-file.js"></script>
+        <script src="./projects/timesheet/js/timesheet-manager.js"></script>
+        <script src="./projects/timesheet/js/timesheet-alert.js"></script>
+        <script src="./projects/timesheet/js/timesheet.js"></script>
+        <script src="./projects/timesheet/js/timesheet-pdf.js"></script>
+        <script src="./projects/timesheet/js/pallet-manager.js"></script>
+        <script src="./projects/timesheet/js/paper.js"></script>
+        </div>
+
+</body>
+
+</html>

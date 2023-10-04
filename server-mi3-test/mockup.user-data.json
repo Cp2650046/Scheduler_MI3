@@ -1,0 +1,37 @@
+{
+    "user_id": 10007,
+    "user_name": "อารียา พิกุลทอง",
+    "user_account": "2563006",
+    "emp_id": "2563006",
+    "badge": 16,
+    "notifications": [
+        {
+            "message": "5 new messages",
+            "time": "3 mins"
+        },
+        {
+            "message": "8 friend requests",
+            "time": "12 hours"
+        },
+        {
+            "message": "3 new reports",
+            "time": "2 days"
+        }
+    ],
+    "project": [
+        {
+            "project_id": 1,
+            "project_name": "Dashboard",
+            "project_db": "AUTHEN",
+            "project_link": "/dashboard",
+            "icon": "home"
+        },
+        {
+            "project_id": 2,
+            "project_name": "Delivery",
+            "project_db": "DR_DO",
+            "project_link": "/delivery",
+            "icon": "truck"
+        }
+    ]
+}
