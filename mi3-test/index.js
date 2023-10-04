@@ -29,8 +29,12 @@ app.use('/masterplans',masterplans);
 app.get('/', (req, res)=>{
     res.render('./index')
 })
-app.get('/login', (req, res)=>{
-    res.render('./login')
+// app.get('/login', (req, res)=>{
+//     res.render('./login')
+// })
+
+app.get('/masterplans', (req, res)=>{
+    res.render('./masterplans')
 })
 
 app.listen(PORT,()=>{

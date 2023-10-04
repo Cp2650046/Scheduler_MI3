@@ -8,10 +8,7 @@ div.card_masterplan:not(.card-outline)>.card-header {
     background-color: dimgray;
     color: #ffe407;
 }
-#fixtb{
-	overflow: auto;
-	position: relative;
-}
+
 #tb_fix{
 	font-family: Verdana;
 	text-align:center;
@@ -28,9 +25,10 @@ div.card_masterplan:not(.card-outline)>.card-header {
 /* CSS for Master plan */
 #fixtb{
 	overflow: auto;
-	position: relative;
-	/*position:static;*/
+	/* position: relative; */
+	height: 100%;
 	top: 140px;
+	white-space: nowrap; 
 }
 
 td.night{
@@ -182,3 +180,9 @@ td.month2:hover {
 #colorInfo span{
 	border:0.5px solid #000;
 }
+
+/* div.div_table_plan {
+	height: 100%;
+	 overflow: auto;
+	/*white-space: nowrap; 
+} */

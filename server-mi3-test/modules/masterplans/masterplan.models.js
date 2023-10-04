@@ -10,7 +10,7 @@ const getDataModel = async (req, transaction) => {
 
     } else if (req.type_id === "cutting") {
         wh_type_id = `m.type_id IN('52') AND m.status_id != '0'`;
-    }else {
+    } else {
         wh_type_id = `type_id IN('21','9','7') AND status_id != '0'`;
     }
     const sqlDataMachine = `SELECT
@@ -25,36 +25,35 @@ const getDataModel = async (req, transaction) => {
                                 isnull(m.graph_sequence, 0) `;
     let machineList = (await connection.query(sqlDataMachine))[0];
     let holidayList = await getDataHoliday();
-    let planList = await  getDataPlan(req);
+    let dataplanList = await getDataPlan(req.type_id, req.search_date1, req.search_date2);
     return {
         machineList,
         holidayList,
-        planList
+        dataplanList
     }
 }
 const getDataHoliday = async () => {
-    const sqlDataHoliday= `SELECT
+    const sqlDataHoliday = `SELECT
                                 holiday
                             FROM
                                 mi.dbo.holiday `;
     let holidayList = (await connection.query(sqlDataHoliday))[0];
     return holidayList;
 }
-const getDataPlan = async (req) => {
-    const {type_id,search_date1,search_date2} = req;
+const getDataPlan = async (type_id, search_date1, search_date2) => {
     var str_wh = "";
     if (type_id == 'afterpress1') {
-        str_wh = `m.type_id IN('12','22','26','16','18','25','23', '41','42','43','44','45','46','47','51') AND m.status_id != '0'`;
+        str_wh = `AND ( ma.type_id IN ('12','22','26','16','18','25','23','41','42','43','44','45','46','47','51')) AND m.machine_id != '' `;
     }
     else if (type_id === 'afterpress2') {
-        str_wh = `(m.type_id IN('1','6','5','10','11','14','19','20','53','54') AND m.status_id != '0') OR (m.type_id IN('14') AND m.status_id = '1') OR (m.type_id IN('5') AND m.status_id != '0' AND (m.connectedTo is null OR m.connectedTo =1))`;
+        str_wh = `AND (ma.type_id IN ('1','6','5','10','11','14','19','20','53','54') OR (ma.type_id='14' and ma.status_id='1')  )  AND m.machine_id!='' `;
 
     } else if (type_id === "cutting") {
-        str_wh = `m.type_id IN('52') AND m.status_id != '0'`;
-    }else {
-        str_wh = `type_id IN('21','9','7') AND status_id != '0'`;
+        str_wh = ` AND ma.type_id IN('52') AND m.machine_id!='' `;
+    } else {
+        str_wh = `AND ma.type_id IN('21','9','7')  AND m.machine_id!=''`;
     }
-    const sqlDataHoliday= `;with mp as(
+    const sqlDataPlan = `;with mp as(
                                 SELECT
                                 m.quantity,
                                 m.priority,
@@ -75,13 +74,13 @@ const getDataPlan = async (req) => {
                                 g.jobid as mi_jobid,
                                 g.emp_id
                             FROM
-                                machine_planning m
-                            LEFT JOIN machine ma ON m.machine_id = ma.machine_id
-                            LEFT JOIN mi_item d ON m.jobid = d.jobid AND m.itid = d.itid
-                            LEFT OUTER JOIN mi g ON m.jobid = g.jobid
+                                mi.dbo.machine_planning m
+                            LEFT JOIN mi.dbo.machine ma ON m.machine_id = ma.machine_id
+                            LEFT JOIN mi.dbo.mi_item d ON m.jobid = d.jobid AND m.itid = d.itid
+                            LEFT OUTER JOIN mi.dbo.mi g ON m.jobid = g.jobid
                             WHERE
                                 1 = 1
-                           ${wh}
+                           ${str_wh}
                             AND m.plan_date BETWEEN '${search_date1}' AND '${search_date2}'
                             GROUP BY
                                 m.quantity,
@@ -125,9 +124,9 @@ const getDataPlan = async (req) => {
                                 MIN (a.mi_jobid) mi_jobid
                             FROM
                                 mp a
-                            LEFT OUTER JOIN timesheet_header c ON a.id = c.plan_id AND c.machine_id NOT LIKE 'P%'
-                            LEFT OUTER JOIN timesheet_item e ON c.header_id = e.header_id
-                            LEFT OUTER JOIN employee f ON a.emp_id = f.emp_id
+                            LEFT OUTER JOIN mi.dbo.timesheet_header c ON a.id = c.plan_id AND c.machine_id NOT LIKE 'P%'
+                            LEFT OUTER JOIN mi.dbo.timesheet_item e ON c.header_id = e.header_id
+                            LEFT OUTER JOIN mi.dbo.employee f ON a.emp_id = f.emp_id
 
                             GROUP BY
                                 a.id,
@@ -151,8 +150,26 @@ const getDataPlan = async (req) => {
                             ORDER BY
                                 a.shift_id,
                                 a.priority ASC `;
-    let holidayList = (await connection.query(sqlDataHoliday))[0];
-    return holidayList;
+    let plansList = (await connection.query(sqlDataPlan))[0];
+    let hrList = await getHr(str_wh, search_date1, search_date2);
+    return {
+        plansList
+        , hrList
+    }
+}
+
+const getHr = async (str_wh, search_date1, search_date2) => {
+    const sql_hr = `SELECT sum(convert (int,hr1)) as hr1,
+                    (sum(hr1 -convert (int,hr1)))*100 as hr2,
+                    m.machine_id as machine,
+                    plan_date as date,
+                    machine_name as machine_n
+                    FROM mi.dbo.machine_planning AS m
+                    JOIN mi.dbo.machine AS ma ON m.machine_id=ma.machine_id
+                    WHERE 1=1 ${str_wh}AND m.plan_date between '${search_date1}' and '${search_date2}'
+                    GROUP BY m.machine_id,plan_date,machine_name`;
+    let hrList = (await connection.query(sql_hr))[0];
+    return hrList;
 }
 
 module.exports = {

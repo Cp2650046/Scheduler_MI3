@@ -38,7 +38,10 @@ td.day,td.night{ height:40px; border:none !important;border-right:1px solid grey
 td.shiftSeparator{ height:2px; background-color:red;}
 div.highlight{background-color:yellow;}
 #showLink{height:120px;z-index:900;}
-#fixtb{overflow:hidden;position:absolute;}
+#fixtb{
+	/* overflow:hidden; */
+	/* position:absolute; */
+}
 div.dragAndDropStatusMessage{
 	position:fixed;bottom:5px;right:5px;
 	width:400px;
