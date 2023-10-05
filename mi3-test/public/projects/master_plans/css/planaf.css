@@ -1,0 +1,156 @@
+
+/* CSS for Master plan */
+#tb_fix{
+	text-align:center;
+	empty-cells:show;
+	table-layout:fixed;
+	border:1px solid #8F8F8F;
+	border-collapse:collapse;
+} 
+
+td.night{
+	vertical-align: bottom;
+	table-layout:fixed;
+	border:1px solid #8F8F8F;
+	/* border-top:3px solid black;
+	border-bottom:1px solid #8F8F8F;
+	border-left:1px solid #8F8F8F;
+	border-right:1px solid #8F8F8F; */
+}
+td.plan{
+	vertical-align: bottom;
+	border:1px solid;
+	border-color:#8F8F8F;
+	border-collapse:collapse;
+	display: table-cell;
+	
+	
+}
+div.day{
+	border:1px solid #8F8F8F;
+	/*height:1px;*/
+	border:1px solid;
+	border-color:black;
+	background-color:black;
+	
+}
+td.month2,td.month{
+	width:26px;
+	height:30px;
+	vertical-align: bottom;
+	table-layout:fixed;
+	border:1px solid;
+	font-size: 14px;
+}
+td.sheet{
+	background-color:#B8B8B8;
+	height:40px;
+	vertical-align: bottom;
+	table-layout:fixed;
+	border:1px solid;
+	font-size: 20px;
+}
+td.month{
+ background-color:#B8B8B8;
+}
+a{text-decoration:none;
+  color:#8F8F8F;  
+}
+td.sheet :hover {
+	color:#00D66F;
+	font-size: 110%;
+	
+
+} 
+td.month2:hover {
+	color:#00D66F;
+	font-size: 110%;
+	background-color:#CCFFE6;
+
+}  /* mouse over link */ 
+  /*font-weight: bold;*/
+  #showlink{
+  position: fixed;
+  background-color:#FFFFFF;
+  height:140px;
+  }
+.machine,.showdate{
+	vertical-align: inherit;
+	table-layout:fixed;
+	border:1px solid #8F8F8F;
+	font-size: 14px;
+}
+.machine{
+	border-bottom:4px solid black
+}
+.failed{
+	border:1px solid #8F8F8F;
+	font-size: 13px;
+    text-align: left;
+	background-color:#D1D1D1;
+}
+.sumhr{
+	border-bottom:4px solid black;
+	font-size: 11px;
+    text-align: left;
+	background-color:#66FFFF;
+}
+.success2,.s5,.noperson,.pm,.Breakdown,.wait_ok,.ok,.ok_cus_color,.wait_ok_cus_color,.success{
+	border:1px solid #8F8F8F;
+	font-size: 13px;
+    text-align: left;
+
+}
+
+.noperson{
+	background-color:yellow;
+}
+.pm{
+	background-color:purple;
+}
+.breakdown{
+	background-color:#FFCC33;
+}
+.s5{
+	background-color:pink;
+}
+.wait_ok{
+	background-color:#0066FF;
+}
+.ok_cus_color{
+	background-color:#CC0000;
+	color:#fff;
+}
+.wait_ok_cus_color{
+	background-color:#FF8F8F;
+}
+.ok{
+	background-color:#33CC00;
+}
+.success{
+	background-color:#FFFFFF;
+}
+.success2{
+	background-color:#663500;
+}
+.link-color-red{
+	background-color:#F00;
+	height:3px;	
+}
+.ui-pnotify-history-container{
+	position:fixed !important;	
+}
+#headVisibility {
+    z-index: 99;
+    position: absolute;
+    background-color: #FFF;
+}
+#naviagateMasterPlanContainer{
+	text-align:center;
+}
+#colorInfo{
+	font-size:12px;
+}
+#colorInfo span{
+	border:0.5px solid #000;
+}

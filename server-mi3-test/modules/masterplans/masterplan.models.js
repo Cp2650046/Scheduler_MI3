@@ -1,5 +1,5 @@
 const connection = require('../../config/connection')
-const getDataModel = async (req, transaction) => {
+const getDataMachineModel = async (req, transaction) => {
     var wh_type_id = "";
     console.log('type_id :>> ', req.type_id);
     if (req.type_id == 'afterpress1') {
@@ -172,7 +172,114 @@ const getHr = async (str_wh, search_date1, search_date2) => {
     return hrList;
 }
 
+const getDataModel = async (req,transaction)=>{
+    console.log('176 :>> ', req);
+    const {targetDateLast,targetDate,targetMachine} = req
+    var wh = "";
+    if(targetDateLast.isEmpty() ||  targetDateLast == 'undefined'){
+        wh += `AND a.plan_date between '${targetDate}' and '${targetDate}' `;	
+    }else{
+        wh += `AND a.plan_date between '${targetDate}' and '${targetDateLast}'`	;	
+    }
+    
+    if(targetMachine.isEmpty()){
+        wh += `AND a.machine_id='${targetMachine}'`;
+    }
+
+    const sql_data =`SELECT
+                        a.id,
+                        f.firstname,
+                        f.lastname,
+                        a.machine_id,
+                        a.plan_date,
+                        a.jobid,
+                        a.job_status_id,
+                        a.shift_id,
+                        a.detail,
+                        a.waste,
+                        a.hr1 AS hr,
+                        isnull(g.job_name, NULL) AS job_name,
+                        d.partName AS partnameB,
+                        isnull(d.partTypeID, 0) AS partTypeID,
+                        a.plan_date,
+                        a.waste AS quantity2,
+                        SUM(qty) AS qty,
+                        MIN(g.jobid) mi_jobid
+                    FROM
+                        mi.dbo.machine_planning AS a
+                    JOIN mi.dbo.machine AS b ON a.machine_id = b.machine_id
+                    LEFT OUTER JOIN mi.dbo.timesheet_header AS c ON a.id = c.plan_id
+                    AND c.machine_id NOT LIKE 'P%'
+                    LEFT OUTER JOIN mi.dbo.timesheet_item AS e ON c.header_id = e.header_id
+                    LEFT OUTER JOIN mi.dbo.mi_item AS d ON a.jobid = d.jobid
+                    AND a.itid = d.itid
+                    LEFT OUTER JOIN mi.dbo.mi AS g ON a.jobid = g.jobid
+                    LEFT OUTER JOIN mi.dbo.employee AS f ON g.emp_id = f.emp_id
+                    WHERE
+                        1 = 1 ${wh}
+                    GROUP BY
+                        a.id,
+                        a.shift_id,
+                        a.priority,
+                        a.quantity,
+                        a.waste,
+                        f.firstname,
+                        f.lastname,
+                        a.machine_id,
+                        a.plan_date,
+                        a.jobid,
+                        a.job_status_id,
+                        a.detail,
+                        a.waste,
+                        a.hr1,
+                        g.job_name,
+                        d.partName,
+                        d.partTypeID,
+                        a.plan_date
+                    ORDER BY
+                        a.shift_id,
+                        a.priority ASC`;
+    let plandDtaList = (await connection.query(sql_data))[0];
+    return plandDtaList;
+    
+}
+
+const getdataHrModel = async (req,transaction) =>{
+    console.log('248 :>> ', req);
+    const {targetDateLast,targetDate,targetMachine} = req
+    var wh = "";
+    if(targetDateLast.isEmpty() ||  targetDateLast == 'undefined'){
+        wh += `AND a.plan_date between '${targetDate}' and '${targetDate}' `;	
+    }else{
+        wh += `AND a.plan_date between '${targetDate}' and '${targetDateLast}'`	;	
+    }
+    
+    if(targetMachine.isEmpty()){
+        wh += `AND a.machine_id='${targetMachine}'`;
+    }
+    const sql_data_hr = `SELECT
+                            SUM(CONVERT(INT, hr1)) AS hr1,
+                            (SUM(hr1 - CONVERT(INT, hr1))) * 100 AS hr2,
+                            a.machine_id AS machine,
+                            plan_date AS DATE,
+                            machine_name AS machine_n
+                        FROM
+                            machine_planning a
+                        JOIN machine b ON a.machine_id = b.machine_id
+                        WHERE
+                            1 = 1 ${wh}
+                        GROUP BY
+                            a.machine_id,
+                            plan_date,
+                            machine_name`;
+    let dataHrList = await (connection.query(sql_data_hr)[0]);
+    return dataHrList;
+}
+
 module.exports = {
+    getDataMachineModel,
+    getDataHoliday,
+    getHr,
     getDataModel,
-    getDataHoliday
+    getdataHrModel
 }

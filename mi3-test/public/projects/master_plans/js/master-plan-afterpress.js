@@ -77,7 +77,7 @@ async function searchNavigation() {
         if(value){
             await setDataPlan(machine.dataplanList.plansList,'all');
             await showHR(machine.dataplanList.hrList);
-            awaitsetTableAfterPress();
+            // await setTableAfterPress();
         }
     }).catch(err => {
         console.log(err.toString());
@@ -94,7 +94,6 @@ async function setPlans(machines, holidays) {
         var str_body_row = "";
         machines.unshift({machine_id: "Machine", machine_name: ""});
         // console.log('85 :>> ', machines);
-        // str_body_row += `<td height='${h}' width='180' class="${i == 0 ? "" : "machine"}" rowspan="${i == 0 ? 1 : 4}">${machines[i].machine_id} ${machines[i].machine_name}</td>`
         for (let i = 0; i < machines.length; i++) {
             if (i == 0) {
                 h = 40;
@@ -105,7 +104,7 @@ async function setPlans(machines, holidays) {
             while (machine_subRow <= 4) {
                 str_body_row += "<tr>";
                 if (machine_subRow == 1) {
-                    str_body_row += `<td height='${h}' width='180' class="${i == 0 ? "" : "machine"}" rowspan="${i == 0 ? 1 : 4}">${machines[i].machine_id} ${machines[i].machine_name}</td>`
+                    str_body_row += `<th height="${h}" width="180" bgcolor="#fff" class="${i != 0 ? "machine" : ""}" rowspan="${i == 0 ? 1 : 4}">${machines[i].machine_id} ${machines[i].machine_name}</th>`
                 }
                 for (let j = 1; j <= 2; j++) { // 2 month
                     let numday = 0;
@@ -121,7 +120,7 @@ async function setPlans(machines, holidays) {
                         // if (d < 10) {
                         //     d = "0" + d;
                         // }
-                        var bg = "";
+                        var bg = "#fff";
                         var is_holiday = holidays.some((element) => element === show_date)
                         if (show_date === check_today) {
                             bg = "orange";
@@ -130,7 +129,7 @@ async function setPlans(machines, holidays) {
                         }
 
                         if (i === 0) {
-                            str_body_row += `<td height="${h}" width="180" bgcolor="${bg}" class="showdate">${show_date}</td>`
+                            str_body_row += `<th height="${h}" width="180" bgcolor="${bg}" class="showdate">${show_date}</th>`
                         } else {
                             switch (machine_subRow) {
                                 case 1:
