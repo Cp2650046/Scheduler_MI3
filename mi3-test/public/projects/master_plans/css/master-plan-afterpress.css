@@ -18,7 +18,7 @@ div.card_masterplan:not(.card-outline)>.card-header {
 #fixtb{
 	overflow: scroll;
 	width: 1490px;
-	height: 500px;
+	height: 508px;
 	/* white-space: nowrap; */
 } 
 #fixtb table {width: 100%;}
@@ -34,4 +34,14 @@ div.card_masterplan:not(.card-outline)>.card-header {
 td.shiftSeparator {
 	height: 2px;
 	background-color: red;
+}
+
+#master_plans_tab1 >.card-body{
+	font-size: 14px;
+}
+
+#naviagateMasterPlan_go{
+	padding: .20rem .5rem;
+	height: fit-content;
+	
 }

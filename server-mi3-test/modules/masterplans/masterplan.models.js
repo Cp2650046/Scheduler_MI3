@@ -2,7 +2,10 @@ const connection = require('../../config/connection')
 const getDataMachineModel = async (req, transaction) => {
     var wh_type_id = "";
     console.log('type_id :>> ', req.type_id);
-    if (req.type_id == 'afterpress1') {
+    if (req.type_id == 'afterpress') {
+        wh_type_id = `(m.type_id IN('12','22','26','16','18','25','23', '41','42','43','44','45','46','47','51','1','6','5','10','11','14','19','20','53','54','21','9','7') AND m.status_id != '0') OR (m.type_id IN('14') AND m.status_id = '1') OR (m.type_id IN('5') AND m.status_id != '0' AND (m.connectedTo is null OR m.connectedTo =1))`;
+    }
+    else if (req.type_id == 'afterpress1') {
         wh_type_id = `m.type_id IN('12','22','26','16','18','25','23', '41','42','43','44','45','46','47','51') AND m.status_id != '0'`;
     }
     else if (req.type_id === 'afterpress2') {
@@ -32,6 +35,7 @@ const getDataMachineModel = async (req, transaction) => {
         dataplanList
     }
 }
+
 const getDataHoliday = async () => {
     const sqlDataHoliday = `SELECT
                                 holiday
@@ -40,11 +44,15 @@ const getDataHoliday = async () => {
     let holidayList = (await connection.query(sqlDataHoliday))[0];
     return holidayList;
 }
+
 const getDataPlan = async (type_id, search_date1, search_date2) => {
     var str_wh = "";
-    if (type_id == 'afterpress1') {
-        str_wh = `AND ( ma.type_id IN ('12','22','26','16','18','25','23','41','42','43','44','45','46','47','51')) AND m.machine_id != '' `;
+    if (type_id == 'afterpress') {
+        str_wh = `AND ( ma.type_id IN ('12','22','26','16','18','25','23','41','42','43','44','45','46','47','51','1','6','5','10','11','14','19','20','53','54','21','9','7') OR (ma.type_id='14' and ma.status_id='1'))  AND m.machine_id != '' `;
     }
+    else if (type_id === 'afterpress1') {
+        str_wh = `AND ( ma.type_id IN ('12','22','26','16','18','25','23','41','42','43','44','45','46','47','51')) AND m.machine_id != '' `;
+    } 
     else if (type_id === 'afterpress2') {
         str_wh = `AND (ma.type_id IN ('1','6','5','10','11','14','19','20','53','54') OR (ma.type_id='14' and ma.status_id='1')  )  AND m.machine_id!='' `;
 
@@ -172,21 +180,21 @@ const getHr = async (str_wh, search_date1, search_date2) => {
     return hrList;
 }
 
-const getDataModel = async (req,transaction)=>{
+const getDataModel = async (req, transaction) => {
     console.log('176 :>> ', req);
-    const {targetDateLast,targetDate,targetMachine} = req
+    const { targetDateLast, targetDate, targetMachine } = req
     var wh = "";
-    if(targetDateLast.isEmpty() ||  targetDateLast == 'undefined'){
-        wh += `AND a.plan_date between '${targetDate}' and '${targetDate}' `;	
-    }else{
-        wh += `AND a.plan_date between '${targetDate}' and '${targetDateLast}'`	;	
+    if (targetDateLast == "" || targetDateLast == 'undefined') {
+        wh += `AND a.plan_date between '${targetDate}' and '${targetDate}' `;
+    } else {
+        wh += `AND a.plan_date between '${targetDate}' and '${targetDateLast}'`;
     }
-    
-    if(targetMachine.isEmpty()){
+
+    if (targetMachine === "") {
         wh += `AND a.machine_id='${targetMachine}'`;
     }
 
-    const sql_data =`SELECT
+    const sql_data = `SELECT
                         a.id,
                         f.firstname,
                         f.lastname,
@@ -241,21 +249,23 @@ const getDataModel = async (req,transaction)=>{
                         a.priority ASC`;
     let plandDtaList = (await connection.query(sql_data))[0];
     return plandDtaList;
-    
+
 }
 
-const getdataHrModel = async (req,transaction) =>{
+const getdataHrModel = async (req, transaction) => {
     console.log('248 :>> ', req);
-    const {targetDateLast,targetDate,targetMachine} = req
-    var wh = "";
-    if(targetDateLast.isEmpty() ||  targetDateLast == 'undefined'){
-        wh += `AND a.plan_date between '${targetDate}' and '${targetDate}' `;	
-    }else{
-        wh += `AND a.plan_date between '${targetDate}' and '${targetDateLast}'`	;	
+    var target_DateLast = req.targetDateLast
+    var target_Date = req.targetDate
+    var target_Machine = req.targetMachine
+    var str_hr_wh = "";
+    if (target_DateLast == "" || target_DateLast == 'undefined') {
+        str_hr_wh += `AND a.plan_date between '${target_Date}' and '${target_Date}' `;
+    } else {
+        str_hr_wh += `AND a.plan_date between '${target_Date}' and '${target_DateLast}'`;
     }
-    
-    if(targetMachine.isEmpty()){
-        wh += `AND a.machine_id='${targetMachine}'`;
+
+    if (target_Machine == "") {
+        str_hr_wh += `AND a.machine_id='${target_Machine}'`;
     }
     const sql_data_hr = `SELECT
                             SUM(CONVERT(INT, hr1)) AS hr1,
@@ -264,22 +274,251 @@ const getdataHrModel = async (req,transaction) =>{
                             plan_date AS DATE,
                             machine_name AS machine_n
                         FROM
-                            machine_planning a
-                        JOIN machine b ON a.machine_id = b.machine_id
+                            mi.dbo.machine_planning AS a
+                        JOIN mi.dbo.machine AS b ON a.machine_id = b.machine_id
                         WHERE
-                            1 = 1 ${wh}
+                            1 = 1 ${str_hr_wh}
                         GROUP BY
                             a.machine_id,
                             plan_date,
                             machine_name`;
-    let dataHrList = await (connection.query(sql_data_hr)[0]);
-    return dataHrList;
+    let dataHrList = await (connection.query(sql_data_hr));
+    // console.log('dataHrList :>> ', dataHrList);
+    return dataHrList[0];
 }
+
+const sendDataPlanMoveModel = async (req, transaction) => {
+    // console.log('280 :>> ', req);
+    var { original_id, original_plan_date, original_machine_id, original_shift_id, machine_id, machine_id, shift_id, plan_date, id } = req
+    var result = {
+        success: 0,
+        message: ""
+    };
+    // 1. original should be existing
+    let type_id_denied = [5, 5]
+    const sql_check_plan = `SELECT
+                                COUNT(*) AS countID
+                            FROM
+                                mi.dbo.machine_planning
+                            WHERE
+                                id = '${original_id}'
+                            AND plan_date = '${original_plan_date}'
+                            AND machine_id = '${original_machine_id}'
+                            AND shift_id = ${original_shift_id}
+                            `;
+    await connection.query(sql_check_plan).then(([data]) => {
+        // console.log('298 :>> ', data[0].countID);
+        if (data[0].countID == 0) {
+            result.success = 2;
+            result.message = "Original plan does not exist anymore!"
+        }
+    })
+        .catch(() => {
+            result.success = 0;
+        })
+    // 2. original should not be recorded as a timesheet source
+    const sql_check_timesheet = `SELECT
+                                    COUNT(*) AS countID
+                                FROM
+                                    mi.dbo.timesheet_header
+                                WHERE
+                                    plan_id = ${original_id}
+                            `;
+    await connection.query(sql_check_timesheet).then(([data]) => {
+        // console.log('307 :>> ', data[0].countID);
+        if (data[0].countID > 0) {
+            result.success = 2;
+            result.message = "This plan has been attached to a timesheet!"
+        }
+    })
+        .catch(() => {
+            result.success = 0;
+        })
+    // 3. hard cover is not allowed in drag and drop
+    const sql_check_allowed = `SELECT
+                                    m.type_id,
+                                    mt.type_name
+                                FROM
+                                    mi.dbo.machine_planning AS mp
+                                LEFT JOIN machine AS m ON m.machine_id = mp.machine_id
+                                LEFT JOIN machine_type AS mt ON mt.type_id = m.type_id
+                                WHERE
+                                    mp.id = ${original_id}
+                            `;
+    await connection.query(sql_check_allowed).then(([data]) => {
+        // console.log('319 :>> ', data[0].type_id);
+        // console.log('320 :>> ', data[0].type_name);
+        if (type_id_denied.includes(data[0].type_id)) {
+            result.success = 2;
+            result.message = `${data[0].type_name} is not allowed to use drag and drop!`
+        }
+    })
+        .catch(() => {
+            result.success = 0;
+        })
+    if (result.success == 2) {
+        return result;
+    } else {
+        var modifiedUserUpdateStatement = "";
+        var i = 0;
+        for (let i = 0; i < id.length; i++) {
+            const element = id[i];
+            console.log('355 :>> ', element);
+            if (element == original_id) {
+                modifiedUserUpdateStatement = ` , saleman_id = '2133745', key_date = CONVERT(VARCHAR(20), GETDATE(), 20) `;
+            } else {
+                modifiedUserUpdateStatement = "";
+            }
+            const sql_update = `UPDATE mi.dbo.machine_planning SET 
+                                    machine_id = '${machine_id}',
+                                    shift_id = '${shift_id}',
+                                    plan_date = '${plan_date}',
+                                    priority = ${i},
+                                    default_machine_id = ''
+                                    ${modifiedUserUpdateStatement}
+                                WHERE id = '${element}'`;
+            console.log('369 :>> ', sql_update);
+            await connection.query(sql_update)
+                    .then(() => {
+                        result.success = 1;
+                        result.message = "สำเร็จ"
+                    })
+                    .catch(() => {
+                        result.message = "อัปเดตไม่สำเร็จ"
+                        result.success = 0;
+                    })
+
+        }
+
+        return result;
+    }
+}
+
+const sendDataPlanMoveThoseBehindModel = async (req, transaction) => {
+    var { original_id, original_plan_date, original_machine_id, original_shift_id, machine_id, machine_id, shift_id, plan_date, id, moveNow } = req
+    var result = {
+        success: 0,
+        message: ""
+    };
+    // 1. original should be existing
+    let type_id_denied = [5, 5]
+    const sql_check_plan = `SELECT
+                                COUNT(*) AS countID
+                            FROM
+                                mi.dbo.machine_planning
+                            WHERE
+                                id = '${original_id}'
+                            AND plan_date = '${original_plan_date}'
+                            AND machine_id = '${original_machine_id}'
+                            AND shift_id = ${original_shift_id}
+                            `;
+    await (connection.query(sql_check_plan)[0]).then(([data]) => {
+        console.log('298 :>> ', data.countID);
+        if (data.countID == 0) {
+            result.success = 2;
+            result.message = "Original plan does not exist anymore!"
+        }
+    })
+        .catch(() => {
+            result.success = 0;
+        })
+    // 2. original should not be recorded as a timesheet source
+    const sql_check_timesheet = `SELECT
+                                    COUNT(*) AS countID
+                                FROM
+                                    mi.dbo.timesheet_header
+                                WHERE
+                                    plan_id = ${original_id}
+                            `;
+    await (connection.query(sql_check_timesheet)[0]).then(([data]) => {
+        console.log('307 :>> ', data.countID);
+        if (data.countID > 0) {
+            result.success = 2;
+            result.message = "This plan has been attached to a timesheet!"
+        }
+    })
+        .catch(() => {
+            result.success = 0;
+        })
+    // 3. hard cover is not allowed in drag and drop
+    const sql_check_allowed = `SELECT
+                                    m.type_id,
+                                    mt.type_name
+                                FROM
+                                    mi.dbo.machine_planning AS mp
+                                LEFT JOIN machine AS m ON m.machine_id = mp.machine_id
+                                LEFT JOIN machine_type AS mt ON mt.type_id = m.type_id
+                                WHERE
+                                    mp.id = ${original_id}
+                            `;
+    await (connection.query(sql_check_allowed)[0]).then(([data]) => {
+        console.log('319 :>> ', data.type_id);
+        console.log('320 :>> ', data.type_name);
+        if (type_id_denied.includes(data.type_id)) {
+            result.success = 2;
+            result.message = `${data.type_name} is not allowed to use drag and drop!`
+        }
+    })
+        .catch(() => {
+            result.success = 0;
+        })
+    if (result.success == 2) {
+        return result;
+    } else {
+        const sql = `EXEC ChangeDateMachinePlanning @id = ${original_id}, @newPlandate = '${plan_date}', @moveNow = ${moveNow}`;
+        await (connection.query(sql)[0]).then(([rs_changdate]) => {
+            console.log('454 :>> ', rs_changdate);
+            if (!moveNow) {
+                // print out the result and ask for confirmation
+                let moveList = rs_changdate
+            } else {
+
+            }
+            result.success = 1;
+            result.message = "สำเร็จ"
+        })
+            .catch(() => {
+                result.message = "อัปเดตไม่สำเร็จ"
+                result.success = 0;
+            })
+        var modifiedUserUpdateStatement = "";
+        id.forEach(element => {
+            if (element == original_id) {
+                modifiedUserUpdateStatement = ` , saleman_id = "2650046", key_date = convert(varchar(20),getdate(),20) `;
+            } else {
+                modifiedUserUpdateStatement = "";
+            }
+
+            const sql_update = `UPDATE mi.dbo.machine_planning SET 
+                                    machine_id = '${machine_id}',
+                                    shift_id = '${shift_id}',
+                                    plan_date = '${plan_date}',
+                                    priority = ${i + 1},
+                                    default_machine_id = ''
+                                    ${modifiedUserUpdateStatement}
+                                WHERE id = '${element}'`;
+            await(connection.query(sql_update)[0]).then(([data]) => {
+                result.success = 1;
+                result.message = "สำเร็จ"
+            })
+                .catch(() => {
+                    result.message = "อัปเดตไม่สำเร็จ"
+                    result.success = 0;
+                })
+
+        });
+
+        return result;
+    }
+}
+
 
 module.exports = {
     getDataMachineModel,
     getDataHoliday,
     getHr,
     getDataModel,
-    getdataHrModel
+    getdataHrModel,
+    sendDataPlanMoveModel,
+    sendDataPlanMoveThoseBehindModel
 }

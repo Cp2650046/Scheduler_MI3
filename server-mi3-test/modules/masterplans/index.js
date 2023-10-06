@@ -16,4 +16,14 @@ Router.post("/get_data_hr", async (req, res) => {
     res.send(data).status(200)
 })
 
+Router.post("/send_data", async (req, res) => {
+    const data = await controllers.sendDataPlanMove(req.body)
+    res.send(data).status(200)
+})
+
+Router.post("/send_data_moveAllThoseBehind", async (req, res) => {
+    const data = await controllers.sendDataPlanMoveThoseBehind(req.body)
+    res.send(data).status(200)
+})
+
 module.exports = Router;

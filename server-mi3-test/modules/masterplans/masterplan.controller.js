@@ -15,8 +15,20 @@ const getDataHr = async(req)=>{
     return res
 }
 
+const sendDataPlanMove = async(req)=>{
+    const res = await models.sendDataPlanMoveModel(req)
+    return res
+}
+
+const sendDataPlanMoveThoseBehind = async(req)=>{
+    const res = await models.sendDataPlanMoveThoseBehindModel(req)
+    return res
+}
+
 module.exports = {
     getDataPlan,
     getData,
-    getDataHr
+    getDataHr,
+    sendDataPlanMove,
+    sendDataPlanMoveThoseBehind
 }

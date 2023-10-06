@@ -37,14 +37,15 @@
                                                     <td>Navigation: </td>
                                                     <td>
                                                         <select id="naviagate_masterplan_typeID" name="naviagate_masterplan_typeID" class="form-select form-select-sm">
-                                                            <option value="36">Roll Cutter</option>
-                                                            <option value="35">Sheet</option>
-                                                            <option value="34">Web</option>
-                                                            <option value="afterpress1" selected>Afterpress1</option>
+                                                            <option value="36" disabled>Roll Cutter</option>
+                                                            <option value="35" disabled>Sheet</option>
+                                                            <option value="34" disabled>Web</option>
+                                                            <option value="afterpress" selected>Afterpress</option>
+                                                            <option value="afterpress1" >Afterpress1</option>
                                                             <option value="afterpress2">Afterpress2</option>
                                                             <option value="afterpress3">Afterpress3</option>
                                                             <option value="cutting">ตัดป้อนแท่น</option>
-                                                            <option value="10">Die-cut</option>
+                                                            <option value="10" disabled>Die-cut</option>
                                                         </select>
                                                     </td>
                                                     <td>Year:</td>
@@ -78,15 +79,15 @@
                                         </table>
                                 </div>
                                 <div class="row mb-2 justify-content-center">
-                                    <span class="box-color-size" style="background-color:#0066FF;"></span>&nbsp;Work(NO OK)&nbsp;&nbsp;&nbsp;
-                                    <span class="box-color-size" style="background-color:#33CC00;"></span>&nbsp;Work(OK)&nbsp;&nbsp;&nbsp;
-                                    <span class="box-color-size" style="background-color: #FFFFFF;"></span>&nbsp;Work(Success)&nbsp;&nbsp;&nbsp;
-                                    <span class="box-color-size" style="background-color:#CC0000;"></span>&nbsp;OK Important job&nbsp;&nbsp;&nbsp;
-                                    <span class="box-color-size" style="background-color:#FF8F8F;"></span>&nbsp;Waiting for Ok Important job&nbsp;&nbsp;&nbsp;
-                                    <span class="box-color-size" style="background-color:purple;"></span>&nbsp;PM&nbsp;&nbsp;&nbsp;
-                                    <span class="box-color-size" style="background-color:yellow;"></span>&nbsp;No operator&nbsp;&nbsp;&nbsp;
-                                    <span class="box-color-size" style="background-color:pink;"></span>&nbsp;5S&nbsp;&nbsp;&nbsp;
-                                    <span class="box-color-size" style="background-color:#FFCC33;"></span>&nbsp;Breakdown
+                                    <span class="box-color-size wait_ok"></span>&nbsp;Work(NO OK)&nbsp;&nbsp;&nbsp;
+                                    <span class="box-color-size ok"></span>&nbsp;Work(OK)&nbsp;&nbsp;&nbsp;
+                                    <span class="box-color-size success"></span>&nbsp;Work(Success)&nbsp;&nbsp;&nbsp;
+                                    <span class="box-color-size ok_cus_color"></span>&nbsp;OK Important job&nbsp;&nbsp;&nbsp;
+                                    <span class="box-color-size wait_ok_cus_color" ></span>&nbsp;Waiting for Ok Important job&nbsp;&nbsp;&nbsp;
+                                    <span class="box-color-size pm"></span>&nbsp;PM&nbsp;&nbsp;&nbsp;
+                                    <span class="box-color-size noperson" ></span>&nbsp;No operator&nbsp;&nbsp;&nbsp;
+                                    <span class="box-color-size s5"></span>&nbsp;5S&nbsp;&nbsp;&nbsp;
+                                    <span class="box-color-size breakdown"></span>&nbsp;Breakdown
                                 </div>
                             </div>
                         </div>
@@ -110,9 +111,10 @@
         </div>
     <!-- </div> -->
     <%- include('../includes/script-bottom'); %>
+    <script src="./projects/master_plans/js/master-main.js"></script>
     <script src="./projects/master_plans/js/master-plans.js"></script>
     <script src="./projects/master_plans/js/master-plan-afterpress.js"></script>
-    <script src="./projects/master_plans/js/dragAndDrop.js"></script>
+    <script src="./projects/master_plans/js/master-plan-drang-and-drop.js"></script>
 
 </body>
 

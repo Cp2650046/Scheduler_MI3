@@ -71,20 +71,22 @@ async function searchNavigation() {
     // console.log('numday1 :>> ', numday1);
     // console.log('numday2 :>> ', numday2);
     // console.log('38 :>> ', type_id);
-    let machine = await getDataPlaning(type_id, search_date1, search_date2);
-    await setPlans(machine.machineList, machine.holidayList).then(async (value) => {
-        console.log(value)
-        if(value){
-            await setDataPlan(machine.dataplanList.plansList,'all');
-            await showHR(machine.dataplanList.hrList);
-            // await setTableAfterPress();
-        }
-    }).catch(err => {
-        console.log(err.toString());
-    });
-    // await setDataPlan(machine.dataplanList.plansList,'all');
-    // await showHR(machine.dataplanList.hrList);
-    // await setTableAfterPress();
+    await getDataPlaning(type_id, search_date1, search_date2);
+    // console.log('machine :>> ', machine);
+    // if(machine){
+    //     await main_set_loading({ loading: false})
+    //     await setPlans(machine.machineList, machine.holidayList).then(async (value) => {
+    //         // console.log(value)
+    //         if(value){
+    //             await setDataPlan(machine.dataplanList.plansList,'all');
+    //             await showHR(machine.dataplanList.hrList);
+                
+    //             // await setTableAfterPress();
+    //         }
+    //     }).catch(err => {
+    //         console.log(err);
+    //     });
+    // }
 }
 
 async function setPlans(machines, holidays) {
@@ -117,9 +119,6 @@ async function setPlans(machines, holidays) {
                         show_date = moment(input_date).add(1, 'month').startOf('month').format("YYYY-MM-DD")
                     }
                     for (let d = 1; d <= numday; d++) {
-                        // if (d < 10) {
-                        //     d = "0" + d;
-                        // }
                         var bg = "#fff";
                         var is_holiday = holidays.some((element) => element === show_date)
                         if (show_date === check_today) {
@@ -185,8 +184,7 @@ async function setDataPlan(plans, type) {
             shift = 'night';
         }
 
-        showtitle = element.job_name + " " + element.detail + "  [ ชิ้นส่วน: " + element.partnameB + "  ]  [ จำนวน: " + numeral(element.waste).format(0,0) + "]  AE:" + element.firstname + "  " + element.lastname;
-        showtitle = showtitle.replace(/"/g, '&quot;');
+        showtitle = `${element.job_name} ${element.detail} [ ชิ้นส่วน: ${element.partnameB} ] [ จำนวน: ${numeral(element.waste).format(0,0)} ] AE: ${element.firstname} ${element.lastname}`;
 
         /*ตรวจสอบ job ประมาณการ*/
         if (!element.mi_jobid) {
@@ -234,9 +232,10 @@ async function setDataPlan(plans, type) {
                     break;
             }
         }
-
-        // console.log(`#${shift} ${element.machine_id}${element.plan_date}`)
-        $(`<div machine_id="${element.machine_id} plan_date="${element.plan_date}" plan_id="${element.id}" plan_date="${element.plan_date}" shift="${element.shift_id}" class="draggable ${display}" title="${element.id}" $showtitle>&nbsp; ${element.jobid} &nbsp;&nbsp;&nbsp; ${String(Number(element.hr).toFixed(2)).replace(/\./, ':')}</div>`).appendTo('#'+shift+element.machine_id+element.plan_date);
+        if($('#'+shift+element.machine_id+element.plan_date).find('div').attr('plan_id') == element.id){ /* check ไม่ให้แผนแสดงซ้ำ */
+            $('#'+shift+element.machine_id+element.plan_date).find('div').remove();
+        }
+        $(`<div machine_id="${element.machine_id}" plan_date="${element.plan_date}" plan_id="${element.id}" shift="${element.shift_id}" class="draggable ${display}" title="${element.id} ${showtitle}">&nbsp; ${element.jobid} &nbsp;&nbsp;&nbsp; ${String(Number(element.hr).toFixed(2)).replace(/\./, ':')}</div>`).appendTo('#'+shift+element.machine_id+element.plan_date);
 
         // if (chk_single) { // ดึงค่ามาเป็นครั้ง
         //     config_menu(element.id);
