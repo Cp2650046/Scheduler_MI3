@@ -15,20 +15,25 @@ div.card_masterplan:not(.card-outline)>.card-header {
 	color: #ffe407;
 }
 
-#fixtb{
+#fixtb {
 	overflow: scroll;
 	width: 1490px;
-	height: 508px;
+	height: 519px;
+	border-radius: .25 rem;
+	box-shadow: 0 0 1px rgba(0,0,0,.125),0 1px 3px rgba(0,0,0,.2);
 	/* white-space: nowrap; */
-} 
-#fixtb table {width: 100%;}
- 
+}
+
+#fixtb table {
+	width: 100%;
+}
+
 /* #tb_fix tr th{position: sticky;left: 0;} */
-#tb_fix tr:nth-child(1) th  {
-	top:0px;
+#tb_fix tr:nth-child(1) th {
+	top: 0px;
 	position: sticky;
 }
- 
+
 /* #tb_fix tr:nth-child(2) th{top:34px;position: sticky;} */
 
 td.shiftSeparator {
@@ -36,12 +41,34 @@ td.shiftSeparator {
 	background-color: red;
 }
 
-#master_plans_tab1 >.card-body{
+#master_plans_tab1>.card-body {
 	font-size: 14px;
 }
 
-#naviagateMasterPlan_go{
-	padding: .20rem .5rem;
-	height: fit-content;
-	
+#naviagateMasterPlan_go {
+	padding: .10rem .5rem;
+	/* height: fit-content; */
+	margin-left: 5px;
+
+}
+
+.navigation-select {
+	background-color: #F3FDE8;
+	border-radius: 5px;
+	border: solid 1px #F3FDE8;
+	cursor: pointer;
+}
+
+@media (min-width: 1600px) {
+	#fixtb {
+		width: 1650px;
+		height: 590px;
+	}
+}
+
+@media (min-width: 1890px) {
+	#fixtb {
+		width: 1870px;
+		height: 690px;
+	}
 }

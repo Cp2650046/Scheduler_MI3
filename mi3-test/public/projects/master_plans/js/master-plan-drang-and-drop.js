@@ -25,25 +25,24 @@ $(document).ready(function () {
 
 async function init() {
     $('head').append('<style>div.mouseDiv{ width:' + dragAndDropApp.mouseDivCSS.width + 'px; height:' + dragAndDropApp.mouseDivCSS.height + 'px; }</style>');
-    await loadingLayer(true);
-    $( ".draggable" ).draggable({ scroll: true ,scrollSpeed: 100,revert: true});
-    // dragAndDropApp.target.draggable({ });
-    // $( ".draggable" ).draggable({ revert: true, helper: "clone" });
+    // $('.draggable').draggable({ scroll: true, revert: true,cursor: "crosshair"  });
+    // await loadingLayer(true);
     $(document).on('mousedown', 'div.draggable', function (e) {
-        console.log('e.which :>> ', e.which);
         if (e.which == 1) { // left click
             $('body,div.draggable').addClass('cursorGrabbing');
             $(this).css({ 'display': 'none' });
             dragAndDropApp.target = $(this);
-            // console.log('37 :>> ', dragAndDropApp.target);
             var div = $('<div></div>').append($(this).html()).css({
-                                                                    'background-color': $(this).css('background-color'),
-                                                                    'font': '13px tahoma',
+                'background-color': $(this).css('background-color'),
+                'font': '13px tahoma',
+                'border-left':  $(this).css('border-left'),
+                'border-radius':  $(this).css('border-radius')
             }).addClass('mouseDiv').prependTo('body');
             dragAndDropApp.reposition(div, e);
             if (dragAndDropApp.needScrollScript) {
-                // scrollScript();
+                scrollScript();
             }
+            // events
             $(document).on('mousemove.dragging', function (e2) {
                 dragAndDropApp.reposition(div, e2);
             }).on('mouseover.shiftContainer', 'td.day, td.night', function () {
@@ -64,11 +63,10 @@ async function init() {
     });
     // because firefox won't scroll while dragging, so we do this
     // check firefox
-    console.log('63:>> ', navigator.userAgent.match(/firefox/i));
     if (navigator.userAgent.match(/firefox/i)) {
         dragAndDropApp.needScrollScript = true;
     }
-    await loadingLayer(false);
+    // dragAndDropApp.loadingLayer(false);
 }
 
 async function loadingLayer(visible) {
@@ -96,12 +94,11 @@ async function scrollScript() {
             x: false,
             y: false,
         };
-        console.log('eScroll :>> ', eScroll.clientX);
-        console.log('eScroll :>> ', eScroll.clientY);
-        console.log('winWidth :>> ', winWidth);
-        console.log('winHeight :>> ', winHeight);
-        console.log('needScrollScriptIsScrolling.x :>> ', dragAndDropApp.needScrollScriptIsScrolling.x);
-       
+        // console.log('eScroll :>> ', eScroll.clientX);
+        // console.log('eScroll :>> ', eScroll.clientY);
+        // console.log('winWidth :>> ', winWidth);
+        // console.log('winHeight :>> ', winHeight);
+
         if (eScroll.clientX + factor >= winWidth) {
             scrollNow.x = true;
             direction.x = 1;
@@ -117,7 +114,7 @@ async function scrollScript() {
             scrollNow.y = true;
             direction.y = 1;
         }
-        else if (eScroll.clientY <= factor + parseFloat($('#fixtb').css('top'))) { // + the amount of top position of the table
+        else if (eScroll.clientY <= factor) { // + the amount of top position of the table
             scrollNow.y = true;
             direction.y = -1;
         }
@@ -125,24 +122,24 @@ async function scrollScript() {
             clearInterval(dragAndDropApp.needScrollScriptIsScrolling.y);
         }
 
-        console.log(' scrollNow.x :>> ', scrollNow.x);
-        console.log('direction.x :>> ', direction.x); 
+        // console.log(' scrollNow.x :>> ', scrollNow.x);
+        // console.log('direction.x :>> ', direction.x);
 
-        console.log(' scrollNow.y :>> ', scrollNow.y);
-        console.log('direction.y :>> ', direction.y); 
+        // console.log(' scrollNow.y :>> ', scrollNow.y);
+        // console.log('direction.y :>> ', direction.y);
         // debugger
         // horizontal
         if (scrollNow.x) {
             clearInterval(dragAndDropApp.needScrollScriptIsScrolling.x);
             dragAndDropApp.needScrollScriptIsScrolling.x = setInterval(function () {
-                $(window).scrollLeft($(window).scrollLeft() + (direction.x * scrollAmount));
+                $("#fixtb").scrollLeft($("#fixtb").scrollLeft() + (direction.x * scrollAmount));
             }, intervalTime);
         }
         // vertical
         if (scrollNow.y) {
             clearInterval(dragAndDropApp.needScrollScriptIsScrolling.y);
             dragAndDropApp.needScrollScriptIsScrolling.y = setInterval(function () {
-                $(window).scrollTop($(window).scrollTop() + (direction.y * scrollAmount));
+                $("#fixtb").scrollTop($("#fixtb").scrollTop() + (direction.y * scrollAmount));
             }, intervalTime);
         }
     });
@@ -160,9 +157,9 @@ async function setVirtualDrop(element) {
     return this;
 }
 
-async function drop(){
-    console.log('148 :>> ', $('#virtualDrop').next('div.draggable').is(dragAndDropApp.target));
-    console.log('149 :>> ', $('#virtualDrop').length);
+async function drop() {
+    // console.log('148 :>> ', $('#virtualDrop').next('div.draggable').is(dragAndDropApp.target));
+    // console.log('149 :>> ', $('#virtualDrop').length);
     if (!$('#virtualDrop').next('div.draggable').is(dragAndDropApp.target) && $('#virtualDrop').length == 1) { // does not drop at the same place
         await killEvents();
         await Swal.fire({
@@ -180,7 +177,7 @@ async function drop(){
             if (result.isConfirmed) {
                 dragAndDropApp.target.insertAfter($('#virtualDrop'));
                 await save($('#dragAndDrop_moveAllThoseBehind').is(':checked'));
-            }else{
+            } else {
                 resetState();
             }
         })
@@ -263,18 +260,18 @@ async function save(moveAllThoseBehind, moveNow) {
     return this;
 }
 
- /*async function displayStatus(text) {
-    if ($('div.dragAndDropStatusMessage').length == 0) {
-        $('<div>' + text + '</div>').addClass('dragAndDropStatusMessage').appendTo('body');
-    }
-    else {
-        $('div.dragAndDropStatusMessage').html(text).stop(true, true).show();
-    }
-    clearTimeout(this.displayStatusTimeout);
-    this.displayStatusTimeout = setTimeout(function () {
-        $('div.dragAndDropStatusMessage').fadeOut(2000);
-    }, 20000);
-    return this;
+/*async function displayStatus(text) {
+   if ($('div.dragAndDropStatusMessage').length == 0) {
+       $('<div>' + text + '</div>').addClass('dragAndDropStatusMessage').appendTo('body');
+   }
+   else {
+       $('div.dragAndDropStatusMessage').html(text).stop(true, true).show();
+   }
+   clearTimeout(this.displayStatusTimeout);
+   this.displayStatusTimeout = setTimeout(function () {
+       $('div.dragAndDropStatusMessage').fadeOut(2000);
+   }, 20000);
+   return this;
 } */
 
 async function reloadSection(planDate, machineID) {

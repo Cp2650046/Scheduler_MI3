@@ -36,7 +36,7 @@
                                                 <tr>
                                                     <td>Navigation: </td>
                                                     <td>
-                                                        <select id="naviagate_masterplan_typeID" name="naviagate_masterplan_typeID" class="form-select form-select-sm">
+                                                        <select id="naviagate_masterplan_typeID" name="naviagate_masterplan_typeID" class="form-select navigation-select">
                                                             <option value="36" disabled>Roll Cutter</option>
                                                             <option value="35" disabled>Sheet</option>
                                                             <option value="34" disabled>Web</option>
@@ -50,14 +50,14 @@
                                                     </td>
                                                     <td>Year:</td>
                                                     <td>
-                                                        <select name="naviagate_masterPlan_year" id="naviagate_masterPlan_year"class="form-select form-select-sm">
+                                                        <select name="naviagate_masterPlan_year" id="naviagate_masterPlan_year"class="form-select navigation-select">
                                                             <option value="2022">2022</option>
                                                         </select>
                                                     </td>
                                                     <td>Month: </td>
                                                     <td>
-                                                        <select name="naviagateMasterPlan_month" id="naviagateMasterPlan_month"class="form-select form-select-sm">
-                                                            <option value="1">1</option>
+                                                        <select name="naviagateMasterPlan_month" id="naviagateMasterPlan_month"class="form-select navigation-select">
+                                                            <!-- <option value="1">1</option>
                                                             <option value="2">2</option>
                                                             <option value="3">3</option>
                                                             <option value="4">4</option>
@@ -68,7 +68,7 @@
                                                             <option value="9">9</option>
                                                             <option value="10">10</option>
                                                             <option value="11">11</option>
-                                                            <option value="12">12</option>
+                                                            <option value="12">12</option> -->
                                                         </select>
                                                     </td>
                                                     <td>
@@ -78,8 +78,8 @@
                                             </tbody>
                                         </table>
                                 </div>
-                                <div class="row mb-2 justify-content-center">
-                                    <span class="box-color-size wait_ok"></span>&nbsp;Work(NO OK)&nbsp;&nbsp;&nbsp;
+                                <div id="colorInfo" class="row mb-2 justify-content-center">
+                                    <!-- <span class="box-color-size wait_ok"></span>&nbsp;Work(NO OK)&nbsp;&nbsp;&nbsp;
                                     <span class="box-color-size ok"></span>&nbsp;Work(OK)&nbsp;&nbsp;&nbsp;
                                     <span class="box-color-size success"></span>&nbsp;Work(Success)&nbsp;&nbsp;&nbsp;
                                     <span class="box-color-size ok_cus_color"></span>&nbsp;OK Important job&nbsp;&nbsp;&nbsp;
@@ -87,7 +87,7 @@
                                     <span class="box-color-size pm"></span>&nbsp;PM&nbsp;&nbsp;&nbsp;
                                     <span class="box-color-size noperson" ></span>&nbsp;No operator&nbsp;&nbsp;&nbsp;
                                     <span class="box-color-size s5"></span>&nbsp;5S&nbsp;&nbsp;&nbsp;
-                                    <span class="box-color-size breakdown"></span>&nbsp;Breakdown
+                                    <span class="box-color-size breakdown"></span>&nbsp;Breakdown -->
                                 </div>
                             </div>
                         </div>
@@ -96,7 +96,6 @@
                                 <!-- <div class="div_table_plan"> -->
                                     <div id='fixtb'>
                                         <table cellSpacing='0' cellPadding='0' id='tb_fix'>
-                                            
                                             <tbody>
 
                                             </tbody>
@@ -111,7 +110,7 @@
         </div>
     <!-- </div> -->
     <%- include('../includes/script-bottom'); %>
-    <script src="./projects/master_plans/js/master-main.js"></script>
+    <script src="./projects/master_plans/js/master-plan-main.js"></script>
     <script src="./projects/master_plans/js/master-plans.js"></script>
     <script src="./projects/master_plans/js/master-plan-afterpress.js"></script>
     <script src="./projects/master_plans/js/master-plan-drang-and-drop.js"></script>

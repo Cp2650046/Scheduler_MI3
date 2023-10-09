@@ -24,25 +24,6 @@ $(document).ready(function () {
     // table head row visibility
 });
 
-function setOptionYear() {
-    let past_year = moment().add(-10, 'years').year();
-    const current_year = moment().year();
-    const future_year = moment().add(1, 'years').year();
-    let year = past_year;
-    var str_option_year = "";
-    var str_selected = "";
-    while (year <= future_year) {
-        if (year == current_year) {
-            str_selected = "selected";
-        } else {
-            str_selected = "";
-        }
-        str_option_year += `<option value="${year}" ${str_selected}>${year}</option>`
-        year = year + 1
-    }
-    $("#naviagate_masterPlan_year").html(str_option_year);
-}
-
 async function searchNavigation() {
     var type_id = 0;
     if ($("#naviagate_masterplan_typeID").attr('selected', true)) {
@@ -106,7 +87,7 @@ async function setPlans(machines, holidays) {
             while (machine_subRow <= 4) {
                 str_body_row += "<tr>";
                 if (machine_subRow == 1) {
-                    str_body_row += `<th height="${h}" width="180" bgcolor="#fff" class="${i != 0 ? "machine" : ""}" rowspan="${i == 0 ? 1 : 4}">${machines[i].machine_id} ${machines[i].machine_name}</th>`
+                    str_body_row += `<th height="${h}" width="180" bgcolor="#fff" class="${i != 0 ? "machine" : "h_machine"}" rowspan="${i == 0 ? 1 : 4}">${machines[i].machine_id} ${machines[i].machine_name}</th>`
                 }
                 for (let j = 1; j <= 2; j++) { // 2 month
                     let numday = 0;
@@ -121,7 +102,9 @@ async function setPlans(machines, holidays) {
                     for (let d = 1; d <= numday; d++) {
                         var bg = "#fff";
                         var is_holiday = holidays.some((element) => element === show_date)
-                        if (show_date === check_today) {
+                        console.log('show_date :>> ', show_date);
+                        console.log('check_today :>> ', check_today);
+                        if (show_date == check_today) {
                             bg = "orange";
                         } else if (is_holiday || moment(show_date).weekday() === 0) {
                             bg = "#494949";
@@ -189,44 +172,44 @@ async function setDataPlan(plans, type) {
         /*ตรวจสอบ job ประมาณการ*/
         if (!element.mi_jobid) {
             if (status == '6' || status == '7') {
-                display = "s5";
+                display = "s5-boder";
             } else {
-                display = "success";
+                display = "success-boder";
             }
         } else {
 
             switch (element.jobid) {
                 case 'ไม่มีช่าง':
-                    display = "noperson";
+                    display = "noperson-boder";
                     break;
                 case 'PM':
-                    display = "pm";
+                    display = "pm-boder";
                     break;
                 case '5 ส':
-                    display = "s5";
+                    display = "s5-boder";
                     break;
                 case 'Breakdown':
-                    display = "breakdown";
+                    display = "breakdown-boder";
                     break;
                 default:
                     switch (status) {
                         case 1:
-                            display = "wait_ok";
+                            display = "wait_ok-boder";
                             break;
                         case 2:
-                            display = "ok";
+                            display = "ok-boder";
                             break;
                         case 4:
-                            display = "success";
+                            display = "success-boder";
                             break;
                         case 6:
-                            display = "ok_cus_color";
+                            display = "ok_cus_color-boder";
                             break;
                         case 7:
-                            display = "wait_ok_cus_color";
+                            display = "wait_ok_cus_color-boder";
                             break;
                         default:
-                            display = "success";
+                            display = "success-boder";
                             break;
                     }
                     break;
@@ -279,6 +262,7 @@ async function setTableAfterPress(){
 
 async function btnPlanGo(){
     searchNavigation();
+    setStatusPlanColor();
      /*var targetLocation = "";
    switch( $('#naviagateMasterPlan_typeID').val() ){
         case "34":

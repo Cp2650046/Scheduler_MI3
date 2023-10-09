@@ -1,7 +1,9 @@
-#fix{
-	empty-cells:show;
+#tb_fix {
+	empty-cells: show;
 }
-body,div.draggable{
+
+body,
+div.draggable {
 	-moz-user-select: -moz-none;
 	-khtml-user-select: none;
 	-webkit-user-select: none;
@@ -12,85 +14,138 @@ body,div.draggable{
 	*/
 	-ms-user-select: none;
 	user-select: none;
-	font-family:Tahoma, Geneva, sans-serif;
+	/* font-family:Tahoma, Geneva, sans-serif; */
 }
-.cursorGrabbing{
-	cursor:-webkit-grabbing !important;
-	cursor:grabbing !important;
+
+.cursorGrabbing {
+	cursor: -webkit-grabbing !important;
+	cursor: grabbing !important;
 }
-div.draggable{
-	cursor:-webkit-grab; 
-	cursor:move;
+
+div.draggable {
+	cursor: -webkit-grab;
+	cursor: move;
 	box-shadow:1px 1px 1px black;
-	margin:1px;
+	margin: 1px;
+	border-radius: 4px;
+	font-size: 14px;
 }
-div.draggable:hover{
-	color:red;
+
+div.draggable:hover {
+	/* color: red; */
+	color: #3E001F;
+	font-weight: bold;
 }
-div.mouseDiv{ 
-	position:fixed; 
-	background-color:yellow;
-	z-index:50; 
-	border:1px solid black; 
-	box-shadow:2px 2px 3px black;
-}
-td.day,td.night{ height:40px; border:none !important;border-right:1px solid grey !important; padding-top:6px; vertical-align:bottom; }
-td.shiftSeparator{ height:2px; background-color:red;}
-div.highlight{background-color:yellow;}
-#showLink{height:120px;z-index:900;}
-#fixtb{
-	/* overflow:hidden; */
-	/* position:absolute; */
-}
-div.dragAndDropStatusMessage{
-	position:fixed;bottom:5px;right:5px;
-	width:400px;
-	height:16px;
-	z-index:999;
-	background-color:dimgray;
-	border-radius:4px 4px 4px 4px;
-	padding:7px 7px 7px 7px;
-	border-radius:5px 5px 5px 5px;
-	box-shadow:1px 1px 3px black;
-	color:yellow;
-	text-align:center;
-	vertical-align:central;
-	font-size:14px;
-}
-div.dragAndDropLoadingLayer{
+
+div.mouseDiv {
 	position: fixed;
-    width: 100%;
-    height: 100%;
-    left: 0px;
-    top: 0px;
-    background-color: #000;
-    z-index: 991;
-    opacity: 0.3;
-    color: #FFF;
-    cursor: progress;
-	display:none;
+	background-color: yellow;
+	z-index: 50;
+	border: 1px solid black;
+	box-shadow: 2px 2px 3px black;
 }
-span.sumhr{
-	text-align:center !important;
+
+td.day,
+td.night {
+	height: 40px;
+	border: none !important;
+	border-right: 1px solid grey !important;
+	padding-top: 6px;
+	vertical-align: bottom;
+	/* background-color: #FFEEF4; */
 }
-td.month,td.month2{
-	height:22px !important;
+
+td.shiftSeparator {
+	height: 2px;
+	background-color: red;
 }
-td.month a,td.month2 a{
-	color:black;
+
+div.highlight {
+	background-color: yellow;
 }
-#showlink{
-	height:100px !important;
-	background-color:lightgray;
-	width:100%;
+
+#showLink {
+	height: 120px;
+	z-index: 900;
 }
-#fixtb{
-	top:100px !important;
+
+div.dragAndDropStatusMessage {
+	position: fixed;
+	bottom: 5px;
+	right: 5px;
+	width: 400px;
+	height: 16px;
+	z-index: 999;
+	background-color: dimgray;
+	border-radius: 4px 4px 4px 4px;
+	padding: 7px 7px 7px 7px;
+	border-radius: 5px 5px 5px 5px;
+	box-shadow: 1px 1px 3px black;
+	color: yellow;
+	text-align: center;
+	vertical-align: central;
+	font-size: 14px;
 }
-input[title="Logo"]{
-	background-position:-362px -96px !important;
+
+div.dragAndDropLoadingLayer {
+	position: fixed;
+	width: 100%;
+	height: 100%;
+	left: 0px;
+	top: 0px;
+	background-color: #000;
+	z-index: 991;
+	opacity: 0.3;
+	color: #FFF;
+	cursor: progress;
+	display: none;
 }
+
+span.sumhr {
+	text-align: center !important;
+}
+
+td.month,
+td.month2 {
+	height: 22px !important;
+}
+
+td.month a,
+td.month2 a {
+	color: black;
+}
+
+#showlink {
+	height: 100px !important;
+	background-color: lightgray;
+	width: 100%;
+}
+
+#fixtb {
+	top: 100px !important;
+}
+
+input[title="Logo"] {
+	background-position: -362px -96px !important;
+}
+
 /* moveAllBehind */
-#moveList{ background-color:PowderBlue; border-collapse:collapse; font:12px tahoma; table-layout:fixed;margin:0 auto;}
-#moveList td { border:thin solid Cornsilk; padding:5px 5px; }
-#moveList tr.head{ background-color:Bisque !important; color:DarkCyan; text-align:center;vertical-align:bottom;}
+#moveList {
+	background-color: PowderBlue;
+	border-collapse: collapse;
+	font: 12px tahoma;
+	table-layout: fixed;
+	margin: 0 auto;
+}
+
+#moveList td {
+	border: thin solid Cornsilk;
+	padding: 5px 5px;
+}
+
+#moveList tr.head {
+	background-color: Bisque !important;
+	color: DarkCyan;
+	text-align: center;
+	vertical-align: bottom;
+}

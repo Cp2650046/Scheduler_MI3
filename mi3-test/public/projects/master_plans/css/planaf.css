@@ -4,7 +4,7 @@
 	text-align:center;
 	empty-cells:show;
 	table-layout:fixed;
-	border:1px solid #8F8F8F;
+	/* border:1px solid #8F8F8F; */
 	border-collapse:collapse;
 } 
 
@@ -74,14 +74,15 @@ td.month2:hover {
   background-color:#FFFFFF;
   height:140px;
   }
-.machine,.showdate{
+.machine,.showdate,.h_machine{
 	vertical-align: inherit;
 	table-layout:fixed;
-	border:1px solid #8F8F8F;
+	/* border:1px solid #8F8F8F; */
 	font-size: 14px;
+	background-color: #EEE0C9;
 }
 .machine{
-	border-bottom:4px solid black
+	border-bottom:1px solid #8F8F8F
 }
 .failed{
 	border:1px solid #8F8F8F;
@@ -90,10 +91,11 @@ td.month2:hover {
 	background-color:#D1D1D1;
 }
 .sumhr{
-	border-bottom:4px solid black;
+	/* border-bottom:4px solid black; */
+	border-bottom: 1px solid #8F8F8F;
 	font-size: 11px;
     text-align: left;
-	background-color:#66FFFF;
+	background-color:#BFF1F1;
 }
 .success2,.s5,.noperson,.pm,.Breakdown,.wait_ok,.ok,.ok_cus_color,.wait_ok_cus_color,.success{
 	border:1px solid #8F8F8F;
@@ -106,7 +108,7 @@ td.month2:hover {
 	background-color:yellow;
 }
 .pm{
-	background-color:#8640b5;
+	background-color:purple;
 }
 .breakdown{
 	background-color:#FFCC33;
@@ -133,6 +135,49 @@ td.month2:hover {
 .success2{
 	background-color:#663500;
 }
+
+/* border darg */
+.noperson-boder{
+	border-left: 15px solid yellow;
+	background-color: #EFED95;
+}
+.pm-boder{
+	border-left: 15px solid purple;
+	background-color: #BEADFA;
+}
+.breakdown-boder{
+	border-left: 15px solid #FFCC33;
+	background-color: #F7C85A;
+}
+.s5-boder{
+	border-left: 15px solid pink;
+	background-color: #e5aeb8;
+}
+.wait_ok-boder{
+	border-left: 15px solid #0066FF;
+	background-color: #64A9F3;
+}
+.ok_cus_color-boder{
+	border-left: 15px solid #CC0000;
+	background-color: #E03C3C;
+}
+.wait_ok_cus_color-boder{
+	border-left: 15px solid #FF8F8F;
+	background-color: #FAA;
+}
+.ok-boder{
+	border-left: 15px solid #33CC00;
+	background-color: #CAF9C0;
+}
+.success-boder{
+	border-left: 15px solid #FFFFFF;
+	background-color: #F4F9FB;
+}
+.success2-boder{
+	border-left: 15px solid #663500;
+	background-color: #ADC4CE;
+}
+
 .link-color-red{
 	background-color:#F00;
 	height:3px;	
