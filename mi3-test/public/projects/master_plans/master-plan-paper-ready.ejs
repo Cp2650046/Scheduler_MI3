@@ -1,0 +1,252 @@
+<!-- Modal Paper -->
+<style>
+    .responderTable{
+        margin:0 auto;
+        font-size:11px;
+        border:2px solid transparent !important;
+    }
+    .responderTable thead tr:last-child,.responderTable tfoot tr:last-child{
+        background-color:wheat;
+    }
+    .responderTable td{
+        padding:0 8px;
+        border:2px solid lemonchiffon !important;
+    }
+    .responderTables tbody tr:nth-child(2n){
+        background-color:wheat !important;
+    }
+    .reset {
+        all: revert;
+        font-size: 15px;
+    }
+    .modal-content{
+        background-color: lemonchiffon;
+        border: 4px solid yellowgreen;
+        color: darkslategrey;
+    }
+    input::placeholder {
+        font-size: 13px;
+    }
+    .input-ready{
+        width: 200px;
+        height: 20px;
+    }
+
+    .modal-header{
+        align-items: center;
+        justify-content: center;
+        border-bottom: unset;
+        padding:unset;
+        padding-top: 1rem;
+    }
+
+    .modal-footer{
+        justify-content: center;
+        padding:unset;
+    }
+
+    #updated-plan{
+        font-size: 13px;
+        padding-top: .25rem;
+    }
+    .modal-dialog{
+        overflow-y: auto;
+        height: 100%;
+        max-height: 566px;
+    }
+</style>
+<div class="modal fade" tabindex="-1" data-backdrop="static" role="dialog" id="modal-paperReadyContainer">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title">รายการสถานะกระดาษ</h6>
+                <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button> -->
+            </div>
+            <div class="modal-body text-center">
+                <table class="responderTable">
+                    <thead>
+                        <tr>
+                            <td>ID</td> 
+                            <td>Job</td>
+                            <td>Part</td>
+                            <td>จำนวนวางแผน</td>
+                            <td>กรอบ</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td id="PRC_id"></td>
+                            <td id="PRC_jobID"></td>
+                            <td class="PRC_partName"></td>
+                            <td class="PRC_planQty"></td>
+                            <td class="PRC_planSig"></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <fieldset class="reset">
+                    <legend class="reset">PO</legend>
+                    <table id="PRC_POList" class="responderTable">
+                        <thead>
+                            <tr>
+                                <td>PO</td>
+                                <td>Code</td>
+                                <td>Name</td>
+                                <td>Quantity</td>
+                                <td>Unit</td>
+                                <td>Status</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </fieldset>
+                <fieldset class="reset"><legend class="reset">การรับสินค้า</legend>
+                    <table id="PRC_ReceiveList" class="responderTable">
+                        <thead>
+                            <tr>
+                                <td>Date</td>
+                                <td>Code</td>
+                                <td>Name</td>
+                                <td>Quantity</td>
+                                <td>Unit</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </fieldset>
+                <fieldset class="reset"><legend class="reset">ใบเบิก</legend>
+                    <table id="PRC_bookList" class="responderTable">
+                        <thead>
+                            <tr>
+                                <td>ID</td>
+                                <td>Part</td>
+                                <td>Quantity</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td></td>
+                                <td>Total</td>
+                                <td id="PRC_totalBook" class="right"></td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </fieldset>
+                <fieldset class="reset"><legend class="reset">การรับเข้าโรงงาน</legend>
+                    <table id="PRC_fwReceiveList" class="responderTable">
+                        <thead>
+                            <tr>
+                                <td>ID</td>
+                                <td>Date</td>
+                                <td>Quantity</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td></td>
+                                <td>Total</td>
+                                <td class="PRC_totalFWReceive" class="right"></td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                   </fieldset>
+                <fieldset class="reset"><legend class="reset">การจ่ายเข้าเครื่องพิมพ์(คลัง)</legend>
+                    <table id="PRC_fwDistributionList" class="responderTable">
+                        <thead>
+                            <tr>
+                                <td>Date</td>
+                                <td>Quantity</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td>Total</td>
+                                <td class="PRC_totalFWDistribution right" ></td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                   </fieldset>
+                <fieldset class="reset"><legend class="reset">Summary</legend>
+                    <table class="responderTable">
+                        <thead>
+                            <tr>
+                                <td>Summary</td>
+                                <td>Quantity</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>จำนวนกระดาษตาม WI ของชิ้นส่วน <span class="PRC_partName"></span></td>
+                                <td id="PRC_totalPaperPart" class="right">0</td>
+                            </tr>
+                            <tr>
+                                <td>จำนวนกระดาษตาม WI รวมทุกชิ้นส่วนที่เกี่ยวข้องในใบเบิกของชิ้นส่วน <span class="PRC_partName"></span></td>
+                                <td id="PRC_totalPaperInvolvedPart" class="right">0</td>
+                            </tr>
+                            <tr>
+                                <td>จำนวนกระดาษรับเข้ารวม</td>
+                                <td class="PRC_totalFWReceive right" >0</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                  </fieldset>
+                  <fieldset class="reset"><legend class="reset">จ่ายเข้าเครื่องพิมพ์(ตัดป้อนแท่น)</legend>
+                    <table style="margin:auto;border:0px" cellpadding="3px" >
+                            <tbody>
+                                <tr>
+                                    <td style="text-align:left;font-size: 13px;"><input type="radio" name="is_paperReady" id="PRC_paperReady"> พร้อม</td>
+                                    <td style="padding-left:10px"><input onkeypress="preventNonNumericalInput(event)" class="input-ready" id="PRC_paperQty" 
+                                    placeholder = "จำนวนกระดาษเข้าเครื่องพิมพ์"></td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align:left;font-size: 13px;"><input type="radio" name="is_paperReady" id="PRC_paperNotReady"> ไม่พร้อม</td>
+                                    <td style="padding-left:10px"><input class="input-ready" id="PRC_paperRemark"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                </fieldset>
+                <fieldset class="reset"><legend class="reset">หมึก</legend>
+                    <table style="margin:auto;border:0px" cellpadding="3px" >
+                        <tbody>
+                            <tr>
+                                <td style="text-align:left;font-size: 13px;"><input type="radio" name="is_inkReady" id="PRC_inkReady"> พร้อม</td>
+                            </tr>
+                            <tr>
+                                <td style="text-align:left;font-size: 13px;"><input type="radio" name="is_inkReady" id="PRC_inkNotReady"> ไม่พร้อม</td>
+                                <td style="padding-left:10px"><input class="input-ready" id="PRC_inkRemark"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </fieldset>
+                    <fieldset id="die_cut" class="reset"><legend class="reset">Block die-cut</legend>
+                    <table style="margin:auto;border:0px" cellpadding="3px" >
+                        <tbody>
+                            <tr>
+                                <td style="text-align:left;font-size: 13px;"><input type="radio" name="is_diecutReady" id="PRC_diecutReady" value="1"> พร้อม</td>
+                                <td style="padding-left:10px"><input class="input-ready" id="PRC_diecut_number" placeholder="รหัส block die-cut"></td>
+                            </tr>
+                            <tr>
+                                <td style="text-align:left;font-size: 13px;"><input type="radio" name="is_diecutReady" id="PRC_diecutNotReady" value="0"> ไม่พร้อม</td>
+                                <td style="padding-left:10px"><input class="input-ready" id="PRC_diecutRemark"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </fieldset>
+                <div id="updated-plan"><span></span></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" onclick="okPaper();">บันทึก</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal">ปิด</button>
+            </div>
+        </div>
+    </div>
+</div>

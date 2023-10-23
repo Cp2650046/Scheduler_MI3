@@ -1,9 +1,5 @@
 var dragAndDropApp = {
     enableMoveAllThoseBehind: false,
-    mouseDivCSS: {
-        'height': 20,
-        'width': 180,
-    },
     target: undefined,
     needScrollScript: false,
     needScrollScriptIsScrolling: {
@@ -12,61 +8,64 @@ var dragAndDropApp = {
     },
     reposition: function (div, e) {
         div.css({
-            'left': (e.clientX - 40) + 'px',
-            'top': (e.clientY + 25) + 'px',
+            'left': (e.clientX) + 'px',
+            'top': (e.clientY) + 'px',
         });
-        return this;
+    },
+    setposition: function (div, e) {
+        // console.log('e.clientX_new :>> ', e.clientX);
+        // console.log('e.clientY_new :>> ', e.clientY);
+        e.clientX = e.clientX - 31
+        e.clientY = e.clientY - 5
+        // console.log('e.clientX :>> ', e.clientX);
+        // console.log('e.clientY :>> ', e.clientY);
+        div.css({
+            'left': (e.clientX) + 'px',
+            'top': (e.clientY) + 'px',
+        });
     },
     displayStatusTimeout: undefined,
 }
-$(document).ready(function () {
-    init();
-});
-
 async function init() {
-    $('head').append('<style>div.mouseDiv{ width:' + dragAndDropApp.mouseDivCSS.width + 'px; height:' + dragAndDropApp.mouseDivCSS.height + 'px; }</style>');
-    // $('.draggable').draggable({ scroll: true, revert: true,cursor: "crosshair"  });
-    // await loadingLayer(true);
-    $(document).on('mousedown', 'div.draggable', function (e) {
+    console.log('s_navigation :>> ', s_navigation);
+    $(document).on('mousedown', 'div.draggable,div.draggable-disabled', async function (e) {
         if (e.which == 1) { // left click
-            $('body,div.draggable').addClass('cursorGrabbing');
-            $(this).css({ 'display': 'none' });
-            dragAndDropApp.target = $(this);
-            var div = $('<div></div>').append($(this).html()).css({
-                'background-color': $(this).css('background-color'),
-                'font': '13px tahoma',
-                'border-left':  $(this).css('border-left'),
-                'border-radius':  $(this).css('border-radius')
-            }).addClass('mouseDiv').prependTo('body');
-            dragAndDropApp.reposition(div, e);
-            if (dragAndDropApp.needScrollScript) {
-                scrollScript();
-            }
-            // events
-            $(document).on('mousemove.dragging', function (e2) {
-                dragAndDropApp.reposition(div, e2);
-            }).on('mouseover.shiftContainer', 'td.day, td.night', function () {
-                if ($('div.draggable:hover, #virtualDrop:hover').length == 0) {
+            let has_timesheet = 0;
+            await hasTimeSheet($(this).attr('plan_id')).then(async (value) => {
+                has_timesheet = value;
+                if (has_timesheet == 1) {
+                    $(this).removeClass('draggable');
+                    $(this).addClass('draggable-disabled');
+                } else {
+                    $('body,div.draggable').addClass('cursorGrabbing');
+                    $(this).css({ 'display': 'none' });
+                    dragAndDropApp.target = $(this);
+                    var div = $('<div></div>').append($(this).html()).css({
+                        'background-color': $(this).css('background-color'),
+                        'border-radius': $(this).css('border-radius'),
+                        'box-shadow': $(this).css('box-shadow')
+                    }).addClass('mouseDiv').prependTo('body');
+                    dragAndDropApp.reposition(div, e);
                     setVirtualDrop($(this));
+                    // events
+                    $(document).on('mousemove.dragging', function (e2) {
+                        dragAndDropApp.reposition(div, e2);
+                    }).on('mouseover.shiftContainer', 'td.day, td.night, div.draggable-disabled', function () {
+                        if ($('div.draggable:hover,#virtualDrop:hover,div.draggable-disabled:hover').length == 0) {
+                            setVirtualDrop($(this));
+                        }
+                    }).on('mouseover.divDraggable', 'div.draggable,div.draggable-disabled', function () {
+                        setVirtualDrop($(this));
+                    }).on('mouseup.drop', function () {
+                        drop();
+                    });
+
                 }
-            }).on('mouseover.divDraggable', 'div.draggable', function () {
-                setVirtualDrop($(this));
-            }).on('mouseup.drop', function () {
-                drop();
+            }).catch(err => {
+                console.log(err);
             });
         }
-    }).on('mouseover.dragAndDropStatusMessage', 'div.dragAndDropStatusMessage', function () {
-        $(this).css({
-            'left': $(this).css('right'),
-            'right': $(this).css('left'),
-        });
-    });
-    // because firefox won't scroll while dragging, so we do this
-    // check firefox
-    if (navigator.userAgent.match(/firefox/i)) {
-        dragAndDropApp.needScrollScript = true;
-    }
-    // dragAndDropApp.loadingLayer(false);
+    })
 }
 
 async function loadingLayer(visible) {
@@ -79,7 +78,7 @@ async function loadingLayer(visible) {
     return this;
 }
 
-async function scrollScript() {
+/* async function scrollScript() {
     $(document).on('mousemove.scroll', function (eScroll) {
         var winWidth = Number($(window).outerWidth(true));
         var winHeight = Number($(window).outerHeight(true));
@@ -143,7 +142,7 @@ async function scrollScript() {
             }, intervalTime);
         }
     });
-}
+} */
 
 async function setVirtualDrop(element) {
     $('#virtualDrop').remove();
@@ -154,13 +153,11 @@ async function setVirtualDrop(element) {
     else {
         virtualDrop.insertAfter(element);
     }
-    return this;
+    // return this;
 }
 
 async function drop() {
-    // console.log('148 :>> ', $('#virtualDrop').next('div.draggable').is(dragAndDropApp.target));
-    // console.log('149 :>> ', $('#virtualDrop').length);
-    if (!$('#virtualDrop').next('div.draggable').is(dragAndDropApp.target) && $('#virtualDrop').length == 1) { // does not drop at the same place
+    if (!$('#virtualDrop').next('div.draggable,div.draggable-disabled').is(dragAndDropApp.target) && $('#virtualDrop').length == 1) { // does not drop at the same place
         await killEvents();
         await Swal.fire({
             icon: 'warning',
@@ -183,19 +180,18 @@ async function drop() {
         })
     }
     else {
-        await killEvents()
+        await killEvents();
         await resetState();
     }
     $('body,div.draggable').removeClass('cursorGrabbing');
-    // return this;
 }
 
 async function killEvents() {
-    $(document).off('mousemove.dragging  mouseover.shiftContainer mouseover.divDraggable mouseup.drop mousemove.scroll');
+    $(document).off('mousemove.dragging  mouseover.shiftContainer mouseover.divDraggable mouseup.drop');
 }
 
 async function resetState() {
-    console.log('div.mouseDiv,#virtualDrop :>> ', $('div.mouseDiv,#virtualDrop'));
+    // console.log('div.mouseDiv,#virtualDrop :>> ', $('div.mouseDiv,#virtualDrop'));
     dragAndDropApp.target.css({ 'display': 'block' });
     $('div.mouseDiv,#virtualDrop').remove();
     clearInterval(dragAndDropApp.needScrollScriptIsScrolling.x);
@@ -231,7 +227,8 @@ async function createMoveListTable(moveList) {
 }
 
 async function save(moveAllThoseBehind, moveNow) {
-    // console.log('object :>> ', dragAndDropApp.target);
+    const userData = JSON.parse(localStorage.getItem('userData'))
+    // console.log('object :>> ', userData);
     var data = {
         original_id: dragAndDropApp.target.attr('plan_id'),
         original_plan_date: dragAndDropApp.target.attr('plan_date'),
@@ -240,9 +237,10 @@ async function save(moveAllThoseBehind, moveNow) {
         machine_id: dragAndDropApp.target.parents('td.dropZone').attr('machine_id'),
         shift_id: dragAndDropApp.target.parents('td.dropZone').hasClass('day') ? 1 : 2,
         plan_date: dragAndDropApp.target.parents('td.dropZone').attr('plan_date'),
-        id: new Array(),
+        id: [],
+        saleman_id: userData.emp_id
     };
-    dragAndDropApp.target.parents('td.dropZone').find('div.draggable').each(function () {
+    dragAndDropApp.target.parents('td.dropZone').find('div.draggable,div.draggable-disabled').each(function () {
         data.id.push($(this).attr('plan_id'));
     });
     // console.log('232 :>> ', data);
@@ -251,32 +249,16 @@ async function save(moveAllThoseBehind, moveNow) {
         $.extend(data, {
             moveNow: typeof moveNow != "undefined" ? (moveNow ? 1 : 0) : 0,
         });
-        await saveMasterPlanDragAndDropMoveAllThoseBehind(data);
+        // await saveMasterPlanDragAndDropMoveAllThoseBehind(data);
     }
     else {
         await saveMasterPlanDragAndDrop(data);
-        await resetState();
     }
-    return this;
 }
 
-/*async function displayStatus(text) {
-   if ($('div.dragAndDropStatusMessage').length == 0) {
-       $('<div>' + text + '</div>').addClass('dragAndDropStatusMessage').appendTo('body');
-   }
-   else {
-       $('div.dragAndDropStatusMessage').html(text).stop(true, true).show();
-   }
-   clearTimeout(this.displayStatusTimeout);
-   this.displayStatusTimeout = setTimeout(function () {
-       $('div.dragAndDropStatusMessage').fadeOut(2000);
-   }, 20000);
-   return this;
-} */
-
 async function reloadSection(planDate, machineID) {
+    // console.log('280 :>> ', machineID + " >> "+planDate);
+    await $(`span.font-total`).html('0');
     getData(planDate, machineID);
-    $('span.' + planDate + '.' + machineID).html('0:00');
     getDataHr(planDate, machineID);
-    return this;
 }

@@ -1,31 +1,28 @@
-let numday1 = "";
-let numday2 = "";
-let check_today = "";
-var input_date = "";
 $(document).ready(function () {
-    setOptionYear();
     numday1 = moment().daysInMonth();
     numday2 = moment().add(2, 'M').daysInMonth();
     check_today = moment().format("YYYY-MM-DD");
-    // console.log('moment("YYYY-MM-DD") :>> ', moment().add(1, 'month').startOf('month').format("YYYY-MM-DD"));
-    // let numday1 = moment().daysInMonth();
-    // let numday2 = moment().add(2, 'M').daysInMonth();
-    // console.log('6 :>> ', moment().daysInMonth());
-    // console.log('7 :>> ',moment().add(2, 'M').daysInMonth())
-    let widthT = ((numday1 + numday2) + 1) * 180
-    console.log('widthT :>> ', widthT);
-    // $("#tb_fix").css({width:widthT+'px'});
-    // $('div#fixtb').css({
-    //     width:$('#tb_fix').width()+'px',
-    //     height:$('#tb_fix').height()+'px'
-    // });
+    setOptionYear(s_year);
     searchNavigation();
-    
-    // table head row visibility
+    window.addEventListener('resize', handleWindowResize);
+    setTimeout(handleWindowResize, 450);
+    // if(s_navigation == 10 || s_navigation == 34 || s_navigation == 35 || s_navigation == 74){
+    //     $(document).on('mousedown.showPaper','div.draggable',function(){
+    //         $(this).addClass('showPaper');
+    //         $(document).on('mouseup.showPaper',function(){
+    //             showPaperReady($('div.showPaper'));
+    //             $('div.draggable.showPaper').removeClass('showPaper');
+    //             $(this).off('mouseup.showPaper mousemove.showPaper');
+    //         }).on('mousemove.showPaper',function(){
+    //             $('div.draggable.showPaper').removeClass('showPaper');
+    //             $(this).off('mouseup.showPaper mousemove.showPaper');
+    //         });
+    //     });
+    // }
 });
 
 async function searchNavigation() {
-    var type_id = 0;
+    let type_id = 0;
     if ($("#naviagate_masterplan_typeID").attr('selected', true)) {
         type_id = $("#naviagate_masterplan_typeID").val();
     }
@@ -35,8 +32,11 @@ async function searchNavigation() {
     if ($("#naviagateMasterPlan_month").attr('selected', true)) {
         month = $("#naviagateMasterPlan_month").val();
     }
-    // console.log('month :>> ', month);
-    // console.log('month :>> ', year);
+    console.log('22 :>> ', type_id);
+    urlParams.set('navigation', type_id);
+    urlParams.set('year', year);
+    urlParams.set('month', month);
+
     check_today = moment().format("YYYY-MM-DD");
     input_date = year + '-' + month + '-01'
     let search_date1 = moment(input_date).add(-1, 'days').format("YYYY-MM-DD");
@@ -52,36 +52,22 @@ async function searchNavigation() {
     // console.log('numday1 :>> ', numday1);
     // console.log('numday2 :>> ', numday2);
     // console.log('38 :>> ', type_id);
+
     await getDataPlaning(type_id, search_date1, search_date2);
-    // console.log('machine :>> ', machine);
-    // if(machine){
-    //     await main_set_loading({ loading: false})
-    //     await setPlans(machine.machineList, machine.holidayList).then(async (value) => {
-    //         // console.log(value)
-    //         if(value){
-    //             await setDataPlan(machine.dataplanList.plansList,'all');
-    //             await showHR(machine.dataplanList.hrList);
-                
-    //             // await setTableAfterPress();
-    //         }
-    //     }).catch(err => {
-    //         console.log(err);
-    //     });
-    // }
+    if (is_login == 0) {
+        await main_set_loading({ type: 'warning', loading: false, message: "Please login to use Drag and Drop feature.", timeOut: 5000 });
+    }
 }
 
 async function setPlans(machines, holidays) {
-    // console.log('47 :>> ', machines.length);
     return new Promise(function (resolve, reject) {
         let h = 0;
         var str_body_row = "";
-        machines.unshift({machine_id: "Machine", machine_name: ""});
-        // console.log('85 :>> ', machines);
+        machines.unshift({ machine_id: "Machine", machine_name: "" });
+        console.log('54 :>> ', machines);
         for (let i = 0; i < machines.length; i++) {
             if (i == 0) {
                 h = 40;
-                // machines[i].machine_id = "Machine";
-                // machines[i].machine_name = "";
             }
             let machine_subRow = 1;
             while (machine_subRow <= 4) {
@@ -100,38 +86,37 @@ async function setPlans(machines, holidays) {
                         show_date = moment(input_date).add(1, 'month').startOf('month').format("YYYY-MM-DD")
                     }
                     for (let d = 1; d <= numday; d++) {
-                        var bg = "#fff";
-                        var is_holiday = holidays.some((element) => element === show_date)
-                        console.log('show_date :>> ', show_date);
-                        console.log('check_today :>> ', check_today);
+                        var bg = "day-color-white";
+                        var is_holiday = holidays.some((item) => item.holiday === show_date)
+                        // console.log('is_holiday :>> ', is_holiday);
                         if (show_date == check_today) {
-                            bg = "orange";
+                            bg = "holiday-color-orage";
                         } else if (is_holiday || moment(show_date).weekday() === 0) {
-                            bg = "#494949";
+                            bg = "holiday-color-gray";
                         }
 
                         if (i === 0) {
-                            str_body_row += `<th height="${h}" width="180" bgcolor="${bg}" class="showdate">${show_date}</th>`
+                            str_body_row += `<th height="${h}" width="180" class="showdate ${bg} td-plan-w">${show_date}</th>`
                         } else {
                             switch (machine_subRow) {
                                 case 1:
-                                    str_body_row += `<td plan_date="${show_date}" machine_id="${machines[i].machine_id}" class="${machines[i].machine_id} ${show_date} day dropZone" bgcolor="${bg}" id="day${machines[i].machine_id}${show_date}"></td>`
+                                    str_body_row += `<td plan_date="${show_date}" machine_id="${machines[i].machine_id}" class="${machines[i].machine_id} ${show_date} day dropZone ${bg} td-plan-w" id="day${machines[i].machine_id}${show_date}"></td>`
                                     break;
                                 case 2:
-                                    str_body_row += `<td class="shiftSeparator"></td>`
+                                    str_body_row += `<td class="shiftSeparator td-plan-w"></td>`
                                     break;
                                 case 3:
-                                    str_body_row += `<td plan_date="${show_date}" machine_id="${machines[i].machine_id}" class="${machines[i].machine_id} ${show_date} night dropZone" bgcolor="${bg}" id="night${machines[i].machine_id}${show_date}"></td>`
+                                    str_body_row += `<td plan_date="${show_date}" machine_id="${machines[i].machine_id}" class="${machines[i].machine_id} ${show_date} night dropZone ${bg} td-plan-w" id="night${machines[i].machine_id}${show_date}"></td>`
                                     break;
                                 case 4:
-                                    str_body_row += `<td class="sumhr">[${machines[i].machine_id} ${machines[i].machine_name}]  Total <span class="${machines[i].machine_id} ${show_date}">0</span></td>`
+                                    str_body_row += `<td class="sumhr td-plan-w">&nbsp;[${machines[i].machine_id} ${machines[i].machine_name}]  Total <span class="${machines[i].machine_id} ${show_date} font-total">0</span></td>`
                                     break;
                             }
                         }
                         show_date = moment(show_date).add(1, 'days').format("YYYY-MM-DD");
                     } // end of day loop
                 }// end of month loop
-                if (i === 0){
+                if (i === 0) {
                     break;
                 }
                 str_body_row += "</tr>";
@@ -142,144 +127,146 @@ async function setPlans(machines, holidays) {
         $("#tb_fix tbody").html(str_body_row);
         resolve(str_body_row);
     });
-    // console.log('str_body_row :>> ', str_body_row);
 }
 
-async function setDataPlan(plans, type) {
-    var chk_single = "";
-    type == 'single';
-    plans.forEach(element => {
-        var display = "";
-        var shift = "";
-        var showtitle = "";
-        var qty = element.qty;
-        var quantity2 = element.quantity2;
-        quantity2 = ((quantity2 * 95) / 100);
-        var status = element.job_status_id;
-        plan_id = element.id;
-        if (qty >= quantity2 && (quantity2 != 0 || quantity2 == "")) {
-            status = 4;
-        }
-        //position day and night for display 
-        if (element.shift_id == 1) {
-            shift = 'day';
-        } else if (element.shift_id == 2) {
-            shift = 'night';
-        }
-
-        showtitle = `${element.job_name} ${element.detail} [ ชิ้นส่วน: ${element.partnameB} ] [ จำนวน: ${numeral(element.waste).format(0,0)} ] AE: ${element.firstname} ${element.lastname}`;
-
-        /*ตรวจสอบ job ประมาณการ*/
-        if (!element.mi_jobid) {
-            if (status == '6' || status == '7') {
-                display = "s5-boder";
+async function setDataPlan(plans = [], type) {
+    // var chk_single = "";
+    // type == 'single';
+    console.log('plans :>> ', plans);
+    var is_draggable = 'draggable';
+    if (plans.length > 0) {
+        plans.forEach(element => {
+            var display = "";
+            var shift = "";
+            var showtitle = "";
+            var status = element.job_status_id;
+            plan_id = element.id;
+            is_draggable = 'draggable';
+            if (element.has_timesheet) {
+                is_draggable = 'draggable-disabled';
             } else {
-                display = "success-boder";
+                is_draggable = 'draggable';
             }
-        } else {
-
-            switch (element.jobid) {
-                case 'ไม่มีช่าง':
-                    display = "noperson-boder";
-                    break;
-                case 'PM':
-                    display = "pm-boder";
-                    break;
-                case '5 ส':
-                    display = "s5-boder";
-                    break;
-                case 'Breakdown':
-                    display = "breakdown-boder";
-                    break;
-                default:
-                    switch (status) {
-                        case 1:
-                            display = "wait_ok-boder";
-                            break;
-                        case 2:
-                            display = "ok-boder";
-                            break;
-                        case 4:
-                            display = "success-boder";
-                            break;
-                        case 6:
-                            display = "ok_cus_color-boder";
-                            break;
-                        case 7:
-                            display = "wait_ok_cus_color-boder";
-                            break;
-                        default:
-                            display = "success-boder";
-                            break;
-                    }
-                    break;
+            //position day and night for display 
+            if (element.shift_id == 1) {
+                shift = 'day';
+            } else if (element.shift_id == 2) {
+                shift = 'night';
             }
-        }
-        if($('#'+shift+element.machine_id+element.plan_date).find('div').attr('plan_id') == element.id){ /* check ไม่ให้แผนแสดงซ้ำ */
-            $('#'+shift+element.machine_id+element.plan_date).find('div').remove();
-        }
-        $(`<div machine_id="${element.machine_id}" plan_date="${element.plan_date}" plan_id="${element.id}" shift="${element.shift_id}" class="draggable ${display}" title="${element.id} ${showtitle}">&nbsp; ${element.jobid} &nbsp;&nbsp;&nbsp; ${String(Number(element.hr).toFixed(2)).replace(/\./, ':')}</div>`).appendTo('#'+shift+element.machine_id+element.plan_date);
 
-        // if (chk_single) { // ดึงค่ามาเป็นครั้ง
-        //     config_menu(element.id);
-        // }
+            var ready = '', ready_title = '', ready_ink = '', ready_ink_title = '', ready_diecut = '', ready_diecut_title = '';
+            if (s_navigation == 10 || s_navigation == 34 || s_navigation == 35 || s_navigation == 74) {
+                // var ready = '', ready_title = '';
+                if (element.is_paper_trim_ready == "1") {
+                    ready_title = '[กระดาษพร้อมพิมพ์]';
+                    ready = '<img style="vertical-align:top" src="./projects/master_plans/images/checkmark-blue.png" title="' + ready_title + '">';
+                }
 
-    });
+                //check ready of ink
+                // var ready_ink='', ready_ink_title = '';
+                if (element.is_ink_ready == "1") {
+                    ready_ink_title = '[หมึกพร้อมพิมพ์]';
+                    ready_ink = '<img style="vertical-align:top" src="./projects/master_plans/images/checkmark-yellow.png" title="' + ready_ink_title + '">';
+                } else if (element.is_ink_ready == "0") {
+                    ready_ink_title = '[หมึกไม่พร้อมพิมพ์]';
+                    ready_ink = '<img style="vertical-align:top" src="./projects/master_plans/images/x-mark-yellow.png" title="' + ready_ink_title + '">';
+                }
 
+                // var ready_diecut='', ready_diecut_title = '';
+                if (element.is_diecut_ready == "1") {
+                    ready_diecut_title = '[Block die-cut พร้อม]';
+                    ready_diecut = '<img style="vertical-align:top" src="./projects/master_plans/images/checkmark-red.png" title="' + ready_diecut_title + '">';
+                } else if (element.is_diecut_ready == "0") {
+                    ready_diecut_title = '[Block die-cut ไม่พร้อม]';
+                    ready_diecut = '<img style="vertical-align:top" src="./projects/master_plans/images/x-mark-red.png" title="' + ready_diecut_title + '">';
+                }
+            }
+
+            if (s_navigation == 36) {
+                showtitle = `${element.job_name} ${element.detail} [ ชิ้นส่วน: ${element.partnameB} ] [ ชนิดกระดาษ: ${element.paper_type.replace(/"/, "'")}] [ แกรมกระดาษ: ${element.paper_gm}  ] [ หน้าม้วน(Roll): ${element.paper_roll} ] [ ยอดงานตามแผน: ${numeral(element.qty_paper).format(0, 0)} ] AE: ${element.firstname} ${element.lastname}`;
+            } else {
+                showtitle = `${element.job_name} ${element.detail} [ ชิ้นส่วน: ${element.partnameB} ] [ จำนวน: ${numeral(element.waste).format(0, 0)} ] AE: ${element.firstname} ${element.lastname} ${ready_title} ${ready_ink_title} ${ready_diecut_title}`;
+            }
+
+            /*ตรวจสอบ job ประมาณการ*/
+            if (!element.mi_jobid) {
+                if (status == '6' || status == '7') {
+                    display = "s5";
+                } else {
+                    display = "success";
+                    is_draggable = 'draggable-disabled'
+                }
+            } else {
+
+                switch (element.jobid) {
+                    case 'ไม่มีช่าง':
+                        display = "noperson";
+                        break;
+                    case 'PM':
+                        display = "pm";
+                        break;
+                    case '5 ส':
+                        display = "s5";
+                        break;
+                    case 'Breakdown':
+                        display = "breakdown";
+                        break;
+                    default:
+                        switch (status) {
+                            case 1:
+                                display = "wait_ok";
+                                break;
+                            case 2:
+                                display = "ok";
+                                break;
+                            case 4:
+                                display = "success";
+                                is_draggable = 'draggable-disabled'
+                                break;
+                            case 6:
+                                display = "ok_cus_color";
+                                break;
+                            case 7:
+                                display = "wait_ok_cus_color";
+                                break;
+                            default:
+                                display = "success";
+                                break;
+                        }
+                        break;
+                }
+            }
+            if (type == "single") {
+                $('#' + shift + element.machine_id + element.plan_date).find('div').remove();
+                console.log('td :>> ', $('#' + shift + element.machine_id + element.plan_date));
+            }
+            if ($('#' + shift + element.machine_id + element.plan_date).find('div').attr('plan_id') == element.id) { /* check ไม่ให้แผนแสดงซ้ำ */
+                $('#' + shift + element.machine_id + element.plan_date).find('div').remove();
+            }
+            $(`<div machine_id="${element.machine_id}" plan_date="${element.plan_date}" plan_id="${element.id}" shift="${element.shift_id}" data-jobID="${element.jobid}" data-partName="${element.partnameB}" data-itid="${element.itid}" data-waste="${numeral(element.waste).format(0, 0)}" data-sig="${element.sig}" class="${is_draggable} ${display} div-plan-w" title="${element.id} : ${showtitle}">&nbsp;${element.jobid.toUpperCase()} &nbsp;&nbsp;${String(Number(element.hr).toFixed(2)).replace(/\./, ':')}&nbsp;&nbsp;${ready}&nbsp;${ready_ink}&nbsp;${ready_diecut}</div>`).appendTo('#' + shift + element.machine_id + element.plan_date);
+            type = "" /* คืนค่าลบครั้งเดียว */
+        });
+    }
 }
 
-async function showHR(showhr) {
-    showhr.forEach(element => {
-        var plan_date = element.date;
-        var p_month = plan_date.substring(5, 7);
-        var p_day = plan_date.substring(8, 10);
-        var hr1 = element.hr1;
-        var hr = Math.floor(element.hr2 / 60);
-        var sum1 = hr1 + hr;
-        var sum2 = element.hr2 % 60;
-        if (sum2 < 10) {
-            sum2 = '0' + sum2;
-        }
-        var sumhr = sum1 + ':' + sum2;
-        $('span.' + element.machine + '.' + element.date).html(sumhr);
-    });
+async function showHR(showhr = []) {
+    if (showhr.length > 0) {
+        showhr.forEach(element => {
+            var hr1 = element.hr1;
+            var hr = Math.floor(element.hr2 / 60);
+            var sum1 = hr1 + hr;
+            var sum2 = element.hr2 % 60;
+            if (sum2 < 10) {
+                sum2 = '0' + sum2;
+            }
+            var sumhr = sum1 + ':' + sum2;
+            $(`span.${element.machine}.${element.date}.font-total`).html(sumhr);
+        });
+    }
 }
 
-async function setTableAfterPress(){
-    // table head row visibility
-    var headTable;
-    headTable = $('<table id="headVisibility"></table>');
-    headTable.append($('#fixtb tr').first().clone());
-    headTable.appendTo('body');
-    $('#headVisibility').css({
-        'width':$('#fixtb').css('width'),
-    });
-    $('#headVisibility').find('td').css('width',(parseFloat($('#fixtb tr td').first().outerWidth(true)-3)+'px'));
-    $(document).on('scroll.headVisibility',function(){
-        $('#headVisibility').css('top',($(window).scrollTop()+parseFloat($('#fixtb').css('top')))+'px');
-    });
-}
-
-async function btnPlanGo(){
+async function btnPlanGo() {
     searchNavigation();
     setStatusPlanColor();
-     /*var targetLocation = "";
-   switch( $('#naviagateMasterPlan_typeID').val() ){
-        case "34":
-        case "35":
-        case "10":
-            targetLocation = "/planning/masterplan/planningWithDragAndDrop.php";
-        break;
-        case "36":
-            targetLocation = "/planning/masterplan/planningcuttingWithDragAndDrop.php";
-        break;
-        case "afterpress1":
-        case "afterpress2":
-        case "afterpress3":
-        case "cutting":
-            targetLocation = "/planning/masterplan/planningafpressWithDragAndDrop.php";
-        break;
-    }
-    window.location.href = location.protocol + '//' + location.host + targetLocation + "?inputdate="+$('#naviagateMasterPlan_year').val() + '-' + $('#naviagateMasterPlan_month').val() + '&type_id=' + $('#naviagateMasterPlan_typeID').val();
-    */
+    window.location.replace("http://localhost:3131/masterplans?" + urlParams.toString());
 }

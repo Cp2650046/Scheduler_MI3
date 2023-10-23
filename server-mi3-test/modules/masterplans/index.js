@@ -26,4 +26,23 @@ Router.post("/send_data_moveAllThoseBehind", async (req, res) => {
     res.send(data).status(200)
 })
 
+Router.post("/check_time_sheet", async (req, res) => {
+    const data = await controllers.checkTimeSheet(req.body)
+    res.send(data).status(200)
+})
+
+Router.post("/get_paper_info", async (req, res) => {
+    const data = await controllers.getPaperInfo(req.body)
+    res.send(data).status(200)
+})
+
+Router.post("/set_paper_and_ink_ready", async (req, res) => {
+    const data = await controllers.setPaperAndInkReady(req.body)
+    res.send(data).status(200)
+})
+
+
+
+
+
 module.exports = Router;

@@ -1,10 +1,8 @@
 
 /* CSS for Master plan */
 #tb_fix{
-	text-align:center;
 	empty-cells:show;
 	table-layout:fixed;
-	/* border:1px solid #8F8F8F; */
 	border-collapse:collapse;
 } 
 
@@ -79,10 +77,12 @@ td.month2:hover {
 	table-layout:fixed;
 	/* border:1px solid #8F8F8F; */
 	font-size: 14px;
-	background-color: #EEE0C9;
+	text-align: center;
+	background-color: #FFF;
 }
 .machine{
-	border-bottom:1px solid #8F8F8F
+	border-bottom:1px solid #8F8F8F;
+	border-right: 1px solid #8F8F8F;
 }
 .failed{
 	border:1px solid #8F8F8F;
@@ -91,7 +91,7 @@ td.month2:hover {
 	background-color:#D1D1D1;
 }
 .sumhr{
-	/* border-bottom:4px solid black; */
+	border-right: 1px solid #8F8F8F;
 	border-bottom: 1px solid #8F8F8F;
 	font-size: 11px;
     text-align: left;
@@ -105,29 +105,29 @@ td.month2:hover {
 }
 
 .noperson{
-	background-color:yellow;
+	background-color:#EFED95;
 }
 .pm{
-	background-color:purple;
+	background-color:#BEADFA;
 }
 .breakdown{
-	background-color:#FFCC33;
+	background-color:#F7C85A;
 }
 .s5{
-	background-color:pink;
+	background-color:#e5aeb8;
 }
 .wait_ok{
-	background-color:#0066FF;
+	background-color:#64A9F3;
 }
 .ok_cus_color{
-	background-color:#CC0000;
-	color:#fff;
+	background-color:#E03C3C;
+	color: #fff;
 }
 .wait_ok_cus_color{
 	background-color:#FF8F8F;
 }
 .ok{
-	background-color:#33CC00;
+	background-color:#CAF9C0;
 }
 .success{
 	background-color:#FFFFFF;
@@ -138,40 +138,41 @@ td.month2:hover {
 
 /* border darg */
 .noperson-boder{
-	border-left: 15px solid yellow;
+	border-left: 15px solid #CCCA80;;
 	background-color: #EFED95;
 }
 .pm-boder{
-	border-left: 15px solid purple;
+	border-left: 15px solid #8D80BB;
 	background-color: #BEADFA;
 }
 .breakdown-boder{
-	border-left: 15px solid #FFCC33;
+	border-left: 15px solid #C6A049;
 	background-color: #F7C85A;
 }
 .s5-boder{
-	border-left: 15px solid pink;
+	border-left: 15px solid #c48893;
 	background-color: #e5aeb8;
 }
 .wait_ok-boder{
-	border-left: 15px solid #0066FF;
+	border-left: 15px solid #467BB3;
 	background-color: #64A9F3;
 }
 .ok_cus_color-boder{
-	border-left: 15px solid #CC0000;
+	border-left: 15px solid #C43737;
 	background-color: #E03C3C;
 }
 .wait_ok_cus_color-boder{
-	border-left: 15px solid #FF8F8F;
+	border-left: 15px solid #BE7D7D;
 	background-color: #FAA;
 }
 .ok-boder{
-	border-left: 15px solid #33CC00;
+	border-left: 15px solid #9ECA95;
 	background-color: #CAF9C0;
 }
 .success-boder{
-	border-left: 15px solid #FFFFFF;
+	border-left: 15px solid #E1E1E1;
 	background-color: #F4F9FB;
+	border-top: 1px solid #E1E1E1;
 }
 .success2-boder{
 	border-left: 15px solid #663500;
@@ -186,9 +187,9 @@ td.month2:hover {
 	position:fixed !important;	
 }
 #headVisibility {
-    z-index: 99;
-    position: absolute;
-    background-color: #FFF;
+z-index: 99;
+position: absolute;
+background-color: #FFF;
 }
 #naviagateMasterPlanContainer{
 	text-align:center;
@@ -198,4 +199,16 @@ td.month2:hover {
 }
 #colorInfo span{
 	border:0.5px solid #000;
+}
+
+.holiday-color-orage{
+	background-color: #FDC9A7 !important;
+}
+
+.holiday-color-gray{
+	background-color: #B1BABF !important;
+}
+
+.day-color-white{
+	background-color: #fff;
 }

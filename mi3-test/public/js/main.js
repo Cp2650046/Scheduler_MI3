@@ -8,7 +8,7 @@ $(function () {
 
 function main_authentication() {
     const url = window.location.pathname.split('/')[1]
-    if (url !== 'login' && url !== 'timesheet' && url !== 'scheduler') {
+    if (url !== 'login' && url !== 'timesheet' && url !== 'scheduler' && url !== 'masterplans') {
         const projectData = JSON.parse(localStorage.getItem('projectData'))
         const userData = JSON.parse(localStorage.getItem('userData'))
         if (projectData === null && userData === null) {

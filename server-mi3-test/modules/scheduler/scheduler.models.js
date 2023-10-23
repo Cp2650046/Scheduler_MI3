@@ -173,7 +173,7 @@ const getPlanSearchModel = async (req, transaction) => {
             END AS machine_name,
             job_status.job_status_name,
             shift.shift_name,
-            isnull( mi_item.partName, m_p.partName ) partName,
+            isnull(m_p.partName,'') AS partName,
             m_p.detail,
             mi.due1,
             m_p.sig,
