@@ -27,7 +27,7 @@ var dragAndDropApp = {
     displayStatusTimeout: undefined,
 }
 async function init() {
-    console.log('s_navigation :>> ', s_navigation);
+    // console.log('s_navigation :>> ', s_navigation);
     $(document).on('mousedown', 'div.draggable,div.draggable-disabled', async function (e) {
         if (e.which == 1) { // left click
             let has_timesheet = 0;
@@ -43,7 +43,8 @@ async function init() {
                     var div = $('<div></div>').append($(this).html()).css({
                         'background-color': $(this).css('background-color'),
                         'border-radius': $(this).css('border-radius'),
-                        'box-shadow': $(this).css('box-shadow')
+                        'box-shadow': $(this).css('box-shadow'),
+                        'width': $(this).css('width')
                     }).addClass('mouseDiv').prependTo('body');
                     dragAndDropApp.reposition(div, e);
                     setVirtualDrop($(this));
@@ -196,8 +197,8 @@ async function resetState() {
     $('div.mouseDiv,#virtualDrop').remove();
     clearInterval(dragAndDropApp.needScrollScriptIsScrolling.x);
     clearInterval(dragAndDropApp.needScrollScriptIsScrolling.y);
-    dragAndDropApp.target = undefined;
     $('div.highlight').removeClass('highlight');
+    dragAndDropApp.target = undefined;
 }
 
 async function createMoveListTable(moveList) {

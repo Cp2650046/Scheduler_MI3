@@ -12,7 +12,7 @@ async function getDataPlaning(type_id, search_date1, search_date2) {
             await main_set_loading({ loading: true, message: 'LOADING...' })
         },
         success: async function (res) {
-            // console.log(res);
+            console.log(res);
             await setPlans(res.machineList, res.holidayList).then(async (value) => {
                 // console.log(value)
                 if (value) {
@@ -223,7 +223,7 @@ async function getPaperInfo(id, jobID, itid) {
         },
         dataType: 'JSON',
         success: function (res) {
-            console.log('res :>> ', res);
+            // console.log('res :>> ', res);
             setPaperInfo(res);
         },
         error: function (err) {
@@ -239,10 +239,13 @@ async function setPaperAndInkReady(data_paper) {
         method: 'POST',
         data: data_paper,
         dataType: 'JSON',
+        async: false,
         success: function (res) {
             console.log('res :>> ', res);
-            console.log('save ink_ready or paper_trim_ready SUCCESS');
-            location.reload();
+            if(res.success === 1){
+                console.log('save ink_ready or paper_trim_ready SUCCESS');
+                location.reload();
+            }
         },
         error: function (err) {
             console.log('save ink_ready or paper_trim_ready UNSUCCESS');

@@ -213,8 +213,12 @@ const getDataModel = async (req, transaction) => {
     if (targetMachine != "") {
         wh += ` AND a.machine_id='${targetMachine}'`;
     }
-
-    const sql_data = `SELECT
+    const sql_find_type_id = `SELECT type_id FROM mi.dbo.machine WHERE machine_id = '${targetMachine}'`;
+    let plandDtaList =  await connection.query(sql_find_type_id)
+    .then(async ([data]) => {
+        // console.log('219 :>> ', data[0].type_id);
+        if(data){
+            var sql_data = `SELECT
                         a.id,
                         f.firstname,
                         f.lastname,
@@ -268,10 +272,17 @@ const getDataModel = async (req, transaction) => {
                     ORDER BY
                         a.shift_id,
                         a.priority ASC`;
-    let plandDtaList = (await connection.query(sql_data))[0];
-    // console.log('plandDtaList :>> ', sql_data);
+            if (data[0].type_id == 10 || data[0].type_id == 34 || data[0].type_id == 35 || data[0].type_id == 74) {
+                sql_data = `EXEC mi.dbo.getMasterPlanDragAndDrop_Machine ${data[0].type_id},'${targetDate}','${targetDate}'`;
+            }
+            return (await connection.query(sql_data))[0];
+        }
+       
+    })
+    .catch((err) => {
+        console.log('err :>> ', err);
+    })
     return plandDtaList;
-
 }
 
 const getDataHrModel = async (req, transaction) => {
@@ -590,7 +601,7 @@ const getPaperInfoModel = async (req, transaction) => {
                                 PURCH.dbo.po_detail AS pd
                             WHERE
                                 pd.po_number = rh.po_number
-                            AND pd.jobid = '${req.jobID}'`;
+                            AND pd.jobid = '${req.jobID}')`;
 
     const sql_booking = `SELECT
                             h.book_number,
@@ -796,32 +807,41 @@ const getPaperInfoModel = async (req, transaction) => {
 }
 
 const setPaperAndInkReadyModel = async (req, transaction) => {
-    // console.log('811 :>> ', req);
-    const { is_ink_ready, ink_remark, is_paper_trim_ready, paper_trim_remark, paper_trim_qty, is_diecut_ready, diecut_remark, diecut_number, plan_id, login_emp_id } = req
+    console.log('799 :>> ', req);
+    var result = {};
+    const { is_ink_ready, ink_remark, is_paper_trim_ready, paper_trim_remark, paper_trim_qty, is_diecut_ready, diecut_remark, diecut_number, id, login_emp_id } = req
     var update_con = "";
 
-    if (is_ink_ready != null) {
+    if (is_ink_ready != "") {
         update_con += `is_ink_ready = ${is_ink_ready} , ink_remark = '${ink_remark}'`;
     }
-    if (is_paper_trim_ready != null) {
+    if (is_paper_trim_ready != "") {
         if (update_con !== "") {
             update_con += ","
         }
-        update_con += `is_paper_trim_ready = '${is_paper_trim_ready}', paper_trim_qty = '${paper_trim_qty}', paper_trim_remark = '${paper_trim_remark}' `;
+        update_con += `is_paper_trim_ready = ${is_paper_trim_ready}, paper_trim_qty = '${paper_trim_qty}', paper_trim_remark = '${paper_trim_remark}' `;
     }
-    if (is_diecut_ready != null) {
+    if (is_diecut_ready != "") {
         if (update_con !== "") {
             update_con += ","
         }
-        update_con += ` is_diecut_ready = ${is_diecut_ready}, diecut_remark='${diecut_remark}', diecut_number = '${diecut_number}' `;
+        update_con += `is_diecut_ready = ${is_diecut_ready}, diecut_remark='${diecut_remark}', diecut_number = '${diecut_number}' `;
     }
 
     if (update_con !== "") {
         update_con += `,update_by = '${login_emp_id}', updatedAt = GETDATE()`;
     }
 
-    const sql_updated = `UPDATE mi.dbo.machine_planning SET ${update_con} WHERE id = ${plan_id}`;
-    await (connection.query(sql_updated));
+    const sql_updated = `UPDATE mi.dbo.machine_planning SET ${update_con} WHERE id = ${id}`;
+    await (connection.query(sql_updated)).then(([data]) => {
+                                            result.success = 1;
+                                            result.message = "สำเร็จ"
+                                        })
+                                    .catch(() => {
+                                        result.message = "อัปเดตไม่สำเร็จ"
+                                        result.success = 0;
+                                    })
+    return result;
     // const sql_set_diecut_status = `EXEC mi.dbo.set_diecut_status @id = '${plan_id}'`;
     // await (connection.query(sql_set_diecut_status));
 

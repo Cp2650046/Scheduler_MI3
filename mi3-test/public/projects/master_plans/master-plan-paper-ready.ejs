@@ -43,6 +43,8 @@
     .modal-footer{
         justify-content: center;
         padding:unset;
+        border-top: unset;
+        height: 40px;
     }
 
     #updated-plan{
@@ -52,7 +54,32 @@
     .modal-dialog{
         overflow-y: auto;
         height: 100%;
-        max-height: 566px;
+        max-height: 620px;
+    }
+
+    #close_paper,#save_paper{
+        border: medium;
+        border-radius: 6px;
+        box-shadow: black 2px 2px 3px;
+        cursor: pointer;
+        height: 24px;
+        width: 24px;
+        margin-left: 10px;
+    }
+    #close_paper:hover,#save_paper:hover{
+        color: unset;
+    }
+    #close_paper{
+        background-image: url("../projects/master_plans/images/close-window-red.png");
+    }
+    #save_paper{
+        background-image: url("../projects/master_plans/images/check-mark-8-green.png");
+    }
+    .btn-danger {
+        background-color: #df4857;
+    }
+    .btn-success {
+        background-color: #42b35c;
     }
 </style>
 <div class="modal fade" tabindex="-1" data-backdrop="static" role="dialog" id="modal-paperReadyContainer">
@@ -209,7 +236,7 @@
                                 </tr>
                                 <tr>
                                     <td style="text-align:left;font-size: 13px;"><input type="radio" name="is_paperReady" id="PRC_paperNotReady"> ไม่พร้อม</td>
-                                    <td style="padding-left:10px"><input class="input-ready" id="PRC_paperRemark"></td>
+                                    <td style="padding-left:10px"><input class="input-ready" id="PRC_paperRemark" placeholder = "หมายเหตุ"></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -222,7 +249,7 @@
                             </tr>
                             <tr>
                                 <td style="text-align:left;font-size: 13px;"><input type="radio" name="is_inkReady" id="PRC_inkNotReady"> ไม่พร้อม</td>
-                                <td style="padding-left:10px"><input class="input-ready" id="PRC_inkRemark"></td>
+                                <td style="padding-left:10px"><input class="input-ready" id="PRC_inkRemark" placeholder = "หมายเหตุ"></td>
                             </tr>
                         </tbody>
                     </table>
@@ -236,7 +263,7 @@
                             </tr>
                             <tr>
                                 <td style="text-align:left;font-size: 13px;"><input type="radio" name="is_diecutReady" id="PRC_diecutNotReady" value="0"> ไม่พร้อม</td>
-                                <td style="padding-left:10px"><input class="input-ready" id="PRC_diecutRemark"></td>
+                                <td style="padding-left:10px"><input class="input-ready" id="PRC_diecutRemark" placeholder = "หมายเหตุ"></td>
                             </tr>
                         </tbody>
                     </table>
@@ -244,8 +271,8 @@
                 <div id="updated-plan"><span></span></div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-success" onclick="okPaper();">บันทึก</button>
-                <button type="button" class="btn btn-danger" data-dismiss="modal">ปิด</button>
+                <input type="button" id="save_paper" onclick="okPaper();" title="Save and close">
+                <input type="button" id="close_paper" data-dismiss="modal" title="Cancel and close">
             </div>
         </div>
     </div>

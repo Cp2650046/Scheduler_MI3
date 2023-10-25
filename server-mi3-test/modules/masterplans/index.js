@@ -41,8 +41,4 @@ Router.post("/set_paper_and_ink_ready", async (req, res) => {
     res.send(data).status(200)
 })
 
-
-
-
-
 module.exports = Router;

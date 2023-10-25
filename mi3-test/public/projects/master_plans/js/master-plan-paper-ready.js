@@ -16,7 +16,7 @@ $(document).ready(function () {
 });
 
 async function showPaperReady(div) {
-    console.log('div :>> ', div);
+    // console.log('div :>> ', div);
     var id = div.attr('plan_id');
     var jobID = div.data('jobid');
     var partName = div.data('partname');
@@ -55,9 +55,9 @@ async function okPaper() {
          alert('ไม่สามารถบันทึกข้อมูลได้ กรุณา Login ก่อนใช้งาน');
          return false;
      } */
-    var is_ink_ready = null
-    var is_paper_trim_ready = null
-    var is_diecut_ready = null
+    let is_ink_ready = null
+    let is_paper_trim_ready = null
+    let is_diecut_ready = null
     if ($('#PRC_inkReady').prop('checked')) {
         is_ink_ready = 1
     } else if ($('#PRC_inkNotReady').prop('checked')) {
@@ -74,15 +74,20 @@ async function okPaper() {
         is_diecut_ready = 0
     }
     if (is_ink_ready != null || is_paper_trim_ready != null || is_diecut_ready != null) {
+        const userData = JSON.parse(localStorage.getItem('userData'))
+        console.log('is_ink_ready :>> ', is_ink_ready);
+        console.log('is_paper_trim_ready :>> ', is_paper_trim_ready);
+        console.log('is_diecut_ready :>> ', is_diecut_ready);
+
         var data = {
-            login_emp_id: login_emp_id,
+            login_emp_id: userData.emp_id,
             id: $('#PRC_id').html(),
-            is_diecut_ready: is_diecut_ready,
-            is_ink_ready: is_ink_ready,
+            is_ink_ready,
             ink_remark: $('#PRC_inkRemark').val() == "" ? null : $('#PRC_inkRemark').val(),
+            is_diecut_ready,
             diecut_remark: $('#PRC_diecutRemark').val() == "" ? null : $('#PRC_diecutRemark').val(),
             diecut_number: $('#PRC_diecut_number').val() == "" ? null : $('#PRC_diecut_number').val(),
-            is_paper_trim_ready: is_paper_trim_ready,
+            is_paper_trim_ready,
             paper_trim_qty: $('#PRC_paperQty').val() == "" ? null : $('#PRC_paperQty').val(),
             paper_trim_remark: $('#PRC_paperRemark').val() == "" ? null : $('#PRC_paperRemark').val()
         }
@@ -95,18 +100,21 @@ async function okPaper() {
 function setPaperInfo(r) {
     var tr = $('<tr></tr>');
     var td = $('<td></td>');
+    resetCheckRadio();
 
     $.each(r.po_list, function () {
+        let qty_po =  numeral(parseFloat(this.qty)).format('0,0.00');
         tr.clone()
             .append(td.clone().html(this.po_number))
             .append(td.clone().html(this.item_code))
             .append(td.clone().html(this.item_name))
-            .append(td.clone().addClass('right').html(numeral(this.qty).format(0, 2)))
+            .append(td.clone().addClass('right').html(qty_po))
             .append(td.clone().html(this.unit_name))
             .append(td.clone().html(this.po_status))
             .appendTo('#PRC_POList tbody')
             ;
     });
+
     if(r.po_list.length === 0){
         $("#PRC_POList tbody").html(`<tr><td colspan="6">ไม่พบข้อมูล</td></tr>`)
     }
@@ -116,7 +124,7 @@ function setPaperInfo(r) {
             .append(td.clone().html(this.receive_date))
             .append(td.clone().html(this.item_code))
             .append(td.clone().html(this.item_name))
-            .append(td.clone().addClass('right').html(numeral(this.qty).format(0, 2)))
+            .append(td.clone().addClass('right').html(numeral(this.qty).format('0,0.00')))
             .append(td.clone().html(this.unit_name))
             .appendTo('#PRC_ReceiveList tbody')
             ;
@@ -131,12 +139,12 @@ function setPaperInfo(r) {
         tr.clone()
             .append(td.clone().html(this.book_number))
             .append(td.clone().html(this.partNames))
-            .append(td.clone().addClass('right').html(numeral(this.qty).format(0, 2)))
+            .append(td.clone().addClass('right').html(numeral(this.qty).format('0,0.00')))
             .appendTo('#PRC_bookList tbody')
             ;
         sumBooking += Number(this.qty);
     });
-    $('#PRC_totalBook').html(numeral(sumBooking).format(0,0));
+    $('#PRC_totalBook').html(numeral(sumBooking).format('0,0'));
     if(r.booking_list.length === 0){
         $("#PRC_bookList tbody").html(`<tr><td colspan="3">ไม่พบข้อมูล</td></tr>`)
     }
@@ -146,12 +154,12 @@ function setPaperInfo(r) {
         tr.clone()
             .append(td.clone().html(this.book_number))
             .append(td.clone().html(this.docDate))
-            .append(td.clone().addClass('right').html(numeral(this.qty).format(0, 2)))
+            .append(td.clone().addClass('right').html(numeral(this.qty).format('0,0.00')))
             .appendTo('#PRC_fwReceiveList tbody')
             ;
         sumFWReceive += Number(this.qty);
     });
-    $('.PRC_totalFWReceive').html(numeral(sumFWReceive).format(0, 0));
+    $('.PRC_totalFWReceive').html(numeral(sumFWReceive).format('0, 0'));
 
     if(r.fwReceive_list.length === 0){
         $("#PRC_fwReceiveList tbody").html(`<tr><td colspan="3">ไม่พบข้อมูล</td></tr>`)
@@ -161,25 +169,24 @@ function setPaperInfo(r) {
     $.each(r.fw_distribution_list, function () {
         tr.clone()
             .append(td.clone().html(this.receive_date))
-            .append(td.clone().addClass('right').html(numeral(this.qty).format(0, 2)))
+            .append(td.clone().addClass('right').html(numeral(this.qty).format('0,0.00')))
             .appendTo('#PRC_fwDistributionList tbody')
             ;
         sumFWDistribution += Number(this.qty);
     });
-    $('.PRC_totalFWDistribution').html(numeral(sumFWDistribution).format(0, 0));
+    $('.PRC_totalFWDistribution').html(numeral(sumFWDistribution).format('0, 0'));
 
     if(r.fw_distribution_list.length === 0){
         $("#PRC_fwDistributionList tbody").html(`<tr><td colspan="2">ไม่พบข้อมูล</td></tr>`)
     }
 
     if (r.part_wi_list.length > 0) {
-        console.log('155', r.part_wi_list[0].totSPaper1);
-        $('#PRC_totalPaperPart').html(numeral(r.part_wi_list[0].totSPaper1).format(0, 0));
+        $('#PRC_totalPaperPart').html(numeral(r.part_wi_list[0].totSPaper1).format('0, 0'));
     }
     if (r.involved_part_wi_list.length > 0) {
-        $('#PRC_totalPaperInvolvedPart').html(numeral(r.involved_part_wi_list[0].wi).format(0, 0));
+        $('#PRC_totalPaperInvolvedPart').html(numeral(r.involved_part_wi_list[0].wi).format('0, 0'));
     }
-    if (r.rs_plan_list.is_ink_ready != null || r.rs_plan_list.is_ink_ready != "") {
+    if (r.rs_plan_list.is_ink_ready != null) {
         if (r.rs_plan_list.is_ink_ready == 1) {
             $('#PRC_inkReady').prop('checked', true);
         } else if (r.rs_plan_list.is_ink_ready == 0) {
@@ -189,7 +196,7 @@ function setPaperInfo(r) {
         $('#PRC_inkRemark').val(r.rs_plan_list.ink_remark);
     }
 
-    if (r.rs_plan_list.is_diecut_ready != null || r.rs_plan_list.is_diecut_ready != "") {
+    if (r.rs_plan_list.is_diecut_ready != null) {
         if (r.rs_plan_list.is_diecut_ready == 1) {
             $('#PRC_diecutReady').prop('checked', true);
             $('#PRC_diecut_number').val(r.rs_plan_list.diecut_number);
@@ -200,12 +207,10 @@ function setPaperInfo(r) {
             $('#PRC_diecutRemark').val(r.diecut_remark);
         }
     }
-
-    if (r.rs_plan_list.is_paper_trim_ready != null && r.rs_plan_list.is_paper_trim_ready != "") {
+    if (r.rs_plan_list.is_paper_trim_ready != null) {
         if (r.rs_plan_list.is_paper_trim_ready == 1) {
             $('#PRC_paperReady').prop('checked', true);
             $('#PRC_paperQty').val(r.rs_plan_list.paper_trim_qty);
-
         } else if (r.rs_plan_list.is_paper_trim_ready == 0) {
             $('#PRC_paperNotReady').prop('checked', true);
         }
@@ -217,10 +222,25 @@ function setPaperInfo(r) {
     } else {
         $("#die_cut").hide();
     }
-    console.log('r.rs_plan_list :>> ', r.rs_plan_list);
     if (r.rs_plan_list.update_by != "" && r.rs_plan_list.update_by != null) {
         console.log('แก้ไขล่าสุด :>> ', $('div#updated-plan'));
         $('div#updated-plan').html(`<span>แก้ไขล่าสุดโดย ${r.rs_plan_list.emp_name} (${r.rs_plan_list.updatedAt})</span>`);
+    }
+}
+
+function resetCheckRadio(){
+    $('#PRC_paperQty').val('');
+    $('#PRC_paperRemark').val('');
+    $('#PRC_inkRemark').val('');
+    $('#PRC_diecutReady').prop('checked', false);
+    $('#PRC_diecutNotReady').prop('checked', false);
+    $('#PRC_paperReady').prop('checked', false);
+    $('#PRC_paperNotReady').prop('checked', false);
+}
+
+function preventNonNumericalInput(e){
+    if (e.which < 48 || e.which > 57) {
+        e.preventDefault();
     }
 }
 
