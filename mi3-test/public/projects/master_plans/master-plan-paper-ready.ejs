@@ -4,16 +4,17 @@
         margin:0 auto;
         font-size:11px;
         border:2px solid transparent !important;
+        width: 100%;
     }
     .responderTable thead tr:last-child,.responderTable tfoot tr:last-child{
-        background-color:wheat;
+        background-color:#ece0a4;
     }
     .responderTable td{
         padding:0 8px;
         border:2px solid lemonchiffon !important;
     }
     .responderTables tbody tr:nth-child(2n){
-        background-color:wheat !important;
+        background-color:#ece0a4 !important;
     }
     .reset {
         all: revert;
@@ -81,8 +82,12 @@
     .btn-success {
         background-color: #42b35c;
     }
+    .text-left{
+        text-align: left;
+    }
 </style>
-<div class="modal fade" tabindex="-1" data-backdrop="static" role="dialog" id="modal-paperReadyContainer">
+
+<div class="modal fade" tabindex="-1" data-backdrop="static" role="dialog" id="modal-paperReadyContainer" data-ref="100">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -212,15 +217,15 @@
                         </thead>
                         <tbody>
                             <tr>
-                                <td>จำนวนกระดาษตาม WI ของชิ้นส่วน <span class="PRC_partName"></span></td>
+                                <td class="text-left">จำนวนกระดาษตาม WI ของชิ้นส่วน <span class="PRC_partName"></span></td>
                                 <td id="PRC_totalPaperPart" class="right">0</td>
                             </tr>
                             <tr>
-                                <td>จำนวนกระดาษตาม WI รวมทุกชิ้นส่วนที่เกี่ยวข้องในใบเบิกของชิ้นส่วน <span class="PRC_partName"></span></td>
+                                <td class="text-left">จำนวนกระดาษตาม WI รวมทุกชิ้นส่วนที่เกี่ยวข้องในใบเบิกของชิ้นส่วน <span class="PRC_partName"></span></td>
                                 <td id="PRC_totalPaperInvolvedPart" class="right">0</td>
                             </tr>
                             <tr>
-                                <td>จำนวนกระดาษรับเข้ารวม</td>
+                                <td class="text-left">จำนวนกระดาษรับเข้ารวม</td>
                                 <td class="PRC_totalFWReceive right" >0</td>
                             </tr>
                         </tbody>
@@ -230,13 +235,13 @@
                     <table style="margin:auto;border:0px" cellpadding="3px" >
                             <tbody>
                                 <tr>
-                                    <td style="text-align:left;font-size: 13px;"><input type="radio" name="is_paperReady" id="PRC_paperReady"> พร้อม</td>
-                                    <td style="padding-left:10px"><input onkeypress="preventNonNumericalInput(event)" class="input-ready" id="PRC_paperQty" 
+                                    <td style="text-align:left;font-size: 13px;"><input type="radio" name="is_paperReady" id="PRC_paperReady" value="1"> พร้อม</td>
+                                    <td style="padding-left:10px"><input type="text" onkeypress="preventNonNumericalInput(event)" class="input-ready" id="PRC_paperQty" 
                                     placeholder = "จำนวนกระดาษเข้าเครื่องพิมพ์"></td>
                                 </tr>
                                 <tr>
-                                    <td style="text-align:left;font-size: 13px;"><input type="radio" name="is_paperReady" id="PRC_paperNotReady"> ไม่พร้อม</td>
-                                    <td style="padding-left:10px"><input class="input-ready" id="PRC_paperRemark" placeholder = "หมายเหตุ"></td>
+                                    <td style="text-align:left;font-size: 13px;"><input type="radio" name="is_paperReady" id="PRC_paperNotReady" value="0"> ไม่พร้อม</td>
+                                    <td style="padding-left:10px"><input type="text" class="input-ready" id="PRC_paperRemark" placeholder = "หมายเหตุ"></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -245,11 +250,11 @@
                     <table style="margin:auto;border:0px" cellpadding="3px" >
                         <tbody>
                             <tr>
-                                <td style="text-align:left;font-size: 13px;"><input type="radio" name="is_inkReady" id="PRC_inkReady"> พร้อม</td>
+                                <td style="text-align:left;font-size: 13px;"><input type="radio" name="is_inkReady" id="PRC_inkReady" value="1"> พร้อม</td>
                             </tr>
                             <tr>
-                                <td style="text-align:left;font-size: 13px;"><input type="radio" name="is_inkReady" id="PRC_inkNotReady"> ไม่พร้อม</td>
-                                <td style="padding-left:10px"><input class="input-ready" id="PRC_inkRemark" placeholder = "หมายเหตุ"></td>
+                                <td style="text-align:left;font-size: 13px;"><input type="radio" name="is_inkReady" id="PRC_inkNotReady" value="0"> ไม่พร้อม</td>
+                                <td style="padding-left:10px"><input type="text" class="input-ready" id="PRC_inkRemark" placeholder = "หมายเหตุ"></td>
                             </tr>
                         </tbody>
                     </table>
@@ -259,11 +264,11 @@
                         <tbody>
                             <tr>
                                 <td style="text-align:left;font-size: 13px;"><input type="radio" name="is_diecutReady" id="PRC_diecutReady" value="1"> พร้อม</td>
-                                <td style="padding-left:10px"><input class="input-ready" id="PRC_diecut_number" placeholder="รหัส block die-cut"></td>
+                                <td style="padding-left:10px"><input class="input-ready" type="text" id="PRC_diecut_number" placeholder="รหัส block die-cut"></td>
                             </tr>
                             <tr>
                                 <td style="text-align:left;font-size: 13px;"><input type="radio" name="is_diecutReady" id="PRC_diecutNotReady" value="0"> ไม่พร้อม</td>
-                                <td style="padding-left:10px"><input class="input-ready" id="PRC_diecutRemark" placeholder = "หมายเหตุ"></td>
+                                <td style="padding-left:10px"><input type="text" class="input-ready" id="PRC_diecutRemark" placeholder = "หมายเหตุ"></td>
                             </tr>
                         </tbody>
                     </table>
@@ -273,6 +278,8 @@
             <div class="modal-footer">
                 <input type="button" id="save_paper" onclick="okPaper();" title="Save and close">
                 <input type="button" id="close_paper" data-dismiss="modal" title="Cancel and close">
+                <input type="hidden" id="PRC_plan_date" />
+                <input type="hidden" id="PRC_machine_id" />
             </div>
         </div>
     </div>

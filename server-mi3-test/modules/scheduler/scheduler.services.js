@@ -20,7 +20,6 @@ const chkIsCaseIn = async (machineId) => {
 }
 
 const chkValuePlanList = async (planList) => {
-    console.log('planList :>> ', planList);
     planList.forEach(async plan => {
         if (plan.hr1 === null || plan.hr1 === 0.00) {
             // console.log("plan.hr =>", plan.hr);
@@ -82,63 +81,8 @@ const explodeDecimal = async (decimalNumber = 0.00) => {
     }
 }
 
-const chkValuePlanListCaseIn = async (planList) => {
-    console.log('planList :>> ', planList);
-    planList.forEach(async plan => {
-        if (plan.hr1 === null || plan.hr1 === 0.00) {
-            // console.log("plan.hr =>", plan.hr);
-            if (plan.hr === null) {
-                plan.hr = 0
-            }
-            let decimalArray = await explodeDecimal(plan.hr);
-            // console.log(decimalArray);
-            let sec = (60 * Number(decimalArray[1])) / 100;
-            if (sec < 10) {
-                sec = '0' + sec;
-            }
-            // console.log(sec);
-
-            plan.hr1 = decimalArray[0] + "." + sec;
-        }
-        // console.log("plan.job_status_id => ", plan.job_status_id);
-        plan.machine_id = plan.machine_id === null ? '' : plan.machine_id;
-        plan.job_status_name = plan.job_status_id === null || plan.job_status_id === 0 ? '' : plan.job_status_name;
-        plan.partName = plan.partName === null ? '' : plan.partName;
-        plan.shift_name = plan.shift_id === null || plan.shift_id === 0 ? '' : plan.shift_name;
-        plan.sig = plan.sig === null ? 0 : plan.sig;
-        plan.paper_size = plan.paper_size === null ? '' : plan.paper_size;
-        plan.paper_type = plan.paper_type === null ? '' : plan.paper_type;
-        plan.saleman_id = plan.saleman_id === null ? '' : plan.saleman_id;
-        plan.key_date = plan.key_date === null ? '' : plan.key_date;
-        plan.due1 = plan.due1 === null ? '' : plan.due1;
-        plan.waste = plan.waste === null ? 0 : plan.waste;
-        plan.make_ready = plan.make_ready === null ? 0.00 : plan.make_ready;
-        plan.process_time1 = plan.process_time1 === null ? 0.00 : plan.process_time1;
-        plan.speed = plan.speed === null ? 0 : plan.speed;
-        plan.date_paper_in = plan.date_paper_in === null ? '' : plan.date_paper_in;
-        plan.date_plate_in = plan.date_plate_in === null ? '' : plan.date_plate_in;
-        plan.date_ink_in = plan.date_ink_in === null ? '' : plan.date_ink_in;
-        plan.waterbase = plan.waterbase === null ? '' : plan.waterbase;
-        plan.varnish = plan.varnish === null ? '' : plan.varnish;
-        plan.recive_dep = plan.recive_dep === null ? '' : plan.recive_dep;
-        plan.send_dep = plan.send_dep === null ? '' : plan.send_dep;
-        plan.remark = plan.remark === null ? '' : plan.remark;
-        plan.machine_id_send = plan.machine_id_send === null ? '' : plan.machine_id_send;
-        plan.detail = plan.detail === null ? '' : plan.detail;
-        plan.act_name = plan.act_name === null ? '' : plan.act_name;
-
-
-        if (plan.ok_date !== undefined && plan.ok_date) {
-            plan.ok_date = plan.ok_date === null ? '' : plan.ok_date;
-        }
-    });
-
-    return planList;
-}
-
 module.exports = {
     chkTimesheet,
     chkValuePlanList,
-    chkIsCaseIn,
-    chkValuePlanListCaseIn
+    chkIsCaseIn
 }

@@ -25,31 +25,37 @@ const getMachine = async (req) => {
 }
 
 const getPlanSearch = async (req) => {
-    var res = await models.getPlanSearchModel(req);
-    res.planList = await services.chkValuePlanList(res.planList);
+    const { menuID } = req
+    var res
+    if (menuID === '47') {
+        res = await models.getCaseInPlanSearchModel(req);
+    } else {
+        res = await models.getPlanSearchModel(req);
+    }
+    console.log(res);
+    // res.planList = await services.chkValuePlanList(res.planList);
     return res
 }
 
 const insertPlan = async (req) => {
-    var numRow = await services.chkIsCaseIn(req.e_machine_id);
+    const { menu_id } = req
+    // var numRow = await services.chkIsCaseIn(req.e_machine_id);
     var res
-    if (numRow === 0) {
-        if (req.is_printing !== undefined && req.is_printing === 1) {
-            res = {
-                success: 0,
-                msg: "ส่วนของ Printing ยังปรับปรุงอยู่"
-            }
-        } else {
-            res = await models.insertPlanModel(req);
-            if (res.success === 1) {
-                await models.insertLogMachinePlanningModel(res);
-            }
-
-        }
-    } else {
+    // if (numRow === 0) {
+    if (req.is_printing !== undefined && req.is_printing === 1) {
         res = {
             success: 0,
-            msg: "ไม่สามารถบันทึกข้อมูลได้ เนื่องจากมีระบบวางแผนตัวไหม่แล้ว"
+            msg: "ส่วนของ Printing ยังปรับปรุงอยู่"
+        }
+    } else {
+        if (menu_id === '47') {
+            res = await models.insertCaseInPlanModel(req);
+        } else {
+            res = await models.insertPlanModel(req);
+        }
+
+        if (res.success === 1) {
+            await models.insertLogMachinePlanningModel(res);
         }
     }
     return res
@@ -152,9 +158,18 @@ const getWorkType = async (req) => {
     return res
 }
 
-const getPlanSearchCaseIn = async (req) => {
-    var res = await models.getPlanSearchCaseInModel(req);
-    res.planList = await services.chkValuePlanListCaseIn(res.planList);
+const getCaseInActCode = async () => {
+    const res = await models.getCaseInActCodeModel()
+    return res
+}
+
+const getJobStatus = async () => {
+    const res = await models.getJobStatusModel()
+    return res
+}
+
+const getSaddle = async () => {
+    const res = await models.getSaddleModel()
     return res
 }
 
@@ -179,5 +194,7 @@ module.exports = {
     deleteMultiPlan,
     cancelMultiPlan,
     getWorkType,
-    getPlanSearchCaseIn
+    getCaseInActCode,
+    getJobStatus,
+    getSaddle
 }

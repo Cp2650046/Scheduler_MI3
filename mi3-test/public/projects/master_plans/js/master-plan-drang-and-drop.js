@@ -1,37 +1,22 @@
 var dragAndDropApp = {
-    enableMoveAllThoseBehind: false,
     target: undefined,
     needScrollScript: false,
-    needScrollScriptIsScrolling: {
-        x: false,
-        y: false,
-    },
     reposition: function (div, e) {
         div.css({
             'left': (e.clientX) + 'px',
             'top': (e.clientY) + 'px',
         });
     },
-    setposition: function (div, e) {
-        // console.log('e.clientX_new :>> ', e.clientX);
-        // console.log('e.clientY_new :>> ', e.clientY);
-        e.clientX = e.clientX - 31
-        e.clientY = e.clientY - 5
-        // console.log('e.clientX :>> ', e.clientX);
-        // console.log('e.clientY :>> ', e.clientY);
-        div.css({
-            'left': (e.clientX) + 'px',
-            'top': (e.clientY) + 'px',
-        });
-    },
-    displayStatusTimeout: undefined,
 }
 async function init() {
-    // console.log('s_navigation :>> ', s_navigation);
-    $(document).on('mousedown', 'div.draggable,div.draggable-disabled', async function (e) {
+    console.log('init')
+    $(document).on('mousedown', 'div.draggable', async function (e) {
+        // console.log('คลิก 1 ครั้ง :>> ');
+        e.preventDefault();
         if (e.which == 1) { // left click
+            // console.log('checkTimesheet :>> ', $(this).attr('plan_id'));
             let has_timesheet = 0;
-            await hasTimeSheet($(this).attr('plan_id')).then(async (value) => {
+            await hasTimeSheet($(this).attr('plan_id')).then((value) => {
                 has_timesheet = value;
                 if (has_timesheet == 1) {
                     $(this).removeClass('draggable');
@@ -46,10 +31,33 @@ async function init() {
                         'box-shadow': $(this).css('box-shadow'),
                         'width': $(this).css('width')
                     }).addClass('mouseDiv').prependTo('body');
-                    dragAndDropApp.reposition(div, e);
-                    setVirtualDrop($(this));
+                    // dragAndDropApp.reposition(div, e);
+                    // setVirtualDrop($(this));
                     // events
                     $(document).on('mousemove.dragging', function (e2) {
+                        /*if(e2.screenX > $("#fixtb").width()){
+                            let rescoll_x =  parseInt(localStorage.getItem('scollX')) + 50;
+                            $("#fixtb").scrollLeft(rescoll_x);
+                            localStorage.setItem('scollX', rescoll_x);
+                        }else if(e2.screenY > $("#fixtb").height()){
+                                let rescoll_y =  parseInt(localStorage.getItem('scollY')) + 50;
+                                $("#fixtb").scrollTop(rescoll_y);
+                                localStorage.setItem('scollY', rescoll_y);
+                        }
+                        else if(e2.screenX == 0){
+                            if(localStorage.getItem('scollX') != 0){
+                                let rescoll_x =  parseInt(localStorage.getItem('scollX')) - 50;
+                                $("#fixtb").scrollLeft(rescoll_x);
+                                localStorage.setItem('scollX', rescoll_x);
+                            }
+                        }
+                        else if(e2.screenY < 230){
+                            if(localStorage.getItem('scollY') != 0){
+                                let rescoll_y =  parseInt(localStorage.getItem('scollY')) - 50;
+                                $("#fixtb").scrollTop(rescoll_y);
+                                localStorage.setItem('scollY', rescoll_y);
+                            }
+                        }*/
                         dragAndDropApp.reposition(div, e2);
                     }).on('mouseover.shiftContainer', 'td.day, td.night, div.draggable-disabled', function () {
                         if ($('div.draggable:hover,#virtualDrop:hover,div.draggable-disabled:hover').length == 0) {
@@ -57,10 +65,10 @@ async function init() {
                         }
                     }).on('mouseover.divDraggable', 'div.draggable,div.draggable-disabled', function () {
                         setVirtualDrop($(this));
-                    }).on('mouseup.drop', function () {
-                        drop();
+                    }).on('mouseup.drop', async function () {
+                        console.log('mouseup.drop :>> ', 66);
+                        await drop();
                     });
-
                 }
             }).catch(err => {
                 console.log(err);
@@ -146,19 +154,22 @@ async function loadingLayer(visible) {
 } */
 
 async function setVirtualDrop(element) {
+    // console.log('124 :>> ', element);
     $('#virtualDrop').remove();
     var virtualDrop = $('<div id="virtualDrop" class="highlight">Drop here</div>');
+    // console.log('element :>> ', element.is($('td')));
     if (element.is($('td'))) {
+        console.log('element145 :>> ', element);
         virtualDrop.prependTo(element);
     }
     else {
+        console.log('element149 :>> ', element);
         virtualDrop.insertAfter(element);
     }
-    // return this;
 }
 
 async function drop() {
-    if (!$('#virtualDrop').next('div.draggable,div.draggable-disabled').is(dragAndDropApp.target) && $('#virtualDrop').length == 1) { // does not drop at the same place
+    if (!$('#virtualDrop').next('div.draggable').is(dragAndDropApp.target) && $('#virtualDrop').length == 1) { // does not drop at the same place
         await killEvents();
         await Swal.fire({
             icon: 'warning',
@@ -179,12 +190,17 @@ async function drop() {
                 resetState();
             }
         })
+        $('body,div.draggable').removeClass('cursorGrabbing');
     }
     else {
+        // if(s_navigation != 10 && s_navigation != 34 && s_navigation != 35 && s_navigation != 74){
+        console.log('192 :>>  else');
         await killEvents();
         await resetState();
+        $('body,div.draggable').removeClass('cursorGrabbing');
+        // }
     }
-    $('body,div.draggable').removeClass('cursorGrabbing');
+
 }
 
 async function killEvents() {
@@ -193,12 +209,16 @@ async function killEvents() {
 
 async function resetState() {
     // console.log('div.mouseDiv,#virtualDrop :>> ', $('div.mouseDiv,#virtualDrop'));
-    dragAndDropApp.target.css({ 'display': 'block' });
+    if (dragAndDropApp.target != undefined) {
+        dragAndDropApp.target.css({ 'display': 'block' });
+    }
     $('div.mouseDiv,#virtualDrop').remove();
-    clearInterval(dragAndDropApp.needScrollScriptIsScrolling.x);
-    clearInterval(dragAndDropApp.needScrollScriptIsScrolling.y);
+    // clearInterval(dragAndDropApp.needScrollScriptIsScrolling.x);
+    // clearInterval(dragAndDropApp.needScrollScriptIsScrolling.y);
     $('div.highlight').removeClass('highlight');
-    dragAndDropApp.target = undefined;
+    if (dragAndDropApp.target != undefined) {
+        dragAndDropApp.target = undefined;
+    }
 }
 
 async function createMoveListTable(moveList) {

@@ -1,0 +1,152 @@
+<script>
+    $(function () {
+        // setMachineWithProcess(machineProcessList);
+        // get_machine_list()
+
+        // fetch_planning_send(plan_id)
+
+        $("#tb_next_process").on("click", ".del", function () {
+            var len = $("#tb_next_process tbody tr").length
+            if (len > 1) {
+                var con = confirm("ยืนยันการลบ", false)
+                if (con) {
+                    $(this).closest("tr").remove();
+                    if ($("#tb_next_process tbody tr").length == 1) {
+                        $(".del").hide()
+                    }
+                }
+            }
+        })
+    })
+    function add_row() {
+        $("#tb_next_process tbody tr:last-child").clone().appendTo($("#tb_next_process tbody"))
+        $("#tb_next_process tbody tr:last-child").find('input').val('')
+        if ($("#tb_next_process tbody tr").length > 1) {
+            $(".del").show()
+        }
+    }
+</script>
+<style>
+    #modal-plan_machine_send .modal-lg {
+        max-width: 1000px;
+    }
+    #modal-plan_machine_send body {text-align:center;background:#e6e6e6;}
+    #modal-plan_machine_send input[type=text] {
+        border: 1px solid #ccc;
+        padding: 3px;
+        width: 250px;
+    }
+
+    #modal-plan_machine_send>input[type=number] {
+        border: 1px solid #ccc;
+        padding: 3px;
+        width: 100px;
+    }
+
+    #modal-plan_machine_send select {
+        border: 1px solid #ccc;
+        padding: 3px;
+    }
+
+    #modal-plan_machine_send>button {
+        border: 1px solid #ccc;
+        padding: 3px;
+        cursor: pointer;
+        border-radius: 3px;
+    }
+
+    #modal-plan_machine_send #btn_submit {
+        /* width: 200px; */
+        padding: 15px;
+        /* font-size: 20px; */
+    }
+
+    #modal-plan_machine_send button#btn_submit {
+        border: 1px solid #52ac52;
+        background: #8ad08a;
+        color: #fff;
+    }
+
+    #modal-plan_machine_send button.add {
+        border: 1px solid #52ac52;
+        padding: 3px;
+        background: #8ad08a;
+        color: #fff;
+    }
+
+    #modal-plan_machine_send button.del {
+        border: 1px solid #996767;
+        padding: 3px;
+        background: #fd9a95;
+        color: #fff;
+    }
+
+    #modal-plan_machine_send button#btn_close {
+        border: 1px solid #996767;
+        padding: 3px;
+        background: #fd9a95;
+        color: #fff;
+        padding: 15px;
+        /* font-size: 20px; */
+    }
+
+    #modal-plan_machine_send #tb_next_process {
+        margin: 0 auto;
+        padding: 0 auto;
+    }
+
+    #modal-plan_machine_send #tb_next_process tfoot th {
+        text-align: left;
+    }
+</style>
+<div class="modal fade" tabindex="-1" data-backdrop="static" role="dialog" id="modal-plan_machine_send">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title">ฟอร์มกรอกเครื่องจักรถัดไป</h6>
+            </div>
+            <div class="modal-body text-center">
+                <table id="tb_next_process">
+                    <thead>
+                        <tr>
+                            <th>ชิ้นส่วน</th>
+                            <th>ขั้นตอนถัดไป</th>
+                            <th>เครื่องจักรถัดไป</th>
+                            <th>ลบ</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><input type="text" class="part_name" placeholder="ระบุชิ้นส่วน"></td>
+                            <td>
+                                <select class="next_process_id" onchange="changeProcess(this)">
+                                    <option value="0">-</option>
+                                </select>
+                            </td>
+                            <td>
+                                <select class="next_machine_id">
+                                    <option value="0">-</option>
+                                </select>
+                            </td>
+                            <td>
+                                <button type="button" class="del">ลบ</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th><button type="button" onclick="add_row()" class="add">+ เพิ่ม</button></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="btn_submit" onclick="save();">บันทึก</button>
+                <button type="button" id="btn_close" data-dismiss="modal">ปิด</button>
+            </div>
+        </div>
+    </div>
+</div>

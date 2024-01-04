@@ -1,15 +1,15 @@
 $(document).ready(async function () {
-    // const urlParams = new URLSearchParams(window.location.search)
-    const user_account = '2650046' /*urlParams.get('user_account')*/
+    const urlParams = new URLSearchParams(window.location.search)
+    const user_account = urlParams.get('user_account')
     if (user_account != null) {
         login_permission_scheduler(user_account);
     } else {
         const userData = JSON.parse(localStorage.getItem('userData'))
-        // if (userData === null) {
-        //     let obj_alert = { type: 'warning', loading: false, message: 'คุณได้ใช้ระบบเกินเวลาที่กำหนดกรุณา Login ใหม่อีกครั้ง' }
-        //     main_set_loading(obj_alert)
-        //     window.location = "http://192.168.5.3/AUTHEN/index.php";
-        // }
+        if (userData === null) {
+            let obj_alert = { type: 'warning', loading: false, message: 'คุณได้ใช้ระบบเกินเวลาที่กำหนดกรุณา Login ใหม่อีกครั้ง' }
+            main_set_loading(obj_alert)
+            window.location = "http://192.168.5.3/AUTHEN/index.php";
+        }
     }
 
 })
@@ -29,11 +29,12 @@ function login_permission_scheduler(user_account) {
         async: false,
         dataType: 'JSON',
         success: async function (data) {
-            console.log(data);
+            // console.log(data);
             if (data.user_id > 0) {
+                console.log(2);
                 localStorage.setItem('userData', JSON.stringify(data))
                 USER_DATA = { ... JSON.parse(localStorage.getItem('userData')) }
-                await getMenu(USER_DATA.emp_id);
+                // await getMenu(USER_DATA.emp_id);
                 // window.location = `${base_url}/scheduler`
             } else {
                 alert("กรุณาติดต่อ แผนก MIS");
@@ -114,10 +115,3 @@ async function scheduler_set_user_name() {
 async function  scheduler_set_badge(){
     $("#info_badge").html(USER_DATA.badge);
 }
-
-// async function get_auto_password() {
-//     const date = new Date();
-//     const monthValue = (date.getMonth() + 1).toString().padStart(2, '0');
-
-//     return "250000@" + monthValue
-// }

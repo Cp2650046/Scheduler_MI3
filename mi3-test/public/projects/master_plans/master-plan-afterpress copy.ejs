@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title id="title_plan">Masterplan - MI3</title>
+    <%- include('../includes/script-top'); %>
+    <link rel="stylesheet" href="./projects/master_plans/css/master-plan-afterpress.css">
+    <link rel="stylesheet" href="./projects/master_plans/css/planaf.css">
+    <link rel="stylesheet" href="./projects/master_plans/css/dragAndDrop.css">
+</head>
+
+<body class="hold-transition sidebar-mini layout-fixed">
+    <!-- <div class="content-wrapper"> -->
+        <div id="main_board">
+            <div id="second_board">
+                <div id="master_plans_tab1" class="card_masterplan">
+                    <div class="card-header pl-2 pb-1 pt-2 border-0">
+                        <div class="card-title">
+                            <span class="project_name">
+                                <i class="fas fa-clipboard"></i>
+                                MASTER PLAN
+                            </span>
+                        </div>
+                        <div id="iconNavigationContainer">
+
+                        </div>
+                        <div class="card-tools">
+                            <div id="colorInfo" class="row mb-2 justify-content-center">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="row justify-content-center">
+                                <table>
+                                    <tbody>
+                                        <tr>
+                                            <td>Navigation: </td>
+                                            <td>
+                                                <select id="naviagate_masterplan_typeID" name="naviagate_masterplan_typeID" class="form-select navigation-select">
+                                                    <option value="36">Roll Cutter</option>
+                                                    <option value="35">Sheet</option>
+                                                    <option value="34">Web</option>
+                                                    <option value="74">Digital Print</option>
+                                                    <option value="afterpress">Afterpress All</option>
+                                                    <option value="afterpress1">Afterpress 1</option>
+                                                    <option value="afterpress2">Afterpress 2</option>
+                                                    <option value="afterpress3">Afterpress 3</option>
+                                                    <option value="cutting">ตัดป้อนแท่น</option>
+                                                    <option value="10">Die-cut</option>
+                                                </select>
+                                            </td>
+                                            <td>&nbsp;Year:</td>
+                                            <td>
+                                                <select name="naviagate_masterPlan_year" id="naviagate_masterPlan_year"class="form-select navigation-select">
+                                                    <option value="2022">2022</option>
+                                                </select>
+                                            </td>
+                                            <td>&nbsp;Month: </td>
+                                            <td>
+                                                <select name="naviagateMasterPlan_month" id="naviagateMasterPlan_month"class="form-select navigation-select">
+                                                </select>
+                                            </td>
+                                            <td>
+                                                <button id="naviagateMasterPlan_go" class="btn btn-sm btn-primary" onclick="btnPlanGo();" >Go</button>
+                                            </td>
+<td>
+                                                <span class="remark_success">&nbsp;&nbsp;* </span><span id="percent_success">หมายเหตุ: Success 95% ขึ้นไป (ยกเว้น Roll Cutter และ ตัดป้อนแท่นที่ใช้เกณฑ์ 100%)</span>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                        </div>
+                    </div>
+                </div>
+                <div id='fixtb'>
+                    <table cellSpacing='0' cellPadding='0' id='tb_fix'>
+                        <tbody>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    <!-- </div> -->
+    <%- include('../master_plans/master-plan-paper-ready.ejs'); %>
+    <%- include('../includes/script-bottom'); %>
+    <script src='../../plugins/iconNavigation/jquery.iconNavigation.js'></script>
+    <script src="./projects/master_plans/js/master-plan-main.js"></script>
+    <script src="./projects/master_plans/js/master-plans.js"></script>
+    <script src="./projects/master_plans/js/master-plan-afterpress.js"></script>
+    <script src="./projects/master_plans/js/master-plan-drang-and-drop.js"></script>
+
+</body>
+
+</html>

@@ -1,5 +1,5 @@
 const connection = require('../../config/connection')
-const getDataMachineModel = async (req, transaction) => {
+const getDataMachineModel = async (req) => {
     var wh_type_id = "";
     console.log('type_id :>> ', req.type_id);
     if (req.type_id == 'afterpress') {
@@ -11,14 +11,13 @@ const getDataMachineModel = async (req, transaction) => {
     else if (req.type_id === 'afterpress2') {
         wh_type_id = `(m.type_id IN('1','6','5','10','11','14','19','20','53','54') AND m.status_id != '0') OR (m.type_id IN('14') AND m.status_id = '1') OR (m.type_id IN('5') AND m.status_id != '0' AND (m.connectedTo is null OR m.connectedTo =1))`;
 
+    } else if (req.type_id === "afterpress3") {
+        wh_type_id = `m.type_id IN('7','9','21') AND m.machine_id != '' `;
     } else if (req.type_id === "cutting") {
         wh_type_id = `m.type_id IN('52') AND m.status_id != '0'`;
     } else {
         wh_type_id = `m.type_id IN('${req.type_id}') AND m.status_id != '0'`;
     }
-    // }  else {
-    //     wh_type_id = `type_id IN('21','9','7') AND status_id != '0'`;
-    // }
     const sqlDataMachine = `SELECT
                                 m.machine_id,
                                 m.machine_name
@@ -27,44 +26,127 @@ const getDataMachineModel = async (req, transaction) => {
                             WHERE
                             ${wh_type_id}
                             ORDER BY
-                                m.machine_id,
-                                isnull(m.graph_sequence, 0) `;
+                                m.type_id ASC,
+                                m.machine_id ASC,
+                                isnull(m.graph_sequence, 0) ASC `;
     let machineList = (await connection.query(sqlDataMachine))[0];
-    let holidayList = await getDataHoliday();
-    let dataplanList = await getDataPlan(req.type_id, req.search_date1, req.search_date2);
+    let holidayList = await getDataHoliday(req.search_date1, req.search_date2);
     return {
         machineList,
         holidayList,
-        dataplanList
     }
 }
 
-const getDataHoliday = async () => {
+const getDataHoliday = async (search_date1, search_date2) => {
     const sqlDataHoliday = `SELECT
                                 holiday_date AS holiday
                             FROM
-                                HRM.dbo.hrm_holiday `;
+                                HRM.dbo.hrm_holiday
+                                WHERE holiday_date BETWEEN '${search_date1}' AND '${search_date2}' `;
     let holidayList = (await connection.query(sqlDataHoliday))[0];
     return holidayList;
 }
 
-const getDataPlan = async (type_id, search_date1, search_date2) => {
+const getDataPlanModel = async (req) => {
     var str_wh = "";
-    if (type_id == 'afterpress') {
-        str_wh = ` AND ( ma.type_id IN ('12','22','26','16','18','25','23','41','42','43','44','45','46','47','51','1','6','5','10','11','14','19','20','53','54','21','9','7') OR (ma.type_id='14' and ma.status_id='1'))  AND m.machine_id != '' `;
+    if (req.type_id == 'afterpress') {
+        str_wh = ` AND ( mac.type_id IN ('12','22','26','16','18','25','23','41','42','43','44','45','46','47','51','1','6','5','10','11','14','19','20','53','54','21','9','7') OR (mac.type_id='14' and mac.status_id='1'))  AND mp.machine_id != '' `;
     }
-    else if (type_id === 'afterpress1') {
-        str_wh = ` AND ( ma.type_id IN ('12','22','26','16','18','25','23','41','42','43','44','45','46','47','51')) AND m.machine_id != '' `;
+    else if (req.type_id === 'afterpress1') {
+        str_wh = ` AND ( mac.type_id IN ('12','22','26','16','18','25','23','41','42','43','44','45','46','47','51')) AND mp.machine_id != '' `;
     }
-    else if (type_id === 'afterpress2') {
-        str_wh = ` AND (ma.type_id IN ('1','6','5','10','11','14','19','20','53','54') OR (ma.type_id='14' and ma.status_id='1')) AND m.machine_id != '' `;
+    else if (req.type_id === 'afterpress2') {
+        str_wh = ` AND (mac.type_id IN ('1','6','5','10','11','14','19','20','53','54') OR (mac.type_id='14' and mac.status_id='1')) AND mp.machine_id != '' `;
 
-    } else if (type_id === "cutting") {
-        str_wh = ` AND ma.type_id IN('52') AND m.machine_id!='' `;
+    } else if (req.type_id === "cutting") {
+        str_wh = ` AND mac.type_id IN('52') AND mp.machine_id!='' `;
+
+    } else if (req.type_id === "afterpress3") {
+        str_wh = ` AND mac.type_id IN('7','9','21') AND mp.machine_id != '' `;
+
     } else {
-        str_wh = ` AND ma.type_id IN('${type_id}') AND m.machine_id != '' `;
+        str_wh = ` AND mac.type_id IN('${req.type_id}') AND mp.machine_id != '' `;
     }
-    var sqlDataPlan = `;with mp as(
+    var sqlDataPlan = `SELECT
+                                mp.id,
+                                f.firstname,
+                                f.lastname,
+                                mp.machine_id,
+                                mp.plan_date,
+                                mp.jobid,
+                                mi.job_name,
+                                mp.quantity,
+                                mp.priority,
+                                mp.job_status_id,
+                                mp.shift_id,
+                                mp.detail,
+                                mp.hr1 AS hr,
+                                mp.waste,
+                                mp.waste AS quantity2,
+                                ISNULL(mp.partName, '') AS partnameB,
+                                d.partTypeID,
+                                mp.paper_type,
+                                mp.paper_gm,
+                                mp.paper_roll,
+                                mp.paper_sheet AS qty_paper,
+                                mi.dbo.fun_has_timesheet(mp.id) AS has_timesheet,
+                                et.qty
+                                
+                            FROM
+                                mi.dbo.machine_planning AS mp
+                            LEFT JOIN mi.dbo.machine AS mac ON mp.machine_id = mac.machine_id
+                            LEFT JOIN mi.dbo.mi ON mp.jobid = mi.jobid
+                            LEFT JOIN mi.dbo.mi_item AS d ON mp.jobid = d.jobid AND mp.itid = d.itid
+                            LEFT JOIN mi.dbo.employee AS f ON mi.emp_id = f.emp_id
+                            OUTER APPLY ( 
+                                SELECT
+                                    c.plan_id,
+                                    SUM(e.qty) AS qty
+                                FROM
+                                    mi.dbo.timesheet_header AS c
+                                INNER JOIN mi.dbo.timesheet_item AS e ON e.header_id = c.header_id
+                                WHERE
+                                    c.plan_id = mp.id
+                                AND c.machine_id NOT LIKE 'P%'
+                                GROUP BY c.plan_id
+                            ) AS et
+                            WHERE
+                                1 = 1
+                            AND mp.plan_date BETWEEN '${req.search_date1}' AND '${req.search_date2}'
+                            ${str_wh}
+                            AND mp.shift_id != 0
+                            GROUP BY 
+                                                mp.quantity,
+                                                mp.priority,
+                                                mp.itid,
+                                                mp.id,
+                                                mp.machine_id,
+                                                mp.plan_date,
+                                                mp.jobid,
+                                                mp.job_status_id,
+                                                mp.shift_id,
+                                                mp.detail,
+                                                mp.waste,
+                                                mp.hr1,
+                                                mp.waste,
+                                                mp.partName,
+                                                d.partTypeID,
+                                                mi.job_name,
+                                                mi.emp_id,
+                                                mp.paper_type,
+                                                mp.paper_gm,
+                                                mp.paper_roll,
+                                                mp.paper_sheet,
+                                                f.firstname,
+                                                f.lastname,
+                                                et.qty
+                            ORDER BY
+                                            mp.machine_id,
+                                            mp.plan_date ASC,
+                                            mp.shift_id ASC,
+                                            mp.priority ASC 
+    
+    /*;with mp as(
                                 SELECT
                                 m.quantity,
                                 m.priority,
@@ -96,7 +178,7 @@ const getDataPlan = async (type_id, search_date1, search_date2) => {
                             WHERE
                                 1 = 1 AND m.shift_id != 0
                            ${str_wh}
-                            AND m.plan_date BETWEEN '${search_date1}' AND '${search_date2}'
+                            AND m.plan_date BETWEEN '${req.search_date1}' AND '${req.search_date2}'
                             GROUP BY
                                 m.quantity,
                                 m.priority,
@@ -137,10 +219,8 @@ const getDataPlan = async (type_id, search_date1, search_date2) => {
                                 isnull(a.job_name, NULL) AS job_name,
                                 a.partName AS partnameB,
                                 isnull(a.partTypeID, 0) AS partTypeID,
-                                a.plan_date,
                                 a.quantity2,
                                 SUM(e.qty) AS qty,
-                                MIN(a.mi_jobid) mi_jobid,
                                 mi.dbo.fun_has_timesheet(a.id) AS has_timesheet,
                                 a.paper_type,
                                 a.paper_gm,
@@ -176,16 +256,19 @@ const getDataPlan = async (type_id, search_date1, search_date2) => {
                                 a.paper_roll,
                                 a.paper_sheet
                             ORDER BY
-                                a.shift_id,
-                                a.priority ASC `;
-    if (type_id == 10 || type_id == 34 || type_id == 35 || type_id == 74) {
-        sqlDataPlan = `EXEC mi.dbo.getMasterPlanDragAndDrop ${type_id},'${search_date1}','${search_date2}'`;
+                                a.machine_id,
+                                a.plan_date ASC,
+                                a.shift_id ASC,
+                                a.priority ASC 
+                                */`;
+    if (req.type_id == 10 || req.type_id == 34 || req.type_id == 35 || req.type_id == 74) {
+        sqlDataPlan = `EXEC mi.dbo.getMasterPlanDragAndDrop ${req.type_id},'${req.search_date1}','${req.search_date2}'`;
     }
     let plansList = (await connection.query(sqlDataPlan))[0];
-    let hrList = await getHr(str_wh, search_date1, search_date2);
+    // let hrList = await getHr(str_wh, search_date1, search_date2);
     return {
         plansList
-        , hrList
+        // , hrList
     }
 }
 
@@ -196,7 +279,7 @@ const getHr = async (str_wh, search_date1, search_date2) => {
                     plan_date as date,
                     machine_name as machine_n
                     FROM mi.dbo.machine_planning AS m
-                    JOIN mi.dbo.machine AS ma ON m.machine_id=ma.machine_id
+                    JOIN mi.dbo.machine AS mac ON m.machine_id=mac.machine_id
                     WHERE 1=1 AND shift_id != 0 ${str_wh}AND m.plan_date between '${search_date1}' and '${search_date2}'
                     GROUP BY m.machine_id,plan_date,machine_name`;
     let hrList = (await connection.query(sql_hr))[0];
@@ -214,11 +297,11 @@ const getDataModel = async (req, transaction) => {
         wh += ` AND a.machine_id='${targetMachine}'`;
     }
     const sql_find_type_id = `SELECT type_id FROM mi.dbo.machine WHERE machine_id = '${targetMachine}'`;
-    let plandDtaList =  await connection.query(sql_find_type_id)
-    .then(async ([data]) => {
-        // console.log('219 :>> ', data[0].type_id);
-        if(data){
-            var sql_data = `SELECT
+    let plandDtaList = await connection.query(sql_find_type_id)
+        .then(async ([data]) => {
+            // console.log('219 :>> ', data[0].type_id);
+            if (data) {
+                var sql_data = `SELECT
                         a.id,
                         f.firstname,
                         f.lastname,
@@ -270,18 +353,20 @@ const getDataModel = async (req, transaction) => {
                         d.partTypeID,
                         a.plan_date
                     ORDER BY
+                        a.machine_id,
+                        a.plan_date,
                         a.shift_id,
                         a.priority ASC`;
-            if (data[0].type_id == 10 || data[0].type_id == 34 || data[0].type_id == 35 || data[0].type_id == 74) {
-                sql_data = `EXEC mi.dbo.getMasterPlanDragAndDrop_Machine ${data[0].type_id},'${targetDate}','${targetDate}'`;
+                if (data[0].type_id == 10 || data[0].type_id == 34 || data[0].type_id == 35 || data[0].type_id == 74) {
+                    sql_data = `EXEC mi.dbo.getMasterPlanDragAndDrop_Machine '${targetDate}','${targetDate}','${targetMachine}'`;
+                }
+                return (await connection.query(sql_data))[0];
             }
-            return (await connection.query(sql_data))[0];
-        }
-       
-    })
-    .catch((err) => {
-        console.log('err :>> ', err);
-    })
+
+        })
+        .catch((err) => {
+            console.log('err :>> ', err);
+        })
     return plandDtaList;
 }
 
@@ -323,13 +408,13 @@ const getDataHrModel = async (req, transaction) => {
 
 const sendDataPlanMoveModel = async (req, transaction) => {
     // console.log('280 :>> ', req);
-    var { original_id, original_plan_date, original_machine_id, original_shift_id, machine_id, machine_id, shift_id, plan_date, id, saleman_id } = req
+    var { original_id, machine_id, machine_id, shift_id, plan_date, id, saleman_id } = req
     var result = {
         success: 0,
         message: ""
     };
     // 1. original should be existing
-    let type_id_denied = [5, 5]
+    /* let type_id_denied = [5, 5]
     const sql_check_plan = `SELECT
                                 COUNT(*) AS countID
                             FROM
@@ -352,22 +437,20 @@ const sendDataPlanMoveModel = async (req, transaction) => {
     })
         .catch(() => {
             result.success = 0;
-        })
+        }) */
     // 2. original should not be recorded as a timesheet source
     const sql_check_timesheet = `SELECT mi.dbo.fun_has_timesheet(${original_id}) AS has_timesheet`;
     await connection.query(sql_check_timesheet).then(([data]) => {
-        console.log('323 :>> ', data[0].has_timesheet);
+        // console.log('323 :>> ', data[0].has_timesheet);
         if (data[0].has_timesheet == 1) {
             result.success = 2;
             result.message = "This plan has been attached to a timesheet!"
-        }
-        if (result.success == 2) {
             return result;
         }
     })
-        .catch(() => {
-            result.success = 0;
-        })
+    .catch(() => {
+        result.success = 0;
+    })
     // 3. hard cover is not allowed in drag and drop
     /*const sql_check_allowed = `SELECT
                                     m.type_id,
@@ -396,16 +479,17 @@ const sendDataPlanMoveModel = async (req, transaction) => {
     } else {
         var modifiedUserUpdateStatement = "";
         var i = 0;
-        if (id.length > 0) {
-            for (let i = 0; i < id.length; i++) {
-                const element = id[i];
-                // console.log('355 :>> ', element);
-                if (element == original_id) {
-                    modifiedUserUpdateStatement = ` , saleman_id = '${saleman_id}', key_date = CONVERT(VARCHAR(20), GETDATE(), 20) `;
-                } else {
-                    modifiedUserUpdateStatement = "";
-                }
-                const sql_update = `UPDATE mi.dbo.machine_planning SET 
+        if (id != undefined) {
+            if (id.length > 0) {
+                for (let i = 0; i < id.length; i++) {
+                    const element = id[i];
+                    // console.log('355 :>> ', element);
+                    if (element == original_id) {
+                        modifiedUserUpdateStatement = ` , saleman_id = '${saleman_id}', key_date = CONVERT(VARCHAR(20), GETDATE(), 20) `;
+                    } else {
+                        modifiedUserUpdateStatement = "";
+                    }
+                    const sql_update = `UPDATE mi.dbo.machine_planning SET 
                                         machine_id = '${machine_id}',
                                         shift_id = '${shift_id}',
                                         plan_date = '${plan_date}',
@@ -413,17 +497,18 @@ const sendDataPlanMoveModel = async (req, transaction) => {
                                         default_machine_id = ''
                                         ${modifiedUserUpdateStatement}
                                     WHERE id = '${element}'`;
-                // console.log('369 :>> ', sql_update);
-                await connection.query(sql_update)
-                    .then(() => {
-                        result.success = 1;
-                        result.message = "สำเร็จ"
-                    })
-                    .catch(() => {
-                        result.message = "อัปเดตไม่สำเร็จ"
-                        result.success = 0;
-                    })
+                    // console.log('369 :>> ', sql_update);
+                    await connection.query(sql_update)
+                        .then(() => {
+                            result.success = 1;
+                            result.message = "สำเร็จ"
+                        })
+                        .catch(() => {
+                            result.message = "อัปเดตไม่สำเร็จ"
+                            result.success = 0;
+                        })
 
+                }
             }
         }
         return result;
@@ -449,7 +534,7 @@ const sendDataPlanMoveThoseBehindModel = async (req, transaction) => {
                             AND shift_id = ${original_shift_id}
                             `;
     await (connection.query(sql_check_plan)[0]).then(([data]) => {
-        console.log('298 :>> ', data.countID);
+        // console.log('298 :>> ', data.countID);
         if (data.countID == 0) {
             result.success = 2;
             result.message = "Original plan does not exist anymore!"
@@ -697,7 +782,9 @@ const getPaperInfoModel = async (req, transaction) => {
                         i.is_diecut_ready,
                         i.diecut_remark,
                         i.diecut_number,
-                        m.type_id
+                        m.type_id,
+                        i.plan_date,
+                        i.machine_id
                     FROM
                         mi.dbo.machine_planning AS i
                     LEFT JOIN mi.dbo.machine AS m ON m.machine_id = i.machine_id
@@ -834,13 +921,13 @@ const setPaperAndInkReadyModel = async (req, transaction) => {
 
     const sql_updated = `UPDATE mi.dbo.machine_planning SET ${update_con} WHERE id = ${id}`;
     await (connection.query(sql_updated)).then(([data]) => {
-                                            result.success = 1;
-                                            result.message = "สำเร็จ"
-                                        })
-                                    .catch(() => {
-                                        result.message = "อัปเดตไม่สำเร็จ"
-                                        result.success = 0;
-                                    })
+        result.success = 1;
+        result.message = "สำเร็จ"
+    })
+        .catch(() => {
+            result.message = "อัปเดตไม่สำเร็จ"
+            result.success = 0;
+        })
     return result;
     // const sql_set_diecut_status = `EXEC mi.dbo.set_diecut_status @id = '${plan_id}'`;
     // await (connection.query(sql_set_diecut_status));
@@ -849,6 +936,7 @@ const setPaperAndInkReadyModel = async (req, transaction) => {
 
 module.exports = {
     getDataMachineModel,
+    getDataPlanModel,
     getDataHoliday,
     getHr,
     getDataModel,

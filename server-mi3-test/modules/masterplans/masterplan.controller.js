@@ -1,7 +1,11 @@
 const models = require('./masterplan.models');
 
-const getDataPlan = async (req)=>{
+const getDataMachine = async (req)=>{
     const res = await models.getDataMachineModel(req)
+    return res
+}
+const getDataPlan = async (req)=>{
+    const res = await models.getDataPlanModel(req)
     return res
 }
 const getData = async (req)=>{
@@ -40,6 +44,7 @@ const setPaperAndInkReady = async(req)=>{
 }
 
 module.exports = {
+    getDataMachine,
     getDataPlan,
     getData,
     getDataHr,

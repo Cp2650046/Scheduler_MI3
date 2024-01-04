@@ -54,6 +54,7 @@ div.div_table_plan {
     height: 100%;
     overflow: auto;
     white-space: nowrap;
+    padding-bottom: .75rem;
 }
 
 h1.text_loading {
@@ -156,72 +157,72 @@ button.btn_plan:not(#e_btn_send_sub):hover {
     filter: brightness(80%);
 }
 
-table.tb_plans thead {
+table#tb_plans thead {
     background-color: #e4e4e4;
     position: sticky;
     top: 0;
     /*#E9B384;*/
 }
 
-table.tb_plans thead tr>th {
+table#tb_plans thead tr>th {
     padding: 0.5rem 1rem;
     text-align: center;
     border: 1px solid #d4d9de;
     border-top: none;
 }
 
-table.tb_plans tbody tr>td {
+table#tb_plans tbody tr>td {
     padding: 0.3rem .5rem;
     border: 1px solid #d4d9de;
 }
 
-table.tb_plans thead tr>th:first-child,
-table.tb_plans tbody tr>td:first-child,
-table.tb_plans thead tr>th:last-child,
-table.tb_plans tbody tr>td:last-child {
+table#tb_plans thead tr>th:first-child,
+table#tb_plans tbody tr>td:first-child,
+table#tb_plans thead tr>th:last-child,
+table#tb_plans tbody tr>td:last-child {
     border-left: none;
     border-right: none;
 }
 
-table.tb_plans tbody tr>td.color_day {
+table#tb_plans tbody tr>td.color_day {
     background: #5FD068;
 }
 
-table.tb_plans tbody tr>td.color_night {
+table#tb_plans tbody tr>td.color_night {
     background: #FF6363;
 }
 
-table.tb_plans tbody tr>td.left {
+table#tb_plans tbody tr>td.left {
     text-align: left;
 }
 
-table.tb_plans tbody tr>td.center {
+table#tb_plans tbody tr>td.center {
     text-align: center;
 }
 
-table.tb_plans tbody tr:nth-child(odd) {
+table#tb_plans tbody tr:nth-child(odd) {
     background-color: #fbfbfb;
 }
 
-table.tb_plans tbody tr:nth-child(even) {
+table#tb_plans tbody tr:nth-child(even) {
     background-color: #fff1c1;
 }
 
-table.tb_plans.dataTable {
+table#tb_plans.dataTable {
     margin: 0 !important;
 }
 
-table.tb_plans tbody tr:hover {
+table#tb_plans tbody tr:hover {
     background-color: #defcf9;
     cursor: pointer;
 }
 
-table.tb_plans tbody tr.rowSelected {
+table#tb_plans tbody tr.rowSelected {
     background-color: #00bbf0;
     color: #fff;
 }
 
-table.tb_plans tbody tr>td.color-row-select {
+table#tb_plans tbody tr>td.color-row-select {
     background-color: #00bbf0;
     color: #fff;
 }
@@ -391,11 +392,3 @@ div.item-autocomplete {
     cursor: pointer;
     color: red;
 } */
-
-/* CASE IN */
-.text-remark{
-    font-style: italic;
-    display: table-cell;
-    vertical-align: bottom;
-    height: 20px;
-}

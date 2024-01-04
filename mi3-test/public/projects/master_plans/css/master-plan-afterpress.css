@@ -1,15 +1,11 @@
+*{box-sizing:border-box;}
 body {
 	font-family: 'Sarabun', sans-serif;
+position:relative;
 }
 
 .box-color-size {
 	width: 20px;
-}
-
-#main_board{
-	height: 100vh;
-  	overflow: hidden;
-	/* width: 100%; */
 }
 
 div.card_masterplan:not(#master_plans_tab2)>.card-body {
@@ -19,36 +15,6 @@ div.card_masterplan:not(#master_plans_tab2)>.card-body {
 div.card_masterplan:not(.card-outline)>.card-header {
 	background-color: dimgray;
 	color: #ffe407;
-}
-
-#fixtb {
-	overflow: auto;
-	/* width: 100%; */
-	height: 100%;
-	scrollbar-width: thin;
-}
-
-#fixtb::-webkit-scrollbar {
-	width: 20px;
-}
-
-#fixtb table {
-	width: 100%;
-	border-collapse: separate;
-	padding-bottom: 8px;
-}
-
-#tb_fix tr:nth-child(1) th {
-	border-bottom: 1px solid gray;
-	border-right: 1px solid gray;
-	top: 0px;
-	position: sticky;
-}
-
-td.shiftSeparator {
-	height: 2px;
-	background-color: #d22121;
-	;
 }
 
 #master_plans_tab1>.card-body {
@@ -89,20 +55,22 @@ td.shiftSeparator {
 }
 
 .div-plan-w{
-	width: 135px;
+	/* width: 135px; */
 	height: 18px;
+	line-height:17px
 }
 
 .div-plan-h{
-	width: 185px;
+	/* width: 185px; */
 	height: 18px;
+	line-height:17px
 }
 
-.td-plan-h{
+table#plan_calendar tbody tr td.td-plan-h{
 	width: 188px;
 }
 
-.td-plan-w{
+table#plan_calendar tbody tr td.td-plan-w{
 	width: 139px;
 }
 
@@ -122,3 +90,13 @@ font-weight: bold;
 	border-radius: 4px;
 	font-size: 13px;
 }
+.remark_success{
+	color: red;
+	font-size: 12px;
+}
+#percent_success{
+	font-size: 12px;
+}
+#fixtb{margin-top:100px;}
+#header-area{height:80px;background:#ccc;position:fixed;top:0;left:0;width:100%;}
+#tb_fix td.dropZone, td.showdate th.h_machine, td.sumhr  {width:240px !important;min-height:40px;border:1px solid #ccc;}

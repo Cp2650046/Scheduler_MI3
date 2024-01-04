@@ -63,21 +63,10 @@ const getDataModel = async (req, transaction) => {
     let strMachineTypeList = await getMachineType(req)
 
     const sqlMachineType = `SELECT type_id,	type_name FROM mi.dbo.machine_type WHERE type_id IN ${strMachineTypeList}`;
-    const sqlSaddle = `SELECT
-                            saddle_detail_id,
-                            saddle_detail_name 
-                        FROM
-                            mi.dbo.machine_saddle_detail 
-                        ORDER BY
-                            CAST(saddle_detail_id AS INT)`;
-    
 
     let machineTypeList = (await connection.query(sqlMachineType))[0]
-    let saddleList = (await connection.query(sqlSaddle))[0]
-
     return {
-        machineTypeList,
-        saddleList
+        machineTypeList
     }
 }
 
@@ -173,7 +162,7 @@ const getPlanSearchModel = async (req, transaction) => {
             END AS machine_name,
             job_status.job_status_name,
             shift.shift_name,
-            isnull(m_p.partName,'') AS partName,
+            isnull( mi_item.partName, m_p.partName ) partName,
             m_p.detail,
             mi.due1,
             m_p.sig,
@@ -211,7 +200,9 @@ const getPlanSearchModel = async (req, transaction) => {
             END AS paperReady,
             m_p.capacity_labor,
             m_p.master_capacity_labor,
-            m_p.machine_id_send
+            m_p.machine_id_send,
+            m_p.saddle_detail_id,
+            msd.saddle_detail_name
         FROM
             mi.dbo.machine_planning AS m_p
             LEFT JOIN mi.dbo.mi ON mi.jobid = m_p.jobid
@@ -221,6 +212,7 @@ const getPlanSearchModel = async (req, transaction) => {
             LEFT JOIN mi.dbo.shift ON m_p.shift_id = shift.shift_id ${strShiftWhere}
             LEFT JOIN mi.dbo.employee ON mi.emp_id = employee.emp_id
             LEFT JOIN mi.dbo.vw_checkPartPaperReceived cppr ON cppr.jobid = m_p.jobid AND cppr.itid = m_p.itid 
+            LEFT JOIN mi.dbo.machine_saddle_detail AS msd ON msd.saddle_detail_id = m_p.saddle_detail_id
         WHERE
             1 = 1 
             ${strWhere}
@@ -281,12 +273,203 @@ const getPlanSearchModel = async (req, transaction) => {
             master_capacity_labor,
             machine_id_send,
             p.process_id,
-            p.process_name 
+            p.process_name,
+            saddle_detail_id,
+            saddle_detail_name
         ORDER BY
             plan_date ASC,
             shift_id ASC,
             ROUND( ISNULL( priority, '' ), 2 ) ASC,
             id ASC`
+    console.log(sqlMain);
+    let planList = (await connection.query(sqlMain))[0]
+    return {
+        typeSearch,
+        planList
+    }
+}
+
+const getCaseInPlanSearchModel = async (req, transaction) => {
+    // console.log(req);
+    const { typeSearch, machineType, machineID, jobID, startDate, endDate, shiftID, checkedPlanDate } = req
+    var actCode = machineID
+    let strWhere = "";
+    let strWhereActCode = "";
+    let strWhereActCode2 = ""
+    let strInner = "";
+    let strShiftWhere = "";
+
+    if (typeSearch === '1') {
+        if (actCode != 0) {
+            strWhereActCode += ` AND mpa.act_code = '${actCode}' `
+            strWhereActCode2 += ` AND m_p.act_code = '${actCode}' `
+        }
+        strWhere += ` AND m_p.plan_date BETWEEN '${startDate}' AND '${endDate}' `
+        strInner += ` ISNULL(m_p.machine_id,m_p.default_machine_id) = machine.machine_id `
+
+    } else if (typeSearch === '2') {
+        strInner += ` CASE WHEN m_p.machine_id = '' THEN m_p.default_machine_id ELSE isnull( m_p.machine_id, m_p.default_machine_id )  END = machine.machine_id `
+        strWhere += ` AND m_p.jobid LIKE '%${jobID}%' `
+        if (checkedPlanDate === '1') {
+            strWhere += `AND (m_p.plan_date BETWEEN '${startDate}' AND '${endDate}' )`
+        }
+    } else if (typeSearch === '3') {
+        strInner += ` m_p.default_machine_id = machine.machine_id `
+        strWhere += ` AND m_p.jobid LIKE '%${jobID}%'
+                      AND (m_p.machine_id IS NULL OR m_p.machine_id = '0' OR m_p.machine_id = '') `
+    } else if (typeSearch === '4') {
+        strInner += ` m_p.default_machine_id = machine.machine_id `
+        strWhere += ` AND (m_p.machine_id IS NULL OR m_p.machine_id = '0' OR m_p.machine_id = '') 
+                     AND (m_p.plan_date BETWEEN '${startDate}' AND '${endDate}' ) `
+    } else {
+        strInner += ` m_p.machine_id = machine.machine_id `
+        strWhere += ` AND 1=2 `
+    }
+
+    // กรองตาม machine type ที่ส่งมา
+    // if (machineType !== "0") {
+    //     strWhere += ` AND machine.type_id = ${machineType} `
+    // }
+
+    // กรองตาม กะ(shift) ที่ส่งมา
+    if (shiftID !== "0") {
+        strShiftWhere += ` AND m_p.shift_id = ${shiftID} `
+    }
+
+    const sqlMain = `SELECT TOP 1000 
+                        m_p.priority ,
+                        m_p.jobid ,
+                        mi.job_name ,
+                        m_p.hr1 ,
+                        m_p.plan_date ,
+                        machine.machine_detail ,
+                        m_p.machine_id ,
+                        machine.machine_name ,
+                        job_status.job_status_name,
+                        shift.shift_name,
+                        ISNULL(mi_item.partName, '') partName,
+                        m_p.detail,
+                        mi.due1,
+                        m_p.sig,
+                        m_p.quantity,
+                        m_p.waste,
+                        m_p.make_ready ,
+                        m_p.process_time1,
+                        m_p.speed,
+                        m_p.date_paper_in,
+                        m_p.paper_size,
+                        m_p.paper_type,
+                        m_p.date_plate_in,
+                        m_p.date_ink_in,
+                        m_p.waterbase ,
+                        m_p.varnish,
+                        m_p.recive_dep,
+                        m_p.remark,
+                        m_p.key_date,
+                        m_p.saleman_id,
+                        m_p.id,
+                        m_p.shift_id ,
+                        ( employee.firstname+ ' ' + employee.lastname ) AS fullname,
+                        m_p.job_status_id ,
+                        m_p.sig_num,
+                        m_p.wait_dry ,
+                        m_p.hr,
+                        m_p.process_time,
+                        machine.type_id AS machine_type_id,
+                        m_p.ok_date,
+                        m_p.itid,
+                        m_p.act_code,
+                        act.act_name ,
+                        MAX ( th.header_id ) AS header_id,
+                        m_p.capacity_labor ,
+                        m_p.master_capacity_labor ,
+                        m_p.machine_id_send ,
+                        pl.process_id AS send_dep,
+                        pl.process_name AS send_dep_name 
+                    FROM
+                        mi.dbo.machine_planning AS m_p
+                        LEFT JOIN mi.dbo.mi ON mi.jobid = m_p.jobid
+                        LEFT JOIN mi.dbo.mi_item ON m_p.jobid = mi_item.jobid 
+                        AND m_p.itid = mi_item.itid
+                        LEFT JOIN mi.dbo.job_status ON m_p.job_status_id = job_status.job_status_id
+                        LEFT JOIN mi.dbo.machine ON ${strInner}
+                        LEFT JOIN mi.dbo.shift ON m_p.shift_id = shift.shift_id ${strShiftWhere}
+                        LEFT JOIN mi.dbo.employee ON mi.emp_id = employee.emp_id
+                        LEFT JOIN mi.dbo.machine_planning_activity AS act ON m_p.act_code = act.act_code
+                        LEFT JOIN mi.dbo.timesheet_header AS th ON m_p.id = th.plan_id
+                        LEFT JOIN PL.dbo.tb_planning_process pl ON CAST ( pl.process_id AS VARCHAR ( 20 ) ) = m_p.send_dep 
+                    WHERE
+                        1 = 1 
+                        AND m_p.id = m_p.plan_id_group 
+                        AND m_p.act_code IN (
+                        SELECT DISTINCT
+                            mpas2.act_code 
+                        FROM
+                            mi.dbo.machine_planning_activity mpa
+                            INNER JOIN mi.dbo.machine_planning_activity_sub mpas ON mpa.act_code = mpas.act_code
+                            INNER JOIN mi.dbo.machine_planning_activity_sub mpas2 ON mpas2.machine_id = mpas.machine_id 
+                        WHERE
+                            1 = 1 
+                            ${strWhereActCode} 
+                        ) 
+                        AND machine.type_id = ${machineType} 
+                        ${strWhere} 
+                        ${strShiftWhere}
+                    GROUP BY
+                        m_p.priority ,
+                        m_p.jobid ,
+                        mi.job_name ,
+                        m_p.hr1 ,
+                        m_p.plan_date ,
+                        machine.machine_detail ,
+                        m_p.machine_id ,
+                        machine.machine_name ,
+                        job_status.job_status_name,
+                        shift.shift_name,
+                        mi_item.partName,
+                        m_p.detail,
+                        mi.due1,
+                        m_p.sig,
+                        m_p.quantity,
+                        m_p.waste,
+                        m_p.make_ready ,
+                        m_p.process_time1,
+                        m_p.speed,
+                        m_p.date_paper_in,
+                        m_p.paper_size,
+                        m_p.paper_type,
+                        m_p.date_plate_in,
+                        m_p.date_ink_in,
+                        m_p.waterbase ,
+                        m_p.varnish,
+                        m_p.recive_dep,
+                        m_p.remark,
+                        m_p.key_date,
+                        m_p.saleman_id,
+                        m_p.id,
+                        m_p.shift_id ,
+                        employee.firstname,
+                        employee.lastname,
+                        m_p.job_status_id,
+                        m_p.sig_num,
+                        m_p.wait_dry ,
+                        m_p.hr,
+                        m_p.process_time,
+                        machine.type_id,
+                        m_p.ok_date,
+                        m_p.itid,
+                        m_p.act_code,
+                        act.act_name ,
+                        m_p.capacity_labor ,
+                        m_p.master_capacity_labor ,
+                        m_p.machine_id_send ,
+                        pl.process_id ,
+                        pl.process_name 
+                    ORDER BY
+                        ISNULL( m_p.plan_date, '' ) ASC,
+                        ISNULL( m_p.shift_id, '' ) ASC,
+                        ROUND( ISNULL( m_p.priority, '' ), 2 ) ASC,
+                        m_p.id ASC`
     console.log(sqlMain);
     let planList = (await connection.query(sqlMain))[0]
     return {
@@ -348,18 +531,151 @@ const insertPlanModel = async (req, transaction) => {
     return data;
 }
 
+const insertCaseInPlanModel = async (req, transaction) => {
+    let data = {
+        success: 0
+    }
+    const { e_jobid, e_plan_date, e_priority, e_job_status_id, e_partName, e_detail,
+        e_shift_id, e_sig, e_waste, e_quantity, e_machine_id,
+        e_sig_num, e_wait_dry, e_make_ready, e_speed, e_process_time,
+        e_process_time1, e_hr, e_hr1, e_paper_type, e_paper_size,
+        e_recive_dep, e_send_dep, e_remark, datePlateIn, datePaperIn,
+        dateInkIn, waterbase, varnish, saleman_id, keyDate,
+        e_capacity_labor, e_machine_id_send, act_code,
+        e_master_capacity_labor, e_itid, e_okdate, plan_id_copy } = req
+
+    const sqlAct = `SELECT machine_id FROM mi.dbo.machine_planning_activity_sub WHERE act_code = '${act_code}'`
+    const queryAct = (await connection.query(sqlAct))[0]
+
+    let isFirstRow = true
+    let strMem = ""
+    let plan_group_id = 0
+
+    data.emp_id = saleman_id;
+
+    const sql = `INSERT INTO mi.dbo.machine_planning ( jobid,
+                plan_date, priority, job_status_id, partName, detail,
+                shift_id, sig, waste, quantity, machine_id,
+                sig_num, wait_dry, make_ready, speed, process_time,
+                process_time1, hr, hr1, paper_type, paper_size,
+                recive_dep, send_dep, remark, date_plate_in, date_paper_in,
+                date_ink_in, waterbase, varnish, saleman_id, key_date,
+                capacity_labor, master_capacity_labor, machine_id_send,
+                itid, ok_date, act_code, plan_id_group)
+            VALUES ('${e_jobid}','${e_plan_date}', ${e_priority}, ${e_job_status_id === '' ? 0 : e_job_status_id}, '${e_partName}', '${e_detail}',
+            ${e_shift_id}, ${e_sig}, ${e_waste}, ${e_quantity}, '${e_machine_id}',
+            ${e_sig_num}, '${e_wait_dry}', ${e_make_ready}, ${e_speed}, ${e_process_time}, 
+            ${e_process_time1}, ${e_hr}, ${e_hr1}, '${e_paper_type}', '${e_paper_size}',
+            '${e_recive_dep}', '${e_send_dep}', '${e_remark}', '${datePlateIn}', '${datePaperIn}',
+            '${dateInkIn}', '${waterbase}', '${varnish}', '${saleman_id}', '${keyDate}',
+            '${e_capacity_labor}', '${e_master_capacity_labor}', '${e_machine_id_send}',
+            '${e_itid}', '${e_okdate}', '${act_code}', ${plan_group_id}) `
+
+    await connection.query(sql)
+        .then(async () => {
+            const sqlGetPlanId = `SELECT TOP 1 id FROM mi.dbo.machine_planning ORDER BY id DESC`
+            let plan_id = (await connection.query(sqlGetPlanId))[0][0].id;
+            data.plan_id = plan_id;
+            data.action_type = "insert"
+            data.success = 1;
+            plan_group_id = plan_id
+
+            sqlUpdatePlanGroupId = `UPDATE mi.dbo.machine_planning SET plan_id_group = ${plan_group_id} WHERE id = ${plan_id}`
+            await connection.query(sqlUpdatePlanGroupId)
+
+            if (plan_id_copy > 0) {
+                data.action_type = "copy"
+                const sqlStroe = `EXEC mi.dbo.fn_copy_machine_plan_process_send @machine_planning_copy = ${plan_id_copy}, @machine_planning_paste = ${plan_id}`;
+                await connection.query(sqlStroe);
+            }
+        }).catch(() => {
+            data.success = 0;
+            data.plan_id = null;
+        })
+
+
+    // for (let machine of queryAct) {
+    //     const sql = `INSERT INTO mi.dbo.machine_planning ( jobid,
+    //         plan_date, priority, job_status_id, partName, detail,
+    //         shift_id, sig, waste, quantity, machine_id,
+    //         sig_num, wait_dry, make_ready, speed, process_time,
+    //         process_time1, hr, hr1, paper_type, paper_size,
+    //         recive_dep, send_dep, remark, date_plate_in, date_paper_in,
+    //         date_ink_in, waterbase, varnish, saleman_id, key_date,
+    //         capacity_labor, master_capacity_labor, machine_id_send,
+    //         itid, ok_date, act_code, plan_id_group)
+    //     VALUES ('${e_jobid}','${e_plan_date}', ${e_priority}, ${e_job_status_id === '' ? 0 : e_job_status_id}, '${e_partName}', '${e_detail}',
+    //     ${e_shift_id}, ${e_sig}, ${e_waste}, ${e_quantity}, '${machine.machine_id}',
+    //     ${e_sig_num}, '${e_wait_dry}', ${e_make_ready}, ${e_speed}, ${e_process_time}, 
+    //     ${e_process_time1}, ${e_hr}, ${e_hr1}, '${e_paper_type}', '${e_paper_size}',
+    //     '${e_recive_dep}', '${e_send_dep}', '${e_remark}', '${datePlateIn}', '${datePaperIn}',
+    //     '${dateInkIn}', '${waterbase}', '${varnish}', '${saleman_id}', '${keyDate}',
+    //     '${e_capacity_labor}', '${e_master_capacity_labor}', '${e_machine_id_send}',
+    //     '${e_itid}', '${e_okdate}', '${act_code}', ${plan_group_id}) `
+
+    //     await connection.query(sql)
+    //         .then(async () => {
+    //             const sqlGetPlanId = `SELECT TOP 1 id FROM mi.dbo.machine_planning ORDER BY id DESC`
+    //             let plan_id = (await connection.query(sqlGetPlanId))[0][0].id;
+    //             data.plan_id = plan_id;
+    //             data.action_type = "insert"
+    //             data.success = 1;
+    //             // console.log("plan_group_id = ", plan_group_id);
+
+    //             if (isFirstRow === true) {
+    //                 // console.log(isFirstRow);
+    //                 plan_group_id = plan_id
+    //                 sqlUpdatePlanGroupId = `UPDATE mi.dbo.machine_planning SET plan_id_group = ${plan_group_id} WHERE id = ${plan_id}`
+    //                 await connection.query(sqlUpdatePlanGroupId)
+
+    //                 isFirstRow = false
+
+    //                 if (plan_id_copy > 0) {
+    //                     data.action_type = "copy"
+    //                     const sqlStroe = `EXEC mi.dbo.fn_copy_machine_plan_process_send @machine_planning_copy = ${plan_id_copy}, @machine_planning_paste = ${plan_id}`;
+    //                     await connection.query(sqlStroe);
+    //                 }
+    //             } else {
+    //                 if (plan_id_copy > 0) {
+    //                     data.action_type = "copy"
+    //                     const sqlStroe = `EXEC mi.dbo.fn_copy_machine_plan_process_send @machine_planning_copy = ${plan_id_copy}, @machine_planning_paste = ${plan_id}`;
+    //                     await connection.query(sqlStroe);
+    //                 }
+    //             }
+    //         })
+    //         .catch(() => {
+    //             data.success = 0;
+    //             data.plan_id = null;
+    //         })
+    //     strMem += sql
+    //     await insertLogMachinePlanningModel(data)
+    // }
+
+    // data.sql_str = strMem
+    return data;
+}
+
 const updatePlanModel = async (req, transaction) => {
     let data = {
         success: 0
     }
-    const { e_jobid, plan_id, e_plan_date, e_priority, e_job_status_id, e_partName, e_detail,
+    const { menu_id, e_jobid, plan_id, e_plan_date, e_priority, e_job_status_id, e_partName, e_detail,
         e_shift_id, e_sig, e_waste, e_quantity, e_machine_id,
         e_sig_num, e_wait_dry, e_make_ready, e_speed, e_process_time,
         e_process_time1, e_hr, e_hr1, e_paper_type, e_paper_size,
         e_recive_dep, e_send_dep, e_remark, datePlateIn, datePaperIn,
         dateInkIn, waterbase, varnish, keyDate,
         e_capacity_labor, e_machine_id_send,
-        e_master_capacity_labor, e_itid, e_okdate,saleman_id } = req
+        e_master_capacity_labor, e_itid, e_okdate, saleman_id, act_code } = req
+
+    let strCondition = ""
+    let strActCode = ""
+    if (menu_id !== '47') {
+        strCondition += `id = ${plan_id}`
+    } else {
+        strCondition += `plan_id_group = ${plan_id}`
+        strActCode += `,act_code = ${act_code}`
+    }
     const sql = `UPDATE mi.dbo.machine_planning SET 
                 jobid = '${e_jobid}',
                 plan_date = '${e_plan_date}', 
@@ -397,7 +713,8 @@ const updatePlanModel = async (req, transaction) => {
                 master_capacity_labor = '${e_master_capacity_labor}',
                 machine_id_send = '${e_machine_id_send}',
                 saleman_id = '${saleman_id}'
-                WHERE id = ${plan_id} `
+                ${strActCode}
+                WHERE ${strCondition} `
     data.plan_id = plan_id;
     data.sql_str = sql.replace(/'/g, "''");
     data.action_type = "update";
@@ -413,7 +730,7 @@ const updatePlanModel = async (req, transaction) => {
 }
 
 const deletePlanModel = async (req, transaction) => {
-    const {empID,plan_id} = req
+    const { empID, plan_id } = req
     let data = {
         success: 0,
         emp_id: empID
@@ -452,20 +769,47 @@ const cancelPlanModel = async (req, transaction) => {
 }
 
 const getCapacityLaborModel = async (req, transaction) => {
-    const { machineId, planDate } = req
+    const { machineId, planDate, menuId } = req
+    var realMachineId = ""
+    var chkMachine = true
+    if (menuId === '47') {
+        const sqlMachine = `SELECT machine_main FROM mi.dbo.machine_planning_activity WHERE act_code = '${machineId}' `
+        await connection.query(sqlMachine).then(
+            ([data]) => {
+                if (data.length > 0) {
+                    realMachineId = data[0].machine_main
+                } else {
+                    chkMachine = false
+                }
+            })
+    } else {
+        realMachineId = machineId
+    }
+
+    if (chkMachine === false || planDate === '') {
+        return {
+            master_capacity_labor: 0
+        }
+    }
+
     const sql = `SELECT TOP
                     1 ISNULL( master_capacity_labor, 0 ) AS master_capacity_labor 
                 FROM
                     mi.dbo.machine_planning_worker 
                 WHERE
                     1 = 1 
-                    AND machine_id = '${machineId}' 
-                    AND ( CONVERT ( DATE, start_date ) <= '${planDate}' AND CONVERT ( DATE, end_date ) >= '${planDate}' ) 
+                    AND machine_id = '${realMachineId}' 
                 ORDER BY
                     create_date DESC`
-    let capacityLabor = (await connection.query(sql))[0]
+    let capacity_labor = 0
+    await connection.query(sql)
+        .then(([data]) => {
+            if (data.length > 0) {
+                capacity_labor = data[0].master_capacity_labor
+            }
+        })
     return {
-        capacityLabor
+        master_capacity_labor: capacity_labor
     }
 }
 
@@ -576,8 +920,8 @@ const insertLogMachinePlanningModel = async (req, transaction) => {
     // const sql = `INSERT INTO mi.dbo.machine_planning_log_mi3(plan_id, action_type, sql_string, success_status) VALUES(${plan_id}, '${action_type}', '${sql_str}', ${success})`;
     var sql = ``
     if (action_type === 'delete') {
-        sql = `INSERT INTO mi.dbo.machine_planning_log_mi3(plan_id, action_type) 
-               VALUES(${plan_id}, '${action_type}')`
+        sql = `INSERT INTO mi.dbo.machine_planning_log_mi3(plan_id, action_type, update_by) 
+               VALUES(${plan_id}, '${action_type}', '${emp_id}')`
     } else {
         sql = `INSERT INTO mi.dbo.machine_planning_log_mi3 
         (plan_id ,action_type ,update_by ,jobid ,hr ,start_date ,end_date
@@ -749,27 +1093,19 @@ const getDefaultMachineListModel = async (menuIdArray) => {
 
     }
 
-    const sqlSaddle = `SELECT
-                            saddle_detail_id,
-                            saddle_detail_name 
-                        FROM
-                            mi.dbo.machine_saddle_detail 
-                        ORDER BY
-                            CAST(saddle_detail_id AS INT)`
-    saddleList = (await connection.query(sqlSaddle))[0]
     return {
         machineList,
-        machineTypeList,
-        saddleList
+        machineTypeList
     }
 }
 
 const updateMultiPlanModel = async (req, transaction) => {
     let result = {}
     let chkProc = true
-    const { proc, status_save, plan_id_array, detail, job_status_id, machine_id, ok_date, plan_date, remark, shift_id, saleman_id } = req
+    const { menu_id, proc, status_save, plan_id_array, detail, job_status_id, machine_id, ok_date, plan_date, remark, shift_id, saleman_id, act_code } = req
     const listPlanId = plan_id_array.join(',')
     var settingAttr = ""
+    console.log(req);
 
     if (plan_date.is_check == 1) {
         var sqlCheck = `select header_id
@@ -805,6 +1141,11 @@ const updateMultiPlanModel = async (req, transaction) => {
                             DECLARE @ok_date varchar(255) = null
                             DECLARE @detail varchar(255) = null 
                             `
+
+            if (menu_id === '47') {
+                settingAttr += ` DECLARE @act_code INT = null`
+            }
+
             if (plan_date.is_check == 1) {
                 settingAttr += ` SET @plan_date = '${plan_date.value}' `
             }
@@ -813,6 +1154,9 @@ const updateMultiPlanModel = async (req, transaction) => {
             }
             if (machine_id.is_check == 1) {
                 settingAttr += ` SET @machine_id = '${machine_id.value}' `
+                if (menu_id === '47') {
+                    settingAttr += ` SET @act_code = '${act_code}' `
+                }
             }
             if (shift_id.is_check == 1) {
                 settingAttr += ` SET  @shift_id = '${shift_id.value}' `
@@ -828,9 +1172,13 @@ const updateMultiPlanModel = async (req, transaction) => {
             }
         }
         var sql = "";
+        var setStr = "";
         if (proc === 'edit') {
+            if (menu_id === '47') {
+                setStr += ", act_code = ISNULL(@act_code, act_code)"
+            }
             sql = ` ${settingAttr}
-                    SELECT @key_date = convert(NVARCHAR, getdate(),103)+' '+convert(NVARCHAR, getdate(),108);
+                    SELECT @key_date = convert(NVARCHAR, getdate(),23)+' '+convert(NVARCHAR, getdate(),108);
                     UPDATE mi.dbo.machine_planning
                     SET
                         plan_date = ISNULL(@plan_date,plan_date)
@@ -843,11 +1191,15 @@ const updateMultiPlanModel = async (req, transaction) => {
                         ,detail = ISNULL(@detail,detail)
                         ,saleman_id = ISNULL('${saleman_id}',saleman_id)
                         ,key_date = ISNULL(@key_date,key_date)
+                        ${setStr}
                     WHERE id IN(${listPlanId})`
         }
-        if(proc === 'copy'){
+        if (proc === 'copy') {
+            if (menu_id === '47') {
+                setStr += ",plan_id_group = 0, act_code = ISNULL(@act_code, act_code)"
+            }
             sql = ` ${settingAttr}
-                    SELECT @key_date = convert(NVARCHAR, getdate(),103)+' '+convert(NVARCHAR, getdate(),108);
+                    SELECT @key_date = convert(NVARCHAR, getdate(),23)+' '+convert(NVARCHAR, getdate(),108);
                     SELECT * INTO #tmp FROM mi.dbo.machine_planning AS mp WHERE id IN(${listPlanId})
                     ALTER TABLE #tmp DROP COLUMN id ;
             
@@ -863,11 +1215,23 @@ const updateMultiPlanModel = async (req, transaction) => {
                         ,detail = ISNULL(@detail,detail)
                         ,saleman_id = ISNULL('${saleman_id}',saleman_id)
                         ,key_date = ISNULL(@key_date,key_date)
+                        ${setStr}
                     INSERT INTO mi.dbo.machine_planning SELECT * FROM #tmp;
                     DROP TABLE #tmp`
         }
+        // console.log("sql = ", sql);
         await connection.query(sql)
-            .then(() => {
+            .then(async () => {
+                let sqlUpdate = ""
+                if (menu_id === '47') {
+                    sqlUpdate = `UPDATE mi.dbo.machine_planning 
+                    SET plan_id_group = id
+                    WHERE plan_id_group = 0`
+                }
+                if (proc === 'copy') {
+                    await connection.query(sqlUpdate)
+                }
+
                 result.success = 1
                 result.msg = 'success'
             })
@@ -882,7 +1246,7 @@ const updateMultiPlanModel = async (req, transaction) => {
 const cancelMultiPlanModel = async (req, transaction) => {
     let result = {}
     let chkProc = true
-    const { plan_id_array,saleman_id } = req
+    const { plan_id_array, saleman_id } = req
     const listPlanId = plan_id_array.join(',')
     var sqlCheck = `SELECT
                         h.header_id
@@ -986,193 +1350,43 @@ const getWorkTypeModel = async (req, transaction) => {
     return WorkTypeList;
 }
 
-const getPlanSearchCaseInModel = async (req, transaction) => {
-    const { type_search, act_code, machine_type, shift_id, job_id, start_date, end_date, checked_plan_date } = req
-
-    let strWhere = "";
-    let strInner = "";
-    let strShiftWhere = "";
-    let strAct = "";
-    let strWhere1 = "";
-
-    // กรองตาม type ที่ค้นหา
-    if (type_search === '1') {
-        strInner += ` ISNULL(m_p.machine_id, m_p.default_machine_id) = machine.machine_id `
-        if(act_code != 0){
-             strAct += ` AND m_p.machine_id = '${act_code}' `
-        }
-        strWhere +=  `AND m_p.plan_date BETWEEN '${start_date}' AND '${end_date}' `
-    } else if (type_search === '2') {
-        strInner += ` CASE WHEN m_p.machine_id = '' THEN m_p.default_machine_id ELSE isnull( m_p.machine_id, m_p.default_machine_id )  END = machine.machine_id `
-        strWhere += ` AND m_p.jobid LIKE '%${job_id}%' `
-        if (checked_plan_date === '1') {
-            strWhere += `AND (m_p.plan_date BETWEEN '${start_date}' AND '${end_date}' )`
-        }
-    } else if (type_search === '3') {
-        strInner += ` m_p.default_machine_id = machine.machine_id `
-        strWhere += ` AND m_p.jobid LIKE '%${job_id}%'
-                      AND (m_p.machine_id IS NULL OR m_p.machine_id = '0' OR m_p.machine_id = '') `
-    } else if (type_search === '4') {
-        strInner += ` m_p.default_machine_id = machine.machine_id `
-        strWhere += ` AND (m_p.machine_id IS NULL OR m_p.machine_id = '0' OR m_p.machine_id = '') 
-                     AND (m_p.plan_date BETWEEN '${start_date}' AND '${end_date}' ) `
-    } else {
-        strInner += ` m_p.machine_id = machine.machine_id `
-        strWhere += ` AND 1=2 `
-    }
-
-    // กรองตาม machine type ที่ส่งมา
-    if (machine_type === "0") {
-        let strMachineTypeList = await getMachineType(47);
-        strWhere1 += ` AND machine.type_id IN ${strMachineTypeList} `
-    } else {
-        strWhere1 += ` AND machine.type_id = ${machine_type} `
-    }
-
-    // กรองตาม กะ(shift) ที่ส่งมา
-    if (shift_id !== "0") {
-        strShiftWhere += ` AND m_p.shift_id = ${shift_id} `
-    }
-
-    const sqlCasein = `SELECT
-                        TOP 100 m_p.priority,
-                        m_p.jobid,
-                        mi.job_name,
-                        m_p.hr1,
-                        m_p.plan_date,
-                        machine.machine_detail,
-                        m_p.machine_id,
-                        machine.machine_name,
-                        job_status.job_status_name,
-                        shift.shift_name,
-                        mi_item.partName,
-                        m_p.detail,
-                        mi.due1,
-                        m_p.sig,
-                        m_p.quantity,
-                        m_p.waste,
-                        m_p.make_ready,
-                        m_p.process_time1,
-                        m_p.speed,
-                        m_p.date_paper_in,
-                        m_p.paper_size,
-                        m_p.paper_type,
-                        m_p.date_plate_in,
-                        m_p.date_ink_in,
-                        m_p.waterbase,
-                        m_p.varnish,
-                        m_p.recive_dep,
-                        m_p.remark,
-                        m_p.key_date,
-                        m_p.saleman_id,
-                        m_p.id,
-                        m_p.shift_id,
-                        (
-                            employee.firstname + '  ' + employee.lastname
-                        ) AS fullname,
-                        m_p.job_status_id,
-                        m_p.sig_num,
-                        m_p.wait_dry,
-                        m_p.hr,
-                        m_p.process_time,
-                        machine.type_id AS machine_type_id,
-                        m_p.ok_date,
-                        m_p.itid,
-                        m_p.act_code,
-                        act.act_name,
-                        MAX(th.header_id) AS header_id,
-                        m_p.capacity_labor,
-                        m_p.master_capacity_labor,
-                        m_p.machine_id_send,
-                        pl.process_id,
-                        pl.process_name AS send_dep
-                    FROM
-                        mi.dbo.machine_planning AS m_p
-                    LEFT JOIN mi.dbo.mi ON mi.jobid = m_p.jobid
-                    LEFT JOIN mi.dbo.mi_item ON m_p.jobid = mi_item.jobid
-                    AND m_p.itid = mi_item.itid
-                    LEFT JOIN mi.dbo.job_status ON m_p.job_status_id = job_status.job_status_id
-                    LEFT JOIN mi.dbo.machine ON ${strInner}
-                    LEFT JOIN mi.dbo.shift ON m_p.shift_id = shift.shift_id ${strShiftWhere}
-                    LEFT JOIN mi.dbo.employee ON mi.emp_id = employee.emp_id
-                    LEFT JOIN mi.dbo.machine_planning_activity AS act ON m_p.act_code = act.act_code
-                    LEFT JOIN mi.dbo.timesheet_header AS th ON m_p.id = th.plan_id
-                    LEFT JOIN PL.dbo.tb_planning_process pl ON CAST (pl.process_id AS VARCHAR(20)) = m_p.send_dep
-                    WHERE
-                        1 = 1
-                    AND m_p.id = m_p.plan_id_group
-                    AND m_p.act_code IN (
-                        SELECT DISTINCT
-                            mpas2.act_code
-                        FROM
-                            mi.dbo.machine_planning_activity mpa
-                        INNER JOIN mi.dbo.machine_planning_activity_sub mpas ON mpa.act_code = mpas.act_code
-                        INNER JOIN mi.dbo.machine_planning_activity_sub mpas2 ON mpas2.machine_id = mpas.machine_id
-                        WHERE
-                            1 = 1 ${strAct}
-                    ) ${strWhere} ${strShiftWhere} ${strWhere1}
-                    GROUP BY
-                        m_p.priority,
-                        m_p.jobid,
-                        mi.job_name,
-                        m_p.hr1,
-                        m_p.plan_date,
-                        machine.machine_detail,
-                        m_p.machine_id,
-                        machine.machine_name,
-                        job_status.job_status_name,
-                        shift.shift_name,
-                        mi_item.partName,
-                        m_p.detail,
-                        mi.due1,
-                        m_p.sig,
-                        m_p.quantity,
-                        m_p.waste,
-                        m_p.make_ready,
-                        m_p.process_time1,
-                        m_p.speed,
-                        m_p.date_paper_in,
-                        m_p.paper_size,
-                        m_p.paper_type,
-                        m_p.date_plate_in,
-                        m_p.date_ink_in,
-                        m_p.waterbase,
-                        m_p.varnish,
-                        m_p.recive_dep,
-                        m_p.remark,
-                        m_p.key_date,
-                        m_p.saleman_id,
-                        m_p.id,
-                        m_p.shift_id,
-                        employee.firstname,
-                        employee.lastname,
-                        m_p.job_status_id,
-                        m_p.sig_num,
-                        m_p.wait_dry,
-                        m_p.hr,
-                        m_p.process_time,
-                        machine.type_id,
-                        m_p.ok_date,
-                        m_p.itid,
-                        m_p.act_code,
-                        act.act_name,
-                        m_p.capacity_labor,
-                        m_p.master_capacity_labor,
-                        m_p.machine_id_send,
-                        pl.process_id,
-                        pl.process_name
-                    ORDER BY
-                        ISNULL(m_p.plan_date, '') ASC,
-                        ISNULL(m_p.shift_id, '') ASC,
-                        ROUND(ISNULL(m_p.priority, ''), 2) ASC,
-                        m_p.id ASC`
-    // console.log(sqlCasein);
-    let planList = (await connection.query(sqlCasein))[0]
-    return {
-        typeSearch:type_search,
-        planList
-    }
+const getCaseInActCodeModel = async (req, transaction) => {
+    let result = {}
+    const sql = `SELECT
+                    act_code,
+                    act_name 
+                FROM
+                    mi.dbo.machine_planning_activity 
+                WHERE
+                    type_id IN ( '5' ) 
+                ORDER BY
+                    type_id`
+    result = (await connection.query(sql))[0]
+    return result
 }
+
+const getJobStatusModel = async (req, transaction) => {
+    let result = {}
+    const sql = `SELECT job_status_id,
+                        job_status_name 
+                FROM mi.dbo.job_status 
+                ORDER BY job_status_id`
+    result = (await connection.query(sql))[0]
+    return result
+}
+
+const getSaddleModel = async (req, transaction) => {
+    const sql = `SELECT
+                    saddle_detail_id,
+                    saddle_detail_name 
+                FROM
+                    mi.dbo.machine_saddle_detail 
+                ORDER BY
+                    CAST(saddle_detail_id AS INT)`
+    return (await connection.query(sql))[0]
+}
+
+
 
 module.exports = {
     getMenuModel,
@@ -1196,5 +1410,9 @@ module.exports = {
     cancelMultiPlanModel,
     deleteMultiPlanModel,
     getWorkTypeModel,
-    getPlanSearchCaseInModel
+    getCaseInActCodeModel,
+    getCaseInPlanSearchModel,
+    insertCaseInPlanModel,
+    getJobStatusModel,
+    getSaddleModel
 }

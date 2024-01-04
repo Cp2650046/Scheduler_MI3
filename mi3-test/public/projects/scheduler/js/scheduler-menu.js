@@ -1,6 +1,7 @@
 $(document).ready(async function () {
     const userData = JSON.parse(localStorage.getItem('userData'))
     if (userData != null) {
+        console.log(1);
         await getMenu(userData.emp_id);
     }
 })
@@ -10,7 +11,7 @@ async function buildMenu(menuList) {
     let div = $('div.menu_list');
     let cardParent = ``;
     // skip this menu
-    let menuDisableArray = [49, 59] //[47, 49, 59]
+    let menuDisableArray = [59]
     menuList.forEach((element) => {
         // console.log('menu id = ', element.menuID);
         let cardChild = ``;

@@ -4,9 +4,9 @@
 <head>
     <title>Scheduler - MI3</title>
     <%- include('../includes/script-top'); %>
-    <link rel="stylesheet" href="./projects/scheduler/css/scheduler.css">
-    <link rel="stylesheet" href="./projects/scheduler/css/scheduler-alert.css">
-    <link rel="stylesheet" href="./projects/scheduler/css/select2.css">
+        <link rel="stylesheet" href="./projects/scheduler/css/scheduler.css">
+        <link rel="stylesheet" href="./projects/scheduler/css/scheduler-alert.css">
+        <link rel="stylesheet" href="./projects/scheduler/css/select2.css">
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -16,16 +16,788 @@
             <div class="content-header">
                 <div class="col-lg-12" id="action_bar">
                 </div>
-                <% if(machineTypeID == 47){ %>
-                <%- include('../scheduler/views/casein.ejs'); %>
-                <script src="./projects/scheduler/js/scheduler-casein.js"></script>
-                <% }else{ %>
-                <%- include('../scheduler/views/all.ejs'); %>
-                <script src="./projects/scheduler/js/scheduler-all.js"></script>
-                <% } %>
+                <div class="container-fluid" id="second_board">
+                    <div id="scheduler_tab1" class="card card_scheduler">
+                        <div class="card-header pl-2 pb-1 pt-2 border-0">
+                            <div class="card-title">
+
+                                <span class="project_name">
+                                    <i class="fas fa-clipboard"></i>
+                                    Scheduler System
+                                </span>
+                            </div>
+                            <div class="card-tools">
+                                <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                                    <i class="fas fa-minus"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-1">
+                                    <h6>
+                                        <i class="fa fa-search"></i>
+                                        ค้นหาข้อมูล
+                                    </h6>
+                                </div>
+                                <div class="col-7">
+                                    <table class="">
+                                        <tbody>
+                                            <tr>
+                                                <td class="col-3">
+                                                    <select id="s_type_search" name="s_type_search"
+                                                        class="form-control">
+                                                        <option value="1">ค้นหาตามเครื่องจักร / วันที่</option>
+                                                        <option value="2">ค้นหา ตาม Job</option>
+                                                        <option value="3">ค้นหา ตาม Job ที่ยังไม่ได้วางแผน
+                                                        </option>
+                                                        <option value="4">ค้นหา ตาม Job
+                                                            ที่ยังไม่ได้วางแผน/วันที่</option>
+                                                    </select>
+                                                </td>
+                                                <td>ประเภทเครื่องจักร: </td>
+                                                <td>
+                                                    <select name="s_machine_type" id="s_machine_type"
+                                                        class="form-control">
+                                                        <option value="">ทั้งหมด</option>
+                                                    </select>
+                                                </td>
+                                                <td class="show_input_machine">
+                                                    <span class="span_machine"
+                                                        data-menu-id="0">เครื่องจักร:&nbsp;</span>
+                                                    <span class="span_machine"
+                                                        data-menu-id="49">เครื่องจักร:&nbsp;</span>
+                                                    <span class="span_machine"
+                                                        data-menu-id="47">ประเภทการทำงาน:&nbsp;</span>
+                                                </td>
+                                                <td class="show_input_machine text-left" colspan="3">
+                                                    <select id="s_machine_id" class="form-control input-s-machine-id"
+                                                        name="s_machine_id" nextEleId="plan_date_start" required>
+                                                    </select>
+                                                </td>
+                                                <td class="show_input_s_job" style="display: none;">Job:&nbsp;
+                                                </td>
+                                                <td class="show_input_s_job" style="display: none;">
+                                                    <input class="form-control" type="text" name="s_job_id"
+                                                        nextEleId="btn_search">
+                                                </td>
+                                                <td colspan="2" class="show_input_s_job" style="display: none;">
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td></td>
+                                                <td>กะ:&nbsp;</td>
+                                                <td>
+                                                    <select name="s_shift_id" id="s_shift_id" class="form-control">
+                                                        <option value="0" selected>ทั้งหมด</option>
+                                                        <option value="1">กะกลางวัน</option>
+                                                        <option value="2">กะกลางคืน</option>
+                                                    </select>
+                                                </td>
+                                                <td class="show_input_plan_date">
+                                                    <input type="checkbox" name="s_chk_plan_date"
+                                                        style="display: none;">
+                                                    <span id="text_plan_date">วันที่วางแผน:&nbsp;</span>
+                                                </td>
+                                                <td class="show_input_plan_date">
+                                                    <div class="row-sm-12" style="display: flex;">
+                                                        <div class="col-sm-5 p-0">
+                                                            <input type="text" class="form-control" id="plan_date_start"
+                                                                nextEleId="plan_date_end" />
+                                                        </div>
+                                                        <div class="col-sm-2 p-0 text-center">
+                                                            <span
+                                                                style="vertical-align: -moz-middle-with-baseline;">ถึง</span>
+                                                        </div>
+                                                        <div class="col-sm-5 p-0">
+                                                            <input type="text" class="form-control" id="plan_date_end"
+                                                                nextEleId="btn_search" />
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td></td>
+                                                <td>
+                                                    <span class="span_saddle_detail show_input_machine"
+                                                    data-menu-id="49">ขั้นตอนงาน:&nbsp;</span></td>
+                                                <td><select name="p_saddle_detail_id" id="p_saddle_detail_id"
+                                                        class="form-control show_input_machine" nextEleId="e_make_ready" data-menu-id="49">
+                                                        <option value="" selected="selected"></option>
+                                                    </select>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="col-4">
+                                    <div class="row">
+                                        <div class="col-8 div_btn_search">
+                                            <button id="btn_search" class="btn btn-primary"
+                                                onclick="searchPlan();">ค้นหา</button>
+                                            <button id="btn_reset" class="btn btn-secondary"
+                                                onclick="resetSeachPlan();">รีเซ็ต</button>
+                                            <button id="btn_back_to_scheduler_page" class="btn btn-info"
+                                                onclick="backToMainPage()">กลับ</button>
+                                        </div>
+                                        <div class="col-4">
+                                            <div class="row">
+                                                <div class="col-6 div_btn_export">
+                                                    <button id="btn_p_print" class="btn btn-block btn_plan btn_print"
+                                                        onclick="btnPrint();"><i
+                                                            class="fas fa-file-export"></i>&nbsp;พิมพ์</button>
+                                                </div>
+                                                <div class="col-6 div_btn_export">
+                                                    <button id="btn_p_excel" class="btn btn-block btn_plan btn_print"
+                                                        onclick="btnExcel();" title="Excel"><i
+                                                            class="fas fa-file-excel"></i>&nbsp;Excel</button>
+                                                </div>
+                                            </div>
+                                            <div class="row mt-1">
+                                                <div class="col-12 div_btn_export">
+                                                    <button id="btn_p_print_test"
+                                                        class="btn btn-block btn_plan btn_print"
+                                                        onclick="btnPrintTest();"><i
+                                                            class="fas fa-file-export"></i>&nbsp;พิมพ์
+                                                        (ทดลอง)</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="scheduler_tab2" class="card card_scheduler card-tabs">
+                        <div class="card-header p-0 pt-1 border-0">
+                            <ul id="" class="nav nav-tabs" role="tablist">
+                                <li class="nav-item">
+                                    <a id="edit_one_plan_tab" class="nav-link active" href="#edit_one_plan" role="tab"
+                                        data-toggle="pill" aria-controls="edit_one_plan">
+                                        <i class="fas fa-clipboard-list mr-1"></i>
+                                        แก้ไขทีละรายการ
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a id="edit_multi_plan_tab" class="nav-link" href="#edit_multi_plan" role="tab"
+                                        data-toggle="pill" aria-controls="edit_multi_plan">
+                                        <i class="fas fa-clipboard-list mr-1"></i>
+                                        แก้ไขทีละหลายรายการ
+                                    </a>
+                                </li>
+                                <!-- <li class="nav-item">
+                                            <a id="print_job_tab" class="nav-link" href="#print_job" role="tab"
+                                                data-toggle="pill" aria-controls="print_job">
+                                                <i class="fas fa-print mr-1"></i>
+                                                พิมพ์ Job
+                                            </a>
+                                        </li> -->
+                                <div class="card-tools">
+                                    <button type="button" class="btn btn-tool" data-card-widget="collapse"
+                                        title="Collapse">
+                                        <i class="fas fa-minus"></i>
+                                    </button>
+                                </div>
+                            </ul>
+                        </div>
+                        <div class="card-body">
+                            <div class="tab-content">
+                                <div id="edit_one_plan" class="tab-pane fade active show" role="tabpanel"
+                                    aria-labelledby="edit_one_plan_tab">
+                                    <div class="row">
+                                        <div class="col-11">
+                                            <table id="plan_data">
+                                                <tbody>
+                                                    <tr>
+                                                        <td><span class="fill-in">*</span>วันที่วางแผน:&nbsp;
+                                                        </td>
+                                                        <td><input type="text" class="form-control" id="e_plan_date"
+                                                                name="e_plan_date" nextEleId="e_jobid"
+                                                                onfocus="$(this).select();" readonly="readonly" /></td>
+                                                        <td>ID:&nbsp;</td>
+                                                        <td><input type="text" class="form-control text-center disabled"
+                                                                id="e_id" name="e_id" value="" readonly /></td>
+                                                        <td><span class="fill-in">*</span>ประเภทกะ:&nbsp;</td>
+                                                        <td>
+                                                            <select name="e_shift_id" id="e_shift_id"
+                                                                class="form-control" nextEleId="e_sig">
+                                                                <option value="0" selected></option>
+                                                                <option value="1">กะกลางวัน</option>
+                                                                <option value="2">กะกลางคืน</option>
+                                                            </select>
+                                                        </td>
+                                                        <td><span class="fill-in">*</span>ยก(เรื่อง)/วัน:&nbsp;
+                                                        </td>
+                                                        <td><input type="text" id="e_sig"
+                                                                class="form-control text-right number int" name="e_sig"
+                                                                value="0" nextEleId="e_waste" /></td>
+                                                        <td>ชนิดกระดาษ:&nbsp;</td>
+                                                        <td><input type="text" id="e_paper_type" class="form-control"
+                                                                name="e_paper_type" nextEleId="e_paper_size"
+                                                                onfocus="$(this).select();" /></td>
+                                                        <td><span class="fill-in">*</span>ขั้นตอนถัดไป:&nbsp;
+                                                            <a href="javascript:open_send()" id="machine_planning_send_a" data-menu-id="49">
+                                                                <img src="./projects/scheduler/images/plus-iconx32.png" />
+                                                            </a>
+                                                        </td>
+                                                        <td>
+                                                            <select name="e_send_dep" id="e_send_dep"
+                                                                class="form-control process-next-input"
+                                                                nextEleId="e_machine_id_send">
+                                                                <option value="" selected="selected"></option>
+                                                            </select>
+                                                        </td>
+                                                        <td>
+                                                        </td>
+                                                        <!-- <td colspan="4">
+                                                                </td> -->
+                                                    </tr>
+                                                    <tr>
+                                                        <td><span class="fill-in">*</span>Job:&nbsp;</td>
+                                                        <td><input class="form-control form-control-sm text-left"
+                                                                list="list_e_jobid" id="e_jobid" name="e_jobid"
+                                                                nextEleId="e_priority" onfocus="$(this).select();" />
+                                                        </td>
+                                                        <td>Priority:&nbsp;</td>
+                                                        <td><input type="text" id="e_priority"
+                                                                class="form-control text-center number int"
+                                                                name="e_priority" value="0" nextEleId="e_job_status_id"
+                                                                onfocus="$(this).select();" /></td>
+                                                        <td><span class="fill-in">*</span>จำนวน:&nbsp;</td>
+                                                        <td><input type="text" id="e_waste"
+                                                                class="form-control text-right number int"
+                                                                name="e_waste" value="" nextEleId="e_quantity" /></td>
+                                                        <td><span class="fill-in">*</span>ยอดงาน:&nbsp;</td>
+                                                        <td><input type="text" id="e_quantity"
+                                                                class="form-control text-right number int"
+                                                                name="e_quantity" nextEleId="e_machine_id"
+                                                                onfocus="$(this).select();" />
+                                                        </td>
+                                                        <td>Size กระดาษ:&nbsp;</td>
+                                                        <td><input type="text" class="form-control" name="e_paper_size"
+                                                                id="e_paper_size" nextEleId="e_recive_dep"
+                                                                onfocus="$(this).select();" /></td>
+                                                        <td><span class="fill-in">*</span>เครื่องจักรถัดไป:&nbsp;
+                                                        </td>
+                                                        <td>
+                                                            <select name="e_machine_id_send" id="e_machine_id_send"
+                                                                class="form-control process-next-input"
+                                                                nextEleId="e_btn_save">
+                                                                <option value="" selected="selected"></option>
+                                                            </select>
+                                                        </td>
+                                                        <td>
+                                                        </td>
+                                                        <!-- <td><span class="fill-in">*</span>ขั้นตอนถัดไป:&nbsp;
+                                                                </td>
+                                                                <td>
+                                                                    <select name="e_send_dep" id="e_send_dep"
+                                                                        class="form-control process-next-input">
+                                                                        <option value="" selected="selected"></option>
+                                                                    </select>
+                                                                </td>
+                                                                <td>
+                                                                </td> -->
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Job Name:&nbsp;</td>
+                                                        <td colspan="3"><input type="text" class="form-control disabled"
+                                                                name="e_job_name" value="" readonly /></td>
+                                                        <td>
+                                                            <div>
+                                                                <span class="fill-in">*</span>
+                                                                <span class="span_machine"
+                                                                    data-menu-id="0">เครื่องจักร:&nbsp;</span>
+                                                                <span class="span_machine"
+                                                                    data-menu-id="49">เครื่องจักร:&nbsp;</span>
+                                                                <span class="span_machine"
+                                                                    data-menu-id="47">ประเภทการทำงาน:&nbsp;</span>
+                                                            </div>
+
+                                                        </td>
+                                                        <td colspan="3" class="text-left">
+                                                            <select id="e_machine_id"
+                                                                class="form-control input-s-machine-id"
+                                                                name="e_machine_id" data-menu-id="0"
+                                                                nextEleId="e_make_ready" required>
+                                                            </select>
+                                                        </td>
+                                                        <!-- <td colspan="2"><input type="text" class="form-control"
+                                                                        name="e_machine_name"
+                                                                        placeholder="Machine Name" /></td> -->
+                                                        <td>รับจาก:&nbsp;</td>
+                                                        <td>
+                                                            <select name="e_recive_dep" id="e_recive_dep"
+                                                                class="form-control" nextEleId="e_remark">
+                                                                <option value="" selected="selected"></option>
+                                                            </select>
+                                                        </td>
+                                                        <td colspan="4">
+                                                        </td>
+                                                        <!-- <td><span
+                                                                        class="fill-in">*</span>เครื่องจักรถัดไป:&nbsp;
+                                                                </td>
+                                                                <td>
+                                                                    <select name="e_machine_id_send"
+                                                                        id="e_machine_id_send"
+                                                                        class="form-control process-next-input">
+                                                                        <option value="" selected="selected"></option>
+                                                                    </select>
+                                                                </td>
+                                                                <td>
+                                                                </td> -->
+                                                    </tr>
+                                                    <tr>
+                                                        <td>AE:&nbsp;</td>
+                                                        <td colspan="3"><input type="text" class="form-control disabled"
+                                                                name="e_ae_name" readonly /></td>
+                                                        <td><span class="fill-in"  data-menu-id="49">*</span>
+                                                            <span class="span_saddle_detail"
+                                                            data-menu-id="49">ขั้นตอนงาน:&nbsp;</span></td>
+                                                        <td colspan="2"><select name="e_saddle_detail_id" id="e_saddle_detail_id"
+                                                                class="form-control" nextEleId="e_make_ready" data-menu-id="49">
+                                                                <option value="" selected="selected"></option>
+                                                            </select>
+                                                        </td>
+                                                        <td></td>
+                                                        <td>หมายเหตุ:&nbsp;</td>
+                                                        <td><input type="text" class="form-control" name="e_remark"
+                                                                id="e_remark" nextEleId="e_send_dep"
+                                                                onfocus="$(this).select();" />
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>วันที่ส่งงาน:&nbsp;</td>
+                                                        <td><input type="text" class="form-control disabled"
+                                                                name="e_due1" readonly /></td>
+                                                        <td colspan="6"></td>
+                                                        <td colspan="3">
+                                                            <!-- <button class="btn btn-primary">Test</button> -->
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Status:&nbsp;</td>
+                                                        <td colspan="3">
+                                                            <select name="e_job_status_id" id="e_job_status_id"
+                                                                class="form-control" nextEleId="e_partName">
+                                                                <!-- <option value="" selected="selected"></option>
+                                                                <option value="1">รอ OK</option>
+                                                                <option value="2">OK</option>
+                                                                <option value="3">Inprocess</option>
+                                                                <option value="4">Success</option>
+                                                                <option value="5">ประมาณการ</option>
+                                                                <option value="6">OK งานสำคัญ</option>
+                                                                <option value="7">รอ OK งานสำคัญ</option> -->
+                                                            </select>
+                                                        </td>
+                                                        <td>Make Ready:&nbsp;</td>
+                                                        <td><input type="text" id="e_make_ready"
+                                                                class="form-control text-right number decimal"
+                                                                name="e_make_ready" value="1.00" nextEleId="e_speed"
+                                                                onfocus="$(this).select();" /></td>
+                                                        <td>Speed:&nbsp;</td>
+                                                        <td><input type="text" id="e_speed"
+                                                                class="form-control text-right number int"
+                                                                name="e_speed" value="0" nextEleId="e_capacity_labor"
+                                                                onfocus="$(this).select();" /></td>
+                                                        <td colspan="5">
+                                                            <!-- <button class="btn btn-primary">Test</button> -->
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>ชิ้นส่วน:&nbsp;</td>
+                                                        <td colspan="3">
+                                                            <input type="text" class="form-control" id="e_partName"
+                                                                name="e_partName" nextEleId="e_detail"
+                                                                onfocus="$(this).select();" />
+                                                            <input type="hidden" name="e_itid" id="e_itid" value="0" />
+                                                        </td>
+                                                        <td>Process Time:&nbsp;</td>
+                                                        <td><input type="text" class="form-control text-right disabled"
+                                                                id="e_process_time1" name="e_process_time1" value="0.00"
+                                                                readonly="readonly" />
+                                                            <input type="hidden" id="e_process_time" value="0.00" />
+                                                        </td>
+                                                        <td>Total:&nbsp;</td>
+                                                        <td><input type="text" class="form-control text-right disabled"
+                                                                id="e_hr1" name="e_hr1" value="0.00"
+                                                                onfocus="$(this).select();" readonly="readonly" />
+                                                            <input type="hidden" id="e_hr" name="e_hr" value="0.00" />
+                                                        </td>
+                                                        <td colspan="5">
+                                                            <!-- <button class="btn btn-primary">Test</button> -->
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>รายละเอียด:&nbsp;</td>
+                                                        <td colspan="3"><input type="text" class="form-control"
+                                                                id="e_detail" name="e_detail" nextEleId="e_shift_id"
+                                                                onfocus="$(this).select();" />
+                                                        </td>
+                                                        <td>จำนวนคน:&nbsp;</td>
+                                                        <td><input type="text" id="e_capacity_labor"
+                                                                class="form-control text-right number int"
+                                                                name="e_capacity_labor" value="0"
+                                                                nextEleId="e_paper_type" />
+                                                            <input type="hidden" id="e_master_capacity_labor"
+                                                                value="0" />
+                                                        </td>
+                                                        <td colspan="5">
+                                                            <!-- <button class="btn btn-primary">Test</button> -->
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <div class="col-1">
+                                            <input type="hidden" name="e_save_type" id="e_save_type" value="1"
+                                                size="1" />
+                                            <input type="hidden" name="e_id_cut" id="e_id_cut" size="1" />
+                                            <button id="e_btn_save" class="btn btn-block btn_plan"
+                                                onclick="btnSave();"><i class="fas fa-save"></i>&nbsp;บันทึกแผน</button>
+                                            <button id="e_btn_copy" class="btn btn-block btn_plan" title="คัดลอกแผน"
+                                                onclick="btnCopy();"><i class="fas fa-copy"></i>&nbsp;คัดลอกแผน</button>
+                                            <button id="btn_insert" class="btn btn-block btn_plan" title="เพิ่มแผน"
+                                                onclick="btnInsert();"><i
+                                                    class="fas fa-plus-circle"></i>&nbsp;เพิ่มแผน</button>
+                                            <button id="e_btn_cancel" class="btn btn-block btn_plan" title="ยกเลิกแผน"
+                                                onclick="btnCancel();"><i
+                                                    class="fas fa-times-circle"></i>&nbsp;ยกเลิกแผน</button>
+                                            <button id="e_btn_delete" class="btn btn-block btn_plan" title="ลบแผน"
+                                                onclick="btnDelete();"><i
+                                                    class="fas fa-trash-alt"></i>&nbsp;ลบแผน</button>
+                                            <!-- <button id="e_btn_reset" class="btn btn-block btn_plan"
+                                                        onclick="btnReset();"><i class="fas fa-sync-alt"></i>&nbsp;รีเซ็ต</button> -->
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="edit_multi_plan" class="tab-pane fade show" role="tabpanel"
+                                    aria-labelledby="edit_multi_plan_tab">
+                                    <div class="row">
+                                        <div class="col-1">
+                                        </div>
+                                        <div class="col-5">
+                                            <div class="row">
+                                                <div class="col-4 mb-2">
+                                                    <input type="checkbox" class="larger" id="es_chk_plan_date"
+                                                        name="es_chk_plan_date" value="1">
+                                                    <span>วันที่วางแผน:</span>
+                                                </div>
+                                                <div class="col-5">
+                                                    <input type="text" class="form-control" id="es_plan_date"
+                                                        name="es_plan_date">
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-4 mb-2">
+                                                    <input type="checkbox" id="es_chk_job_status_id" class="larger"
+                                                        name="es_chk_job_status_id" value="1">
+                                                    <span>Status:</span>
+                                                </div>
+                                                <div class="col-5">
+                                                    <select name="es_job_status_id" id="es_job_status_id"
+                                                        class="form-control">
+                                                        <option value="" selected="selected"></option>
+                                                        <option value="1">รอ OK</option>
+                                                        <option value="2">OK</option>
+                                                        <option value="3">Inprocess</option>
+                                                        <option value="4">Sucess</option>
+                                                        <option value="5">ประมาณการ</option>
+                                                        <option value="6">OK งานสำคัญ</option>
+                                                        <option value="7">รอ OK งานสำคัญ</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-4 mb-2">
+                                                    <input type="checkbox" id="es_chk_machine_id" class="larger"
+                                                        name="es_chk_machine_id" value="1">
+                                                    <span class="span_machine"
+                                                        data-menu-id="0">เครื่องจักร:&nbsp;</span>
+                                                    <span class="span_machine"
+                                                        data-menu-id="49">เครื่องจักร:&nbsp;</span>
+                                                    <span class="span_machine"
+                                                        data-menu-id="47">ประเภทการทำงาน:&nbsp;</span>
+                                                </div>
+                                                <div class="col-5">
+                                                    <select id="es_machine_id" class="form-control input-s-machine-id"
+                                                        name="es_machine_id" required>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-4 mb-2">
+                                                    <input type="checkbox" id="es_chk_shift_id" class="larger"
+                                                        name="es_chk_shift_id" value="1">
+                                                    <span>ประเภทกะ:</span>
+                                                </div>
+                                                <div class="col-5">
+                                                    <select name="es_shift_id" id="es_shift_id" class="form-control">
+                                                        <option value="0" selected></option>
+                                                        <option value="1">กะกลางวัน</option>
+                                                        <option value="2">กะกลางคืน</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-5">
+                                            <div class="row">
+                                                <div class="col-3 mb-2">
+                                                    <input type="checkbox" id="es_chk_remark" class="larger"
+                                                        name="es_chk_remark" value="1">
+                                                    <span>หมายเหตุ:</span>
+                                                </div>
+                                                <div class="col-6">
+                                                    <input class="form-control" type="text" id="es_remark"
+                                                        name="es_remark" placeholder="หมายเหตุ" value="">
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-3 mb-2">
+                                                    <input type="checkbox" id="es_chk_detail" class="larger"
+                                                        name="es_chk_detail" value="1">
+                                                    <span>รายละเอียด:</span>
+                                                </div>
+                                                <div class="col-6">
+                                                    <input class="form-control" type="text" id="es_detail"
+                                                        name="es_detail" placeholder="รายละเอียด" value="">
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-3 mb-2" data-menu-id="0">
+                                                    <input type="checkbox" id="es_chk_okdate" class="larger"
+                                                        name="es_chk_okdate" value="1">
+                                                    <span>OK Date:</span>
+                                                </div>
+                                                <div class="col-6" data-menu-id="0">
+                                                    <input class="form-control" type="text" id="es_okdate"
+                                                        name="es_okdate" placeholder="OK Date" value="">
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-3 mb-2" data-menu-id="49">
+                                                    <input type="checkbox" id="es_chk_saddle_detail_id" class="larger"
+                                                        name="es_chk_saddle_detail_id" value="1">
+                                                    <span>ขั้นตอนงาน:</span>
+                                                </div>
+                                                <div class="col-6" data-menu-id="49">
+                                                    <select class="form-control" id="es_saddle_detail_id" name="es_saddle_detail_id"></select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- <div class="col-1">
+                                                </div> -->
+                                        <div class="col-1">
+                                            <button id="e_btn_save" class="btn btn-block btn_plan"
+                                                onclick="btnMultipleSave('edit',1);"><i
+                                                    class="fas fa-save"></i>&nbsp;บันทึกแผน</button>
+                                            <button id="e_btn_copy" class="btn btn-block btn_plan" title="คัดลอกแผน"
+                                                onclick="btnMultipleSave('copy',2);"><i
+                                                    class="fas fa-copy"></i>&nbsp;คัดลอกแผน</button>
+                                            <button id="e_btn_cancel" class="btn btn-block btn_plan" title="ยกเลิกแผน"
+                                                onclick="btnMultipleCancel();"><i
+                                                    class="fas fa-times-circle"></i>&nbsp;ยกเลิกแผน</button>
+                                            <button id="e_btn_delete" class="btn btn-block btn_plan" title="ลบแผน"
+                                                onclick="btnMultipleDelete();"><i
+                                                    class="fas fa-trash-alt"></i>&nbsp;ลบแผน</button>
+                                            <!-- <button id="e_btn_reset" class="btn btn-block btn_plan"
+                                                        onclick="btnReset();"><ion-icon
+                                                            name="refresh-circle"></ion-icon>&nbsp;รีเซ็ต</button> -->
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="print_job" class="tab-pane fade show" role="tabpanel"
+                                    aria-labelledby="print_job_tab">
+                                    <div class="row">
+                                        <div class="col-3"></div>
+                                        <div class="col-3">
+                                            <table>
+                                                <tbody>
+                                                    <tr>
+                                                        <td>ประเภทเครื่องจักร:&nbsp;</td>
+                                                        <td><select name="p_machine_type" id="p_machine_type"
+                                                                class="form-control">
+                                                                <option value="">ทั้งหมด</option>
+                                                            </select>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>วันที่:&nbsp;</td>
+                                                        <td>
+                                                            <div class="row-sm-12" style="display: flex;">
+                                                                <div class="col-sm-5 p-0">
+                                                                    <input type="text" class="form-control"
+                                                                        id="p_date_start" readonly />
+                                                                </div>
+                                                                <div class="col-sm-2 p-0 text-center">
+                                                                    <span
+                                                                        style="vertical-align: -moz-middle-with-baseline;">ถึง</span>
+                                                                </div>
+                                                                <div class="col-sm-5 p-0">
+                                                                    <input type="text" class="form-control"
+                                                                        id="p_date_end" readonly />
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <td>
+                                                        <span class="span_machine"
+                                                            data-menu-id="0">เครื่องจักร:&nbsp;</span>
+                                                        <span class="span_machine"
+                                                            data-menu-id="49">เครื่องจักร:&nbsp;</span>
+                                                        <span class="span_machine"
+                                                            data-menu-id="47">ประเภทการทำงาน:&nbsp;</span>
+                                                    </td>
+                                                    <td>
+                                                        <div class="row mt-2 mr-2">
+                                                            <div class="col-2">
+                                                                <input type="radio" class="form-control" name="s_print"
+                                                                    id="s_print_1" value="1" checked="checked">
+                                                            </div>
+                                                            <div class="col-1">
+                                                                <span>ทั้งหมด</span>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>&nbsp;</td>
+                                                        <td>
+                                                            <div class="row mt-2 mr-2">
+                                                                <div class="col-2">
+                                                                    <input type="radio" class="form-control"
+                                                                        name="s_print" id="s_print_2" value="2">
+                                                                </div>
+                                                                <div class="col-1">
+                                                                    <span>ตามเครื่อง</span>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr id="tr_show_machine" style="display: none;">
+                                                        <td>&nbsp;</td>
+                                                        <td>
+                                                            <div class="row mt-2 mr-2">
+                                                                <select id="p_machine_id"
+                                                                    class="form-control input-s-machine-id"
+                                                                    name="p_machine_id" required>
+                                                                </select>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <div class="col-5"></div>
+                                        <div class="col-1">
+                                            <div>
+                                                <button id="btn_p_print" class="btn btn-block btn_plan"
+                                                    onclick="btnPrint();">
+                                                    <i class="fas fa-file-export"></i></i>&nbsp;พิมพ์</button>
+                                            </div>
+                                            <div>
+                                                <button id="btn_p_excel" class="btn btn-block btn_plan" title="Excel"
+                                                    onclick="btnPrintTest();">
+                                                    <i class="fas fa-file-export"></i>&nbsp;พิมพ์(ทดลอง)</button>
+                                            </div>
+                                            <div>
+                                                <button id="btn_p_excel" class="btn btn-block btn_plan" title="Excel"
+                                                    onclick="btnExcel();">
+                                                    <i class="fas fa-file-excel"></i>&nbsp;Excel</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="scheduler_tab3" class="card card_scheduler">
+                        <div class="card-header p-0 pt-1 border-0">
+                        </div>
+                        <div class="card-body">
+                            <div class="div_table_plan">
+                                <table class="tb_plans" id="tb_plans" name="tb_plans">
+                                    <thead>
+                                        <tr>
+                                            <th class="checkbox_plan">All <input type="checkbox" id="check_plans" />
+                                            </th>
+                                            <th>ID</th>
+                                            <th>Prt.</th>
+                                            <th>Job</th>
+                                            <th>Job Name</th>
+                                            <th>Total</th>
+                                            <th>วันที่วางแผน</th>
+                                            <th>ประเภท</th>
+                                            <th data-menu-id="0">Mac.ID</th>
+                                            <th data-menu-id="0">Machine</th>
+                                            <th data-menu-id="49">Mac.ID</th>
+                                            <th data-menu-id="49">Machine</th>
+                                            <th data-menu-id="47">ประเภทการทำงาน</th>
+                                            <th>Status</th>
+                                            <th>ประเภทกะ</th>
+                                            <th>ชิ้นส่วน</th>
+                                            <th>รายละเอียดต่างๆ</th>
+                                            <th>ยก/วัน</th>
+                                            <th data-menu-id="49">ขั้นตอนงาน</th>
+                                            <th>Size กระดาษ</th>
+                                            <th>ชนิดกระดาษ</th>
+                                            <th>ผู้ใช้งาน</th>
+                                            <th>วันที่คีย์</th>
+                                            <th>ยอดงาน</th>
+                                            <th>จำนวน</th>
+                                            <th>M.Ready</th>
+                                            <th>P.Time</th>
+                                            <th>Speed</th>
+                                            <th data-menu-id="1">กระดาษ</th>
+                                            <th>วันที่ส่ง</th>
+                                            <th data-menu-id="1">Plate</th>
+                                            <th data-menu-id="1">หมึก</th>
+                                            <th data-menu-id="1">Water Base</th>
+                                            <th data-menu-id="1">Varish</th>
+                                            <th>รับจาก</th>
+                                            <th>ส่งต่อ</th>
+                                            <th>หมายเหตุ</th>
+                                            <th class="is_printing" data-menu-id="1">OK Date</th>
+                                            <th>ส่งต่อเครื่อง</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="scheduler_tab4" class="card card_scheduler">
+                        <div class="card-header p-0 border-0">
+                        </div>
+                        <div class="card-body">
+                            <div class="row justify-content-end">
+                                <div class="col-2 align-self-end">
+                                    <span>จำนวนรวม:</span>&nbsp;<span class="input_total"
+                                        name="show_total_waste"></span>
+                                </div>
+                                <div class="col-3 align-self-end">
+                                    <span>ชั่วโมงการทำงานรวม (กลางวัน):</span>&nbsp;<span class="input_total"
+                                        name="show_sum_hr_day"></span>
+                                </div>
+                                <div class="col-3 align-self-end">
+                                    <span>ชั่วโมงการทำงานรวม (กลางคืน):</span>&nbsp;<span class="input_total"
+                                        name="show_sum_hr_night"></span>
+                                </div>
+                                <div class="col-2 align-self-end">
+                                    <span>จำนวนกรอบ:</span>&nbsp;<span class="input_total" name="show_sum_sig"></span>
+                                </div>
+                                <div class="col-2 align-self-end">
+                                    <span>รวมรายการ:</span>&nbsp;<span class="input_total" name="show_sum_job"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
+    <%- include('../scheduler/test.ejs'); %>
     <%- include('../includes/script-bottom'); %>
         <script src="./projects/scheduler/js/scheduler-main.js"></script>
         <script src="./projects/scheduler/js/scheduler.js"></script>

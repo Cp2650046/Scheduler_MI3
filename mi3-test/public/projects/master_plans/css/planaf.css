@@ -4,6 +4,7 @@
 	empty-cells:show;
 	table-layout:fixed;
 	border-collapse:collapse;
+	width:100%;
 } 
 
 td.night{
@@ -127,7 +128,7 @@ td.month2:hover {
 	background-color:#FF8F8F;
 }
 .ok{
-	background-color:#CAF9C0;
+	background-color:#82D770;
 }
 .success{
 	background-color:#FFFFFF;

@@ -1,6 +1,11 @@
 const Router = require('express').Router()
 const controllers = require('./masterplan.controller')
 
+Router.get("/get_data_machine", async (req, res) => {
+    const data = await controllers.getDataMachine(req.query)
+    res.send(data).status(200)
+})
+
 Router.get("/get_data_plan", async (req, res) => {
     const data = await controllers.getDataPlan(req.query)
     res.send(data).status(200)

@@ -1,91 +1,197 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <title id="title_plan">Masterplan - MI3</title>
     <%- include('../includes/script-top'); %>
     <link rel="stylesheet" href="./projects/master_plans/css/master-plan-afterpress.css">
     <link rel="stylesheet" href="./projects/master_plans/css/planaf.css">
-    <link rel="stylesheet" href="./projects/master_plans/css/dragAndDrop.css">
+    <!-- <link rel="stylesheet" href="./projects/master_plans/css/dragAndDrop.css"> -->
+    <style>
+       .diableSelection {
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            -khtml-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+        .placehover{background:#fff9a3;border:1px solid #fff9a3;line-height:18px;padding:0px 2px;font-size:12px;text-align:center;font-weight:bold;}
+        .mousemove{cursor: move;}
+        .mouseover{background:#efefef;}
+
+        *{box-sizing:border-box;}
+        body{position:relative;overflow:unset}
+        #header-area{height:80px;background:#ccc;position:fixed;top:0;left:0;width:100%;}
+        .move_plan{position:absolute;z-index:99;}
+        table#plan_calendar {table-layout: fixed;border-collapse: unset; font-size: 14px;}
+        table#plan_calendar {width:100%;padding-left: 10px ;padding-right:10px;padding-bottom:15px;height:100%;}
+        table#plan_calendar tbody tr:first-child td{text-align:center;}
+        table#plan_calendar tbody tr td {border:1px solid gray;/*width:188px;*/}
+
+        table#plan_calendar tbody tr td.dropzone{/*width:188px;*/height:100px;vertical-align:bottom;}
+        table#plan_calendar tbody tr.night td{border-top:2px solid #f00;}
+
+        table#plan_calendar tbody tr td .x{width:240px !important;display:flex;flex-direction:column;justify-content:end;border:1px solid #999;border-bottom:none;border-right:none;}
+        table#plan_calendar tbody tr td:last-child .x{border-right:1px solid #999;}
+        table#plan_calendar tbody tr td .x{min-height:200px;height:100%;}
+        table#plan_calendar tbody tr td .x .day{height:50%;display:flex;flex-direction:column;justify-content:end;height:100%;background:#fff;border-bottom:1px solid #bf2a2a}
+        table#plan_calendar tbody tr td .x .night{height:50%;display:flex;flex-direction:column;justify-content:end;height:100%;background:#fff;}
+        #main-area{margin-top:55px;}
+        #main-area tbody tr:first-child td{position:sticky;background:#fff;top:80px;}
+        .draggable{background:#ddd;border:0px solid #000;cursor: move;line-height:18px;
+            /* width:135px; */
+            border-radius:3px;border:1px solid #333;}
+        .draggable{padding:0px 2px;font-size:12px;}
+
+        div#header-area:not(#master_plans_tab2)>.card-body {
+            background-color: lightgray;
+            font-size: 14px;
+        }
+        div#header-area:not(.card-outline)>.card-header {
+            background-color: dimgray;
+            color: #ffe407;
+        }
+
+        .noperson{
+            background-color:#EFED95;
+        }
+        .pm{
+            background-color:#BEADFA;
+        }
+        .breakdown{
+            background-color:#F7C85A;
+        }
+        .s5{
+            background-color:#e5aeb8;
+        }
+        .wait_ok{
+            background-color:#64A9F3;
+        }
+        .ok_cus_color{
+            background-color:#E03C3C;
+            color: #fff;
+        }
+        .wait_ok_cus_color{
+            background-color:#FF8F8F;
+        }
+        .ok{
+            background-color:#82D770;
+        }
+        .success{
+            background-color:#FFFFFF;
+        }
+        .success2{
+            background-color:#663500;
+        }
+        .box-color-size {
+            width: 20px;
+        }
+        #naviagateMasterPlan_go {
+            padding: 0px 15px 0px 15px;
+            margin-left: 5px;
+        }
+        .navigation-select {
+            background-color: #F3FDE8;
+            border-radius: 5px;
+            border: solid 1px #F3FDE8;
+            cursor: pointer;
+        }
+        #colorInfo{
+            font-size:12px;
+        }
+        #colorInfo span{
+            border:0.5px solid #000;
+        }
+        .remark_success{
+            color: red;
+            font-size: 12px;
+        }
+        #percent_success{
+            font-size: 12px;
+        }
+        .card-body {
+            padding: 5px;
+        }
+        .card-header {
+            border-top-left-radius: unset;
+            border-top-right-radius: unset;
+        }
+        .project_name{
+            font-weight: bold;
+        }
+        
+    </style>
 </head>
 
-<body class="hold-transition sidebar-mini layout-fixed">
-    <!-- <div class="content-wrapper"> -->
-        <div id="main_board">
-            <div id="second_board">
-                <div id="master_plans_tab1" class="card_masterplan">
-                    <div class="card-header pl-2 pb-1 pt-2 border-0">
-                        <div class="card-title">
-                            <span class="project_name">
-                                <i class="fas fa-clipboard"></i>
-                                MASTER PLAN
-                            </span>
-                        </div>
-                        <div id="iconNavigationContainer">
+<body>
+    <div id="header-area">
+        <div class="card-header pl-2 pb-1 pt-2 border-0">
+            <div class="card-title">
+                <span class="project_name">
+                    <i class="fas fa-clipboard"></i>
+                    MASTER PLAN
+                </span>
+            </div>
+            <div id="iconNavigationContainer">
 
-                        </div>
-                        <div class="card-tools">
-                            <div id="colorInfo" class="row mb-2 justify-content-center">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <div class="row justify-content-center">
-                                <table>
-                                    <tbody>
-                                        <tr>
-                                            <td>Navigation: </td>
-                                            <td>
-                                                <select id="naviagate_masterplan_typeID" name="naviagate_masterplan_typeID" class="form-select navigation-select">
-                                                    <option value="36">Roll Cutter</option>
-                                                    <option value="35">Sheet</option>
-                                                    <option value="34">Web</option>
-                                                    <option value="74">Digital Print</option>
-                                                    <option value="afterpress">Afterpress All</option>
-                                                    <option value="afterpress1">Afterpress 1</option>
-                                                    <option value="afterpress2">Afterpress 2</option>
-                                                    <option value="afterpress3">Afterpress 3</option>
-                                                    <option value="cutting">ตัดป้อนแท่น</option>
-                                                    <option value="10">Die-cut</option>
-                                                </select>
-                                            </td>
-                                            <td>&nbsp;Year:</td>
-                                            <td>
-                                                <select name="naviagate_masterPlan_year" id="naviagate_masterPlan_year"class="form-select navigation-select">
-                                                    <option value="2022">2022</option>
-                                                </select>
-                                            </td>
-                                            <td>&nbsp;Month: </td>
-                                            <td>
-                                                <select name="naviagateMasterPlan_month" id="naviagateMasterPlan_month"class="form-select navigation-select">
-                                                </select>
-                                            </td>
-                                            <td>
-                                                <button id="naviagateMasterPlan_go" class="btn btn-sm btn-primary" onclick="btnPlanGo();" >Go</button>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                        </div>
-                    </div>
-                </div>
-                <div id='fixtb'>
-                    <table cellSpacing='0' cellPadding='0' id='tb_fix'>
-                        <tbody>
-
-                        </tbody>
-                    </table>
+            </div>
+            <div class="card-tools">
+                <div id="colorInfo" class="row mb-2 justify-content-center">
                 </div>
             </div>
         </div>
-    <!-- </div> -->
+        <div class="card-body">
+            <div class="row justify-content-center">
+                    <table>
+                        <tbody>
+                            <tr>
+                                <td>Navigation: </td>
+                                <td>
+                                    <select id="naviagate_masterplan_typeID" name="naviagate_masterplan_typeID" class="form-select navigation-select">
+                                        <option value="36">Roll Cutter</option>
+                                        <option value="35">Sheet</option>
+                                        <option value="34">Web</option>
+                                        <option value="74">Digital Print</option>
+                                        <option value="afterpress">Afterpress All</option>
+                                        <option value="afterpress1">Afterpress 1</option>
+                                        <option value="afterpress2">Afterpress 2</option>
+                                        <option value="afterpress3">Afterpress 3</option>
+                                        <option value="cutting">ตัดป้อนแท่น</option>
+                                        <option value="10">Die-cut</option>
+                                    </select>
+                                </td>
+                                <td>&nbsp;Year:</td>
+                                <td>
+                                    <select name="naviagate_masterPlan_year" id="naviagate_masterPlan_year"class="form-select navigation-select">
+                                        <option value="2022">2022</option>
+                                    </select>
+                                </td>
+                                <td>&nbsp;Month: </td>
+                                <td>
+                                    <select name="naviagateMasterPlan_month" id="naviagateMasterPlan_month"class="form-select navigation-select">
+                                    </select>
+                                </td>
+                                <td>
+                                    <button id="naviagateMasterPlan_go" class="btn btn-sm btn-primary" onclick="btnPlanGo();" >Go</button>
+                                </td>
+                                <td>
+                                    <span class="remark_success">&nbsp;&nbsp;* </span><span id="percent_success">หมายเหตุ: Success 95% ขึ้นไป (ยกเว้น Roll Cutter และ ตัดป้อนแท่นที่ใช้เกณฑ์ 100%)</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+            </div>
+        </div>
+    </div>
+    <div id="main-area"></div>
     <%- include('../master_plans/master-plan-paper-ready.ejs'); %>
     <%- include('../includes/script-bottom'); %>
     <script src='../../plugins/iconNavigation/jquery.iconNavigation.js'></script>
     <script src="./projects/master_plans/js/master-plan-main.js"></script>
+    <script src="./projects/master_plans/js/test.js"></script>
     <script src="./projects/master_plans/js/master-plans.js"></script>
     <script src="./projects/master_plans/js/master-plan-afterpress.js"></script>
-    <script src="./projects/master_plans/js/master-plan-drang-and-drop.js"></script>
+    <!-- <script src="./projects/master_plans/js/master-plan-drang-and-drop.js"></script> -->
 
 </body>
 

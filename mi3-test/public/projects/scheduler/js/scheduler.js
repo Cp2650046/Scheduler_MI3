@@ -1,7 +1,7 @@
 var apiScheduler = `${api_url}/scheduler`
 
 async function getMenu(empID) {
-    console.log("get menu");
+    // console.log("get menu");
     const url = `${apiScheduler}/get_menu`;
     let res = {}
     $.ajax({
@@ -15,29 +15,28 @@ async function getMenu(empID) {
             main_set_table_loading({ loading: true, message: 'LOADING ...' }, "body");
         },
         success: async function (data) {
-            console.log("success function");
-            // console.log('19 :>> ', data);
+            // console.log("success function");
             let dataNextMachine = await getNextMachine();
+
             const schedulerData = {
                 schedulerNextMachine: dataNextMachine,
                 schedulerDefaultMachine: data.machineList,
-                schedulerMachineTypeList: data.machineTypeList
+                schedulerMachineTypeList: data.machineTypeList,
+                schedulerActCode: await getActCode(),
+                schedulerStatuPlanList: await getJobStatus(),
+                schedulerSaddleList: await getSaddle()
             }
 
             localStorage.setItem("schedulerData", JSON.stringify(schedulerData));
 
             if (data) {
-                // console.log('data.menuList :>> ', window.location.pathname);
-                if(window.location.pathname === "/scheduler"){
-                   await buildMenu(data.menuList); 
-                }
+                await buildMenu(data.menuList);
                 main_set_loading({ loading: false });
             }
             res = data;
         },
         error: function (err) {
             console.log(err);
-            main_set_loading({ loading: false });
         }
     })
     return res
@@ -84,11 +83,10 @@ async function getMachine(machineType) {
     return res
 }
 
-async function getPlanSearch(objSearchData,menuType) {
-    var url = `${apiScheduler}/get_plan_search`;
-    if(menuType == 47){
-        url = `${apiScheduler}/get_plan_search_casein`;
-    }
+async function getPlanSearch(objSearchData) {
+    // console.log(objSearchData);
+    // const objFilter = randomObjects(); // test serch function
+    const url = `${apiScheduler}/get_plan_search`;
     let res = {}
     $.ajax({
         url: url,
@@ -224,7 +222,7 @@ async function getJob(jobid) {
     return res
 }
 
-async function getCapacityLabor(machine_id, e_plan_date) {
+async function getCapacityLabor(machine_id, e_plan_date, menu_id) {
     const url = `${apiScheduler}/get_capacity_labor`;
     let res = {}
     $.ajax({
@@ -232,13 +230,14 @@ async function getCapacityLabor(machine_id, e_plan_date) {
         method: 'GET',
         data: {
             machineId: machine_id,
-            planDate: e_plan_date
+            planDate: e_plan_date,
+            menuId: menu_id
         },
         async: false,
         dataType: 'JSON',
         success: function (data) {
             // console.log(data);
-            res = data.capacityLabor;
+            res = data.master_capacity_labor;
         },
         error: function (err) {
             console.log(err);
@@ -285,8 +284,30 @@ async function getNextMachine() {
         beforeSend: function () {
         },
         success: function (data) {
-            // console.log('263 :>> ', data);
+            console.log('263 :>> ', data);
             res = data.result;
+        },
+        error: function (err) {
+            console.log(err);
+        }
+    })
+    return res
+}
+
+async function getJobStatus() {
+    const url = `${apiScheduler}/get_job_status`;
+    let res = {}
+    $.ajax({
+        url: url,
+        method: 'GET',
+        data: {},
+        async: false,
+        dataType: 'JSON',
+        beforeSend: function () {
+        },
+        success: function (data) {
+            console.log('263 :>> ', data);
+            res = data;
         },
         error: function (err) {
             console.log(err);
@@ -404,28 +425,44 @@ async function deleteMultiplePlan(obj_data_plan) {
     return res
 }
 
-/* CASE IN */
-function getWorkType(menu_id) {
-    return new Promise(function (resolve, reject) {
-        const url = `${apiScheduler}/get_work_type`;
-        let res = {}
-        $.ajax({
-            url: url,
-            method: 'GET',
-            data: { menu_id },
-            async: true,
-            dataType: 'JSON',
-            success: async function (data) {
-                res = data;
-                resolve(res);
-            },
-            error: function (err) {
-                console.log(err);
-                reject();
-            }
-        })
-        // return res
-    });
+async function getActCode() {
+    const url = `${apiScheduler}/get_act_code`;
+    let res = {}
+    $.ajax({
+        url: url,
+        method: 'GET',
+        async: false,
+        dataType: 'JSON',
+        beforeSend: function () {
+        },
+        success: function (data) {
+            // console.log(data);
+            res = data;
+        },
+        error: function (err) {
+            console.log(err);
+        }
+    })
+    return res
+}
+
+async function getSaddle() {
+    const url = `${apiScheduler}/get_saddle`;
+    let res = {}
+    $.ajax({
+        url: url,
+        method: 'GET',
+        data: {},
+        async: false,
+        dataType: 'JSON',
+        success: function (data) {
+            res = data;
+        },
+        error: function (err) {
+            console.log(err);
+        }
+    })
+    return res
 }
 
 // ==========================================================================================
